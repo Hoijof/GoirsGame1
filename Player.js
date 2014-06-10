@@ -1,6 +1,10 @@
-function Player () {
+function Player (id) {
 	//stats 
+
+	this.id				= id;
+	this.name			= "Player";
 	this.strength 		= this.generateStat("strength");
+	this.endurance		= this.generateStat("endurance");
 	this.intelligence 	= this.generateStat("intelligence");
 	this.willpower		= this.generateStat("willpower");
 	this.agility 		= this.generateStat("agility");
