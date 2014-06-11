@@ -8,7 +8,7 @@ function updateWorldInfo() {
 	addDivToWorldInfo("Total Deaths : " + world.deaths);
 	addDivToWorldInfo("Total Births : " + world.births);
 	addDivToWorldInfo("Population : " + world.population);
-	addDivToWorldInfo("Player health : " + player.health + " level : " + player.level);
+	addDivToWorldInfo("Player health : " + player.health.toPrecision(4) + " level : " + player.level);
 }
 
 var world  = new World();
@@ -49,6 +49,11 @@ $(document).ready(function (){
 	$("#advance").on("click", function() {
 		world.callADay();
 		updateWorldInfo();
+
+		if (player.health <= 0) {
+			alert("You lasted " + world.day + " days in this cruel world.")
+			location.reload();
+		}
 	});
 });
 

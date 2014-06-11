@@ -3,7 +3,7 @@ function World() {
 	this.day    	= 0;
 	this.deaths 	= 0;
 	this.births     = 1;
-	this.population = getRandomInt(200, 700);
+	this.population = getRandomInt(200, 2000);
 	this.people     = Array();
 
 	this.refreshCounter = REFRESH_COUNTER;
