@@ -1,8 +1,11 @@
 function Entity (id) {
 
 	//stats 
+
 	this.id				= id;
 	this.name			= "Entity";
+	this.level = 0;
+
 	this.strength 		= this.generateStat("strength");
 	this.endurance		= this.generateStat("endurance");
 	this.intelligence 	= this.generateStat("intelligence");
@@ -16,30 +19,48 @@ function Entity (id) {
 }
 
 Entity.prototype.generateStat = function(stat) {
+	var result;
+
 	switch(stat) {
 		case "strength":
-			return getRandomInt(3,10);
+			result = getRandomInt(3,10);
+			this.level += result;
+			return result;
 		break;
 		case "endurance":
-			return getRandomInt(3,10);
+			result = getRandomInt(3,10);
+			this.level += result;
+			return result;
 		break;
 		case "intelligence":
-			return getRandomInt(3,10);;
+			result = getRandomInt(3,10);
+			this.level += result;
+			return result;
 		break;
 		case "willpower":
-			return getRandomInt(3,10);;
+			result = getRandomInt(3,10);
+			this.level += result;
+			return result;
 		break;
 		case "agility":
-			return getRandomInt(3,10);;
+			result = getRandomInt(3,10);
+			this.level += result;
+			return result;
 		break;
 		case "speed":
-			return getRandomInt(3,10);;
+			result = getRandomInt(3,10);
+			this.level += result;
+			return result;
 		break;
 		case "stamina":
-			return getRandomInt(3,10);;
+			result = getRandomInt(3,10);
+			this.level += result;
+			return result;
 		break;
 		case "faith":
-			return getRandomInt(3,10);;
+			result = getRandomInt(3,10);
+			this.level += result;
+			return result;
 		break;
 	}
 };

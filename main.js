@@ -8,14 +8,18 @@ function updateWorldInfo() {
 	addDivToWorldInfo("Total Deaths : " + world.deaths);
 	addDivToWorldInfo("Total Births : " + world.births);
 	addDivToWorldInfo("Population : " + world.population);
+	addDivToWorldInfo("Player health : " + player.health + " level : " + player.level);
 }
 
 var world  = new World();
-updateWorldInfo();
 
-for(var i = 0; i < world.population; i++) {
+var player = new Player(0);
+world.addPerson(player);
+for(var i = 1; i < world.population; i++) {
 	world.addPerson(new Entity(i));
 }
+
+updateWorldInfo();
 
 /*var won = 0;
 var defeat = 0;

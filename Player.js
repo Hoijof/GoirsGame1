@@ -3,6 +3,8 @@ function Player (id) {
 
 	this.id				= id;
 	this.name			= "Player";
+	this.level = 0;
+
 	this.strength 		= this.generateStat("strength");
 	this.endurance		= this.generateStat("endurance");
 	this.intelligence 	= this.generateStat("intelligence");

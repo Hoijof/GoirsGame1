@@ -51,19 +51,35 @@ World.prototype.callADay = function() {
 
 	this.population = this.people.length = this.people.size();
 
-	if(this.refreshCounter <= 0) {
+	this.refreshPeople();
+	/*if(this.refreshCounter <= 0) {
 		this.refreshPeople();
 		this.refreshCounter = REFRESH_COUNTER;
 	} else {
 		this.refreshCounter--;
+	}*/
+
+	this.updatePeopleHealth();
+};
+
+World.prototype.updatePeopleHealth = function() {
+	for (var i = 0; i < this.people.length; i++) {
+		this.people[i].health += MAX_ENTITY_HEALTH * REGENERATION_RATIO;
+		if (this.people[i].health > MAX_ENTITY_HEALTH) this.people[i].health = MAX_ENTITY_HEALTH;
 	}
 };
 
 World.prototype.addPerson = function(person) {
-	this.people.push(person);
+
+	this.people[person.id] = person;
 };
 World.prototype.removePerson = function(person) {
 	this.people[person.id] = undefined;
+};
+
+World.prototype.getPersonById = function(id) {
+	console.log(this.people[id]);
+	return this.people[id];
 };
 
 World.prototype.getRandomPerson = function(reference) {
