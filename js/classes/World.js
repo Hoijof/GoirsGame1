@@ -3,12 +3,16 @@ function World() {
 	this.day    	= 0;
 	this.deaths 	= 0;
 	this.births     = 1;
-	this.population = getRandomInt(200, 2000);
+	this.population = getRandomInt(WORLD_MIN_SIZE, WORLD_MAX_SIZE);
 	this.people     = Array();
 
 	this.refreshCounter = REFRESH_COUNTER;
 
 	this.lastId = 0;
+
+	for(var i = 1; i < this.population; i++) {
+		this.addPerson(new Entity(i));
+	}
 
 }
 
@@ -28,12 +32,22 @@ World.prototype.callADay = function() {
 		var result = attacker.fightAgainstEntity(attacked);
 		switch (result) {
 			case "victory" :
-				++deathsToday;
-				this.removePerson(attacked);
+				if ( !survivalCheck(attacked)) {
+					++deathsToday;
+					attacked.basics.isDead = true;
+					this.removePerson(attacked);
+				} else {
+					console.log(attacked.basics.name + " survived the fight!");
+				}
 			break;
 			case "defeat" :
-				++deathsToday;
-				this.removePerson(attacker);
+				if ( !survivalCheck(attacker)) {
+					++deathsToday;
+					attacker.basics.isDead = true;
+					this.removePerson(attacker);
+				} else {
+					console.log(attacker.basics.name + " survived the fight!");
+				}
 			break;
 			case "draw" :
 				
@@ -65,14 +79,13 @@ World.prototype.callADay = function() {
 
 World.prototype.updatePeopleHealth = function() {
 	for (var i = 0; i < this.people.length; i++) {
-		this.people[i].health += MAX_ENTITY_HEALTH * REGENERATION_RATIO;
-		if (this.people[i].health > MAX_ENTITY_HEALTH) this.people[i].health = MAX_ENTITY_HEALTH;
+		regeneratePerson(this.people[i]);
 	}
 };
 
 World.prototype.addPerson = function(person) {
-	if (person.id > this.lastId ) this.lastId = person.id;
-	this.people[person.id] = person;
+	if (person.basics.id > this.lastId ) this.lastId = person.basics.id;
+	this.people[person.basics.id] = person;
 };
 
 World.prototype.getLastId = function() {
@@ -80,7 +93,7 @@ World.prototype.getLastId = function() {
 }
 
 World.prototype.removePerson = function(person) {
-	this.people[person.id] = undefined;
+	this.people[person.basics.id] = undefined;
 };
 
 World.prototype.getPersonById = function(id) {
@@ -98,7 +111,7 @@ World.prototype.getRandomPerson = function(reference) {
 		var repeated = false;
 		if(reference !== undefined) {
 			for(var i = 0; i < reference.length; ++i) {
-				if (person.id == reference[i].id) repeated = true;
+				if (person.basics.id == reference[i].basics.id) repeated = true;
 			}
 		}
 		
@@ -110,8 +123,12 @@ World.prototype.getRandomPerson = function(reference) {
 
 World.prototype.refreshPeople = function() {
 	var peopleAux = Array();
+	var iAux = 0;
 	for (var i = 0; i < this.people.size(); i++) {
-		if (this.people[i] !== undefined) peopleAux.push(this.people[i]);
+		if (this.people[i] !== undefined){
+			peopleAux[iAux] = this.people[i];	
+			peopleAux[iAux].basics.id = iAux++;
+		} 
 	}
 	this.people = peopleAux;
 };

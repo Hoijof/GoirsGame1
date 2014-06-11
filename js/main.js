@@ -8,52 +8,43 @@ function updateWorldInfo() {
 	addDivToWorldInfo("Total Deaths : " + world.deaths);
 	addDivToWorldInfo("Total Births : " + world.births);
 	addDivToWorldInfo("Population : " + world.population);
-	addDivToWorldInfo("Player health : " + player.health.toPrecision(4) + " level : " + player.level);
+	addDivToWorldInfo("Player health : " + player.basics.health.toFixed(2) + " level : " + player.basics.level + " victories " + player.basics.victories + " defeats : " + player.basics.defeats);
 }
 
 var world  = new World();
 
-var player = new Player(0);
+var player = new Entity(0);
+player.basics.name = "Hoijof";
+player.attributes.intelligence = 68;
+player.attributes.agility = 30;
+player.attributes.speed = 39;
+
+var foo = new Entity(1);
+foo.basics.name = getRandomCitizenName("male");
+
+foo.attributes.intelligence = 68;
+foo.attributes.agility = 100;
+foo.attributes.speed = 100;
+
 world.addPerson(player);
-for(var i = 1; i < world.population; i++) {
-	world.addPerson(new Entity(i));
-}
-
-updateWorldInfo();
-
-/*var won = 0;
-var defeat = 0;
-var draw = 0;
-for(var i = 0; i < 100; i++) {
-	var player = new Player();
-	var enemy  = new Entity();
-	var result = player.fightAgainstEntity(enemy)
-	switch (result) {
-		case "victory" :
-			++won;
-		break;
-		case "defeat" :
-			++defeat;
-		break;
-		case "draw" :
-			++draw;
-		break;
-	}
-}
-
-console.log((won) + " victories");
-console.log((defeat) + " defeats");
-console.log((draw) + " draws");*/
 
 $(document).ready(function (){
+	updateWorldInfo();
 	$("#advance").on("click", function() {
-		world.callADay();
+		//world.callADay();
 		updateWorldInfo();
-
-		if (player.health <= 0) {
+		player.fightAgainstEntity(foo);
+		if (player.basics.isDead) {
 			alert("You lasted " + world.day + " days in this cruel world.")
 			location.reload();
 		}
+	});
+
+	$("#rollPlayer").on("click", function() {
+		player = new Entity(0);
+		player.name = "Hoijof";
+		world.addPerson(player);
+		updateWorldInfo();
 	});
 });
 

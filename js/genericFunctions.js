@@ -1,6 +1,16 @@
+// PROTOTYPES
+
 Array.prototype.size = function(){
 	return this.filter(function(a){return a !== undefined;}).length
 };
+
+
+Number.prototype.map = function ( in_min , in_max , out_min , out_max ) {
+  return ( this - in_min ) * ( out_max - out_min ) / ( in_max - in_min ) + out_min;
+}
+
+
+// FUNCTIONS
 
 function formatNumberLength(num, length) {
 	var r = "" + num;
@@ -32,6 +42,10 @@ function loadjsfile( filename)
 
 function getRandomInt (min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getRandom (min, max) {
+	return Math.random() * (max - min + 1) + min;
 }
 
 function getRandomCitizenName(sex) {
