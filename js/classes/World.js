@@ -8,12 +8,13 @@ function World() {
 
 	this.refreshCounter = REFRESH_COUNTER;
 
+	this.lastId = 0;
+
 }
 
 World.prototype.callADay = function() {
 	this.day++;
 
-	console.log(this.population + " " + this.people.size());
 	var fightsToday = getRandomInt(0, (this.population/2)*WORLD_FIGHT_FACTOR);
 	var deathsToday = 0;
 	console.log(fightsToday + " fights to be done");
@@ -70,15 +71,19 @@ World.prototype.updatePeopleHealth = function() {
 };
 
 World.prototype.addPerson = function(person) {
-
+	if (person.id > this.lastId ) this.lastId = person.id;
 	this.people[person.id] = person;
 };
+
+World.prototype.getLastId = function() {
+	return this.lastId;
+}
+
 World.prototype.removePerson = function(person) {
 	this.people[person.id] = undefined;
 };
 
 World.prototype.getPersonById = function(id) {
-	console.log(this.people[id]);
 	return this.people[id];
 };
 
@@ -87,7 +92,6 @@ World.prototype.getRandomPerson = function(reference) {
 	var maxIterations = MAX_ITERATIONS;
 	while(maxIterations > 0) {
 		maxIterations--;
-		//console.log(maxIterations);
 		var person = this.people[getRandomInt(0,this.people.size())];
 		if (person === undefined) continue;
 
@@ -100,7 +104,7 @@ World.prototype.getRandomPerson = function(reference) {
 		
 		if (repeated == false) return person;
 	}
-	console.log("overflow with " + this.people.size() + " " + this.people);
+	console.log("overflows with " + this.people.size() + " " + this.people);
 	return false;
 };
 
@@ -110,5 +114,4 @@ World.prototype.refreshPeople = function() {
 		if (this.people[i] !== undefined) peopleAux.push(this.people[i]);
 	}
 	this.people = peopleAux;
-	console.log(this.people.size());
 };
