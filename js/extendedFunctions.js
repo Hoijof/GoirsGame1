@@ -61,7 +61,7 @@ function attackingFirstCheck(attacker, attacked) {
 }
 
 function survivalCheck(entity) {
-	var check = isAppening(entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.2);
+	var check = isAppening(entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.2 + getRandomInt(-5,5));
 	return check;
 }
 

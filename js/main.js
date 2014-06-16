@@ -51,12 +51,14 @@ foo.attributes.speed = 100;
 world.addPerson(player);
 
 $(document).ready(function (){
-	updateWorldInfo();
-	updatePlayerInfo();
+	Math.seedrandom();
+	//updateWorldInfo();
+	//updatePlayerInfo();
 	$("#advance").on("click", function() {
+		Math.seedrandom();
 		world.callADay();
-		updateWorldInfo();
-		updatePlayerInfo();
+		//updateWorldInfo();
+		//updatePlayerInfo();
 		//player.fightAgainstEntity(foo);
 		if (player.basics.isDead) {
 			alert("You lasted " + world.day + " days in this cruel world.")

@@ -1,10 +1,30 @@
-div {
-	float:left;
-	margin: 10px;
-	padding : 3px;
-	border : 1px solid black;
+/* GLOBAL STYLES */
+
+@font-face {
+	font-family : mainFont;
+	src         : url(Dalelands.otf);
 }
 
-input {
-	float:left;
+body {
+	font-family : mainFont;
 }
+
+/* PLAYER BAR STYLES */
+.playerBar {
+	position: fixed;
+	left    : 0px;
+	top     : 0px;
+	width   : 250px;
+	height  : 100%;
+	background-color : black
+}
+
+.playerBar > .header {
+	top: 0px;
+	color: white;
+	margin: 10px;
+	text-align: center;
+	width: 230px;
+}
+
+/* WORLD BAR STYLES */
