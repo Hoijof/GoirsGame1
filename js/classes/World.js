@@ -1,11 +1,14 @@
 function World() {
-	this.Player 	= null;
-	this.day    	= 0;
-	this.deaths 	= 0;
-	this.births     = 1;
-	this.population = getRandomInt(WORLD_MIN_SIZE, WORLD_MAX_SIZE);
-	this.people     = Array();
+	this.player 	= null;
 
+    this.standard = {
+        day         : 0,
+        deaths      : 0,
+        births      : 1,
+        population  : getRandomInt(WORLD_MIN_SIZE, WORLD_MAX_SIZE)
+    };
+
+    this.people = [];
 	this.refreshCounter = REFRESH_COUNTER;
 
 	this.lastId = 0;
@@ -19,9 +22,9 @@ function World() {
 World.prototype.callADay = function() {
 	var report = true;
 
-	this.day++;
+	this.standard.day++;
 
-	var fightsToday = getRandomInt(0, (this.population/2)*WORLD_FIGHT_FACTOR);
+	var fightsToday = getRandomInt(0, (this.standard.population/2)*WORLD_FIGHT_FACTOR);
 	var deathsToday = 0;
 	var todayVictories = 0;
 	var todayDefeats = 0;
@@ -68,24 +71,24 @@ World.prototype.callADay = function() {
 		}
 	}
 
-	this.deaths += deathsToday;
+	this.standard.deaths += deathsToday;
 
 
-	var birthsToday = getRandomInt(0, (this.population/2)*WORLD_BIRTH_FACTOR);
-	this.births += birthsToday;
+	var birthsToday = getRandomInt(0, (this.standard.population/2)*WORLD_BIRTH_FACTOR);
+	this.standard.births += birthsToday;
 	for( i = 0; i < birthsToday; ++i) {
-		this.addPerson(new Entity(this.population+i));
+		this.addPerson(new Entity(this.getLastId()));
 	}
 
-	this.population = this.people.length = this.people.size();
+	this.standard.population = this.people.length = this.people.size();
 
 	this.refreshPeople();
 
 	if (report) {
 		console.log ("Deaths : " + deathsToday + " " +
 		"Victories : " + todayVictories + " " +
-		"Defeats : " +  todayDefeats + " " +
-		"Draws : " +  todayDraws + " " +
+		"Defeats : "   +  todayDefeats + " " +
+		"Draws : "     +  todayDraws + " " +
 		"Survivals : " + survivalsToday)
 	}
 	this.updatePeopleHealth();
@@ -98,7 +101,7 @@ World.prototype.updatePeopleHealth = function() {
 };
 
 World.prototype.addPerson = function(person) {
-	if (person.basics.id > this.lastId ) this.lastId = person.basics.id;
+    this.lastId++;
 	this.people[person.basics.id] = person;
 };
 
@@ -140,7 +143,7 @@ World.prototype.refreshPeople = function() {
 	var iAux = 0;
 	for (var i = 0; i < this.people.size(); i++) {
 		if (this.people[i] !== undefined){
-			peopleAux[iAux] = this.people[i];	
+			peopleAux[iAux] = this.people[i];
 			peopleAux[iAux].basics.id = iAux++;
 		} 
 	}

@@ -12,12 +12,17 @@
 	    <script src="js/classes/World.js" type="text/javascript"></script>
 	    <script src="js/classes/Entity.js" type="text/javascript"></script>
 	    <script src="js/classes/Player.js" type="text/javascript"></script>
-        <script src="js/engine.js" type="text/javascript"></script>
+        <script src="js/Engine.js" type="text/javascript"></script>
 	    <script src="js/main.js" type="text/javascript"></script>
 	</head>
 	<body>
         <div id="mainDiv" class="mainDiv">
             <div id="playerBar" class="playerBar">
+                <div id="headerBasics" class="header">
+                    PLAYER BASICS
+                </div>
+                <table id="playerBasics" class="stats">
+                </table>
 
                 <div id="headerStats" class="header">
                     PLAYER STATS
@@ -28,19 +33,36 @@
                 <div id="headerHealth" class="header">
                     PLAYER HEALTH
                 </div>
-                <table id="playerHealth" class="health">
+                <table id="playerHealth" class="stats">
                 </table>
+
+                <div id="playerActions" class="playerActions">
+                    <div id="advance" class="advanceButton"></div>
+                    <div id="rollPlayer" class="rollPlayerButton"></div>
+                </div>
             </div>
 
             <div id="mainBody" class="mainBody">
 
                 <H1>GOIRS'S GAME</H1>
-                <div id="advance" class="advanceButton"></div>
-                <div id="rollPlayer" class="rollPlayerButton"></div>
+                <div id="mainContainer" class="mainContainer">
+                    <div id="console" class="console">
+                        <input id="consoleInput" class="consoleInput" type="text">
+                    </div>
+
+                </div>
             </div>
 
             <div id="worldBar" class="worldBar">
+                <div id="headerStandard" class="header">
+                    WORLD STANDARD DATA
+                </div>
+                <table id="worldStandard" class="stats">
+                </table>
 
+                <div id="worldActions" class="worldActions">
+
+                </div>
             </div>
         </div>
         <script src="js/style.js" type="text/javascript"></script>

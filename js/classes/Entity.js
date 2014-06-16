@@ -1,28 +1,30 @@
 function Entity (id) {
 
 	//stats 
-	
+
+    this.id = id;
+
 	this.basics = {
-		id            : id,
 		isDead		  : false,
-		name          : getRandomCitizenName("male") + " " + getRandomCitizenSurname(),
+        sex           : 0,
+		name          : 0,
+        surname       : 0,
 		level         : 0,
-		preferredHand : isAppening(60) ? "right" : "left",
+		preferredHand : null,
 		victories     : 0,
 		defeats       : 0,
-		experience    : 1,
-		health        : MAX_ENTITY_HEALTH
+		experience    : 1
 	}
 
 	this.attributes = {
-		strength 		: this.generateStat("strength"),
-		endurance		: this.generateStat("endurance"),
-		intelligence 	: this.generateStat("intelligence"),
-		willpower		: this.generateStat("willpower"),
-		agility 		: this.generateStat("agility"),
-		speed 			: this.generateStat("speed"),
-		stamina	 	    : this.generateStat("stamina"),
-		faith 			: this.generateStat("faith")
+		strength 		: 0,
+		endurance		: 0,
+		intelligence 	: 0,
+		willpower		: 0,
+		agility 		: 0,
+		speed 			: 0,
+		stamina	 	    : 0,
+		faith 			: 0
 	}
 
 	this.vitalPoints = {
@@ -34,8 +36,30 @@ function Entity (id) {
 		rightLeg : MAX_ENTITY_HEALTH
 	}
 
+    this.init();
 	this.basics.experience = this.basics.level*100;
 }
+
+Entity.prototype.init = function () {
+    this.basics.isDead		  = false;
+    this.basics.sex           = isAppening(50) ? "male" : "female";
+    this.basics.name          = getRandomCitizenName(this.basics.sex);
+    this.basics.surname       = getRandomCitizenSurname();
+    this.basics.level         = 0;
+    this.basics.preferredHand = isAppening(60) ? "right" : "left";
+    this.basics.victories     = 0;
+    this.basics.defeats       = 0;
+    this.basics.experience    = 1;
+
+    this.attributes.strength 		= this.generateStat("strength");
+    this.attributes.endurance		= this.generateStat("endurance");
+    this.attributes.intelligence 	= this.generateStat("intelligence");
+    this.attributes.willpower		= this.generateStat("willpower");
+    this.attributes.agility 		= this.generateStat("agility");
+    this.attributes.speed 			= this.generateStat("speed");
+    this.attributes.stamina	 	    = this.generateStat("stamina");
+    this.attributes.faith 			= this.generateStat("faith");
+};
 
 Entity.prototype.generateStats = function() {
 	/*this.generateStat("strength");
@@ -99,8 +123,8 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 	var timesSecond = 0;
 	var turns = 0;
 
-	if (this.basics.id == 0 || enemy.basics.id == 0) {
-		console.log("A fight between ---- " + this.basics.id+this.basics.name + " ---- and ----- " + enemy.basics.id+enemy.basics.name + " ----- is going to start")
+	if (this.id == 0 || enemy.id == 0) {
+		console.log("A fight between ---- " + this.id+this.basics.name + " ---- and ----- " + enemy.id+enemy.basics.name + " ----- is going to start")
 		this.report();
 		enemy.report();
 	}
@@ -124,7 +148,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 
 		turns++;
 	}
-	if (this.basics.id == 0 || enemy.basics.id == 0) {
+	if (this.id == 0 || enemy.id == 0) {
 		console.log("Fight lasted " + turns + " turns");
 		console.log(this.basics.name + " attacked first " + timesFirst + " times and " + timesSecond + " times second");
 	}
@@ -133,7 +157,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 	if (isDying(this)) {
 		this.basics.defeats++;
 		enemy.basics.victories++;
-		if (this.basics.id == 0 || enemy.basics.id == 0) {
+		if (this.id == 0 || enemy.id == 0) {
 			console.log(enemy.basics.name + " Wins.");
 		}
 		giveExperienceForWinning(enemy, this, turns);
@@ -143,7 +167,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 		if(isDying(enemy)) {
 			enemy.basics.defeats++;
 			this.basics.victories++;
-			if (this.basics.id == 0 || enemy.basics.id == 0) {
+			if (this.id == 0 || enemy.id == 0) {
 				console.log(this.basics.name + " Wins.");
 			}
 			
@@ -151,7 +175,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 			giveExperienceForLosing(enemy, this, turns);
 			return "victory";
 		} else {
-			if (this.basics.id == 0 || enemy.basics.id == 0) {
+			if (this.id == 0 || enemy.id == 0) {
 				console.log("Nobody wins");
 			}
 			
@@ -164,7 +188,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 
 Entity.prototype.report = function() {
 	console.log("---------------------------------------------------------------------------------------");
-	console.log("Starting report of Entity with id = " + this.basics.id + " and name = " + this.basics.name + " and level of " + this.basics.level);
+	console.log("Starting report of Entity with id = " + this.id + " and name = " + this.basics.name + " and level of " + this.basics.level);
 	console.log("Attributes Report");
 	$.each(this.attributes, function(key, val) { 
 		console.log(key + " = " + val);

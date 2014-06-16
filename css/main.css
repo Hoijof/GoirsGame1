@@ -6,7 +6,7 @@
 }
 
 body {
-	font-family : mainFont sans-serif;
+	font-family : mainFont;
     margin: 0;
 }
 .mainDiv{
@@ -14,7 +14,8 @@ body {
     overflow: hidden;
     position: relative;
 }
-/* PLAYER BAR STYLES */
+/* BARS STYLES */
+
 .playerBar {
 	left     : 0;
 	top      : 0;
@@ -24,15 +25,16 @@ body {
     position : absolute;
 }
 
-.playerBar > .header {
-	top: 0;
-	color: white;
-	margin: 10px;
+.playerBar > .header, .worldBar > .header{
+	top       : 0;
+	color     : white;
+	margin    : 10px;
 	text-align: center;
-	width: 230px;
+	width     : 230px;
+    cursor    : pointer;
 }
 
-.playerBar > table {
+.playerBar > table, .worldBar > table {
     color: white;
     border: 1px solid white;
     border-radius: 5px;
@@ -41,42 +43,31 @@ body {
     margin-right: 10px;
  }
 
-.playerBar > table > tbody > tr:hover {
+.playerBar > table > tbody > tr:hover, .worldBar > table > tbody > tr:hover {
     background-color: white !important;
     color : black;
 }
 
-.playerBar > table > tbody > tr:hover > td {
+.playerBar > table > tbody > tr:hover > td, .worldBar > table > tbody > tr:hover > td {
     color : black;
 }
 
-.playerBar > table > tbody > tr > td:first-child {
+.playerBar > table > tbody > tr > td:first-child, .worldBar > table > tbody > tr > td:first-child {
     text-align: left;
     padding-left: 20px;
 }
-.playerBar > table > tbody > tr > td:last-child {
+.playerBar > table > tbody > tr > td:last-child, .worldBar > table > tbody > tr > td:last-child {
     padding-right: 20px;
 }
 
-.playerBar > table > tbody > .normal > td {
+.playerBar > table > tbody > .normal > td, .worldBar > table > tbody > .normal > td {
     color : white;
 }
-.playerBar > table > tbody > .increased > td {
+.playerBar > table > tbody > .increased > td, .worldBar > table > tbody > .increased > td {
     color:green !important;
 }
-.playerBar > table > tbody > .decreased > td {
+.playerBar > table > tbody > .decreased > td, .worldBar > table > tbody > .decreased > td {
     color:red !important;
-}
-
-/* MAIN BODY STYLES */
-
-.mainBody {
-    background-color: yellow;
-    float   : left;
-    height: 100%;
-    overflow: hidden;
-    margin-left: 250px;
-    margin-right: 250px;
 }
 
 .advanceButton {
@@ -94,10 +85,77 @@ body {
     cursor : pointer;
 }
 
+.playerBar > .playerActions > div {
+    float : left;
+    margin-left: 10px;
+    margin-top: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* MAIN BODY STYLES */
+
+.mainBody {
+    background-color: yellow;
+    float   : left;
+    height: 100%;
+    overflow: hidden;
+    margin-left: 250px;
+    margin-right: 250px;
+}
+
+.mainBody > .mainContainer {
+    width : 100%;
+    height : 100%;
+    overflow: hidden;
+    text-align: center;
+}
+.mainBody > .mainContainer > .console {
+    width:700px;
+    height: 400px;
+    padding : 10px;
+    text-align : left;
+    background-color :  black;
+    color:lawngreen;
+    overflow: hidden;
+    margin  : auto;
+    font-family: arial sans-serif;
+    font-size  : 12;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.mainBody > .mainContainer > .console > div {
+    height: 20px;
+}
+
+.consoleInput {
+    font-family: arial sans-serif;
+    font-size  : 12px;
+    background-color : black;
+    color   : lawngreen;
+    width   : 100%;
+    outline : 0;
+    border  : 0;
+    height  : 20px;
+    padding : 0;
+}
+
+
+
 /* WORLD BAR STYLES */
 
 .worldBar {
-    background-color: red;
+    background-color: black;
+    color    : white;
     width    : 250px;
     position : absolute;
     right    : 0;
