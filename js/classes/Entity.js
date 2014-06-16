@@ -5,7 +5,7 @@ function Entity (id) {
 	this.basics = {
 		id            : id,
 		isDead		  : false,
-		name          : getRandomCitizenName("male"),
+		name          : getRandomCitizenName("male") + " " + getRandomCitizenSurname(),
 		level         : 0,
 		preferredHand : isAppening(60) ? "right" : "left",
 		victories     : 0,
@@ -26,13 +26,15 @@ function Entity (id) {
 	}
 
 	this.vitalPoints = {
-		head     : 45,
-		body     : 98,
-		leftArm  : 90,
-		rightArm : 80,
-		leftLeg  : 45,
-		rightLeg : 64
+		head     : MAX_ENTITY_HEALTH,
+		body     : MAX_ENTITY_HEALTH,
+		leftArm  : MAX_ENTITY_HEALTH,
+		rightArm : MAX_ENTITY_HEALTH,
+		leftLeg  : MAX_ENTITY_HEALTH,
+		rightLeg : MAX_ENTITY_HEALTH
 	}
+
+	this.basics.experience = this.basics.level*100;
 }
 
 Entity.prototype.generateStats = function() {
@@ -96,9 +98,13 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 	var timesFirst = 0;
 	var timesSecond = 0;
 	var turns = 0;
-	console.log("A fight between ---- " + this.basics.id+this.basics.name + " ---- and ----- " + enemy.basics.id+enemy.basics.name + " ----- is going to start")
-	this.report();
-	enemy.report();
+
+	if (this.basics.id == 0 || enemy.basics.id == 0) {
+		console.log("A fight between ---- " + this.basics.id+this.basics.name + " ---- and ----- " + enemy.basics.id+enemy.basics.name + " ----- is going to start")
+		this.report();
+		enemy.report();
+	}
+	
 	while(!isDying(this) && !isDying(enemy)  && turns < MAX_BATTLE_TURNS) {
 		var attacker, attacked;
 		if (attackingFirstCheck(this,enemy)){
@@ -118,19 +124,39 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 
 		turns++;
 	}
-	console.log("Fight lasted " + turns + " turns");
-	console.log(this.basics.name + " attacked first " + timesFirst + " times and " + timesSecond + " times second");
+	if (this.basics.id == 0 || enemy.basics.id == 0) {
+		console.log("Fight lasted " + turns + " turns");
+		console.log(this.basics.name + " attacked first " + timesFirst + " times and " + timesSecond + " times second");
+	}
+	
 
 	if (isDying(this)) {
 		this.basics.defeats++;
 		enemy.basics.victories++;
+		if (this.basics.id == 0 || enemy.basics.id == 0) {
+			console.log(enemy.basics.name + " Wins.");
+		}
+		giveExperienceForWinning(enemy, this, turns);
+		giveExperienceForLosing(this, enemy, turns)
 		return "defeat";
 	}	else {
 		if(isDying(enemy)) {
 			enemy.basics.defeats++;
 			this.basics.victories++;
+			if (this.basics.id == 0 || enemy.basics.id == 0) {
+				console.log(this.basics.name + " Wins.");
+			}
+			
+			giveExperienceForWinning(this, enemy, turns)
+			giveExperienceForLosing(enemy, this, turns);
 			return "victory";
 		} else {
+			if (this.basics.id == 0 || enemy.basics.id == 0) {
+				console.log("Nobody wins");
+			}
+			
+			giveExperienceForWinning(enemy, this, turns);
+			giveExperienceForWinning(this, enemy, turns)
 			return "draw";
 		}
 	} 
@@ -138,7 +164,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 
 Entity.prototype.report = function() {
 	console.log("---------------------------------------------------------------------------------------");
-	console.log("Starting report of Entity with id = " + this.basics.id + " and name = " + this.basics.name);
+	console.log("Starting report of Entity with id = " + this.basics.id + " and name = " + this.basics.name + " and level of " + this.basics.level);
 	console.log("Attributes Report");
 	$.each(this.attributes, function(key, val) { 
 		console.log(key + " = " + val);

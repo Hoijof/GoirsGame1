@@ -17,10 +17,16 @@ function World() {
 }
 
 World.prototype.callADay = function() {
+	var report = true;
+
 	this.day++;
 
 	var fightsToday = getRandomInt(0, (this.population/2)*WORLD_FIGHT_FACTOR);
 	var deathsToday = 0;
+	var todayVictories = 0;
+	var todayDefeats = 0;
+	var todayDraws = 0;
+	var survivalsToday = 0;
 	console.log(fightsToday + " fights to be done");
 
 	for(var i = 0; i < fightsToday; ++i) {
@@ -32,24 +38,31 @@ World.prototype.callADay = function() {
 		var result = attacker.fightAgainstEntity(attacked);
 		switch (result) {
 			case "victory" :
+				todayVictories++;
 				if ( !survivalCheck(attacked)) {
 					++deathsToday;
 					attacked.basics.isDead = true;
 					this.removePerson(attacked);
+					//console.log(attacked.basics.name + " dies.");
 				} else {
-					console.log(attacked.basics.name + " survived the fight!");
+					++survivalsToday;
+					//console.log(attacked.basics.name + " survived the fight!");
 				}
 			break;
 			case "defeat" :
+			todayDefeats++;
 				if ( !survivalCheck(attacker)) {
 					++deathsToday;
 					attacker.basics.isDead = true;
 					this.removePerson(attacker);
+					//console.log(attacker.basics.name + " dies.");
 				} else {
-					console.log(attacker.basics.name + " survived the fight!");
+					++survivalsToday;
+					//console.log(attacker.basics.name + " survived the fight!");
 				}
 			break;
 			case "draw" :
+				todayDraws++;
 				
 			break;
 		}
@@ -67,19 +80,20 @@ World.prototype.callADay = function() {
 	this.population = this.people.length = this.people.size();
 
 	this.refreshPeople();
-	/*if(this.refreshCounter <= 0) {
-		this.refreshPeople();
-		this.refreshCounter = REFRESH_COUNTER;
-	} else {
-		this.refreshCounter--;
-	}*/
 
+	if (report) {
+		console.log ("Deaths : " + deathsToday + " " +
+		"Victories : " + todayVictories + " " +
+		"Defeats : " +  todayDefeats + " " +
+		"Draws : " +  todayDraws + " " +
+		"Survivals : " + survivalsToday)
+	}
 	this.updatePeopleHealth();
 };
 
 World.prototype.updatePeopleHealth = function() {
 	for (var i = 0; i < this.people.length; i++) {
-		regeneratePerson(this.people[i]);
+		dailyHealingEntity(this.people[i]);
 	}
 };
 
