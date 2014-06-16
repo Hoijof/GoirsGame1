@@ -2,29 +2,104 @@
 
 @font-face {
 	font-family : mainFont;
-	src         : url(Dalelands.otf);
+	src         : url(../src/fonts/Dalelands.otf);
 }
 
 body {
-	font-family : mainFont;
+	font-family : mainFont sans-serif;
+    margin: 0;
 }
-
+.mainDiv{
+    width : 100%;
+    overflow: hidden;
+    position: relative;
+}
 /* PLAYER BAR STYLES */
 .playerBar {
-	position: fixed;
-	left    : 0px;
-	top     : 0px;
-	width   : 250px;
-	height  : 100%;
-	background-color : black
+	left     : 0;
+	top      : 0;
+	width    : 250px;
+	height   : 100%;
+	background-color : black;
+    position : absolute;
 }
 
 .playerBar > .header {
-	top: 0px;
+	top: 0;
 	color: white;
 	margin: 10px;
 	text-align: center;
 	width: 230px;
 }
 
+.playerBar > table {
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 220px;
+    margin-left: 10px;
+    margin-right: 10px;
+ }
+
+.playerBar > table > tbody > tr:hover {
+    background-color: white !important;
+    color : black;
+}
+
+.playerBar > table > tbody > tr:hover > td {
+    color : black;
+}
+
+.playerBar > table > tbody > tr > td:first-child {
+    text-align: left;
+    padding-left: 20px;
+}
+.playerBar > table > tbody > tr > td:last-child {
+    padding-right: 20px;
+}
+
+.playerBar > table > tbody > .normal > td {
+    color : white;
+}
+.playerBar > table > tbody > .increased > td {
+    color:green !important;
+}
+.playerBar > table > tbody > .decreased > td {
+    color:red !important;
+}
+
+/* MAIN BODY STYLES */
+
+.mainBody {
+    background-color: yellow;
+    float   : left;
+    height: 100%;
+    overflow: hidden;
+    margin-left: 250px;
+    margin-right: 250px;
+}
+
+.advanceButton {
+    background-image: url(../src/img/clock.png);
+    width  : 32px;
+    height : 32px;
+    cursor : pointer;
+}
+
+.rollPlayerButton {
+    background-image: url(../src/img/dice.png);
+    background-size : cover;
+    width  : 32px;
+    height : 32px;
+    cursor : pointer;
+}
+
 /* WORLD BAR STYLES */
+
+.worldBar {
+    background-color: red;
+    width    : 250px;
+    position : absolute;
+    right    : 0;
+    height   : 100%;
+}

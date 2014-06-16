@@ -8,7 +8,7 @@ function attack(attacker,attacked) {
 		return;
 	}
 	// select the zone to attack
-	var zones = Array();
+	var zones = [];
 	for (var zone in attacked.vitalPoints)
 		zones.push([zone, attacked.vitalPoints[zone]]);
 	zones.sort(function(a,b) { return b[1] - a[1]});
@@ -39,7 +39,6 @@ function attack(attacker,attacked) {
 	var legsOk = (attacked.vitalPoints.leftLeg > 0 && attacker.vitalPoints.rightLeg > 0);
 
 	if (attacked.attributes.agility/attacker.attributes.agility + getRandomInt(-2,2) > 5 && legsOk) { // TODO: take a look at it
-		dodges = true;
 		if (attacker.basics.id == 0 || attacked.basics.id == 0) {
 			console.log(attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.");
 		}
@@ -47,6 +46,7 @@ function attack(attacker,attacked) {
 		damage = (((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + attacker.attributes.agility * 0.15) * getRandom(0.8,1.1)).toFixed(3);
 		if (damage < 0) damage = 0;
 		attacked.vitalPoints[zoneToAttack[0]] -= damage;
+
 		if (attacker.basics.id == 0 || attacked.basics.id == 0) {
 			console.log(attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " and deals " + damage + " points of damage. That part has " + attacked.vitalPoints[zoneToAttack[0]].toFixed(3) + " health points left.");
 		}
@@ -63,13 +63,6 @@ function attackingFirstCheck(attacker, attacked) {
 function survivalCheck(entity) {
 	var check = isAppening(entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.2 + getRandomInt(-5,5));
 	return check;
-}
-
-function regeneratePerson (person) {
-	for (var vitalPoint in person.vitalPoints) {
-		vitalPoint += MAX_ENTITY_HEALTH * REGENERATION_RATIO;
-		if (vitalPoint > MAX_ENTITY_HEALTH) vitalPoint = MAX_ENTITY_HEALTH;
-	}
 }
 
 function isDying (entity) {
@@ -113,28 +106,28 @@ function getRandomAttributeName() {
 	var rand = getRandomInt(0,7);
 	switch (rand) {
 		case 0:
-			return "strength"
+			return "strength";
 		break;
 		case 1:
-			return "endurance"			
+			return "endurance";
 		break;
 		case 2:
-			return "intelligence"
+			return "intelligence";
 		break;
 		case 3:
-			return "willpower"
+			return "willpower";
 		break;
 		case 4:
-			return "agility"
+			return "agility";
 		break;
 		case 5:
-			return "speed"
+			return "speed";
 		break;
 		case 6:
-			return "stamina"
+			return "stamina";
 		break;
 		case 7:
-			return "faith"
+			return "faith";
 		break;
 	}
 }

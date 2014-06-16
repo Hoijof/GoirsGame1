@@ -12,14 +12,36 @@
 	    <script src="js/classes/World.js" type="text/javascript"></script>
 	    <script src="js/classes/Entity.js" type="text/javascript"></script>
 	    <script src="js/classes/Player.js" type="text/javascript"></script>
+        <script src="js/engine.js" type="text/javascript"></script>
 	    <script src="js/main.js" type="text/javascript"></script>
 	</head>
 	<body>
-		<H1>GOIRS'S GAME</H1>
-		<div id="playerBar" class="playerBar">
-			<div id="header" class="header">
-				PLAYER STATS
-			</div>
-			<div id="stats" class="stats">
-		</div>
+        <div id="mainDiv" class="mainDiv">
+            <div id="playerBar" class="playerBar">
+
+                <div id="headerStats" class="header">
+                    PLAYER STATS
+                </div>
+                <table id="playerStats" class="stats">
+                </table>
+
+                <div id="headerHealth" class="header">
+                    PLAYER HEALTH
+                </div>
+                <table id="playerHealth" class="health">
+                </table>
+            </div>
+
+            <div id="mainBody" class="mainBody">
+
+                <H1>GOIRS'S GAME</H1>
+                <div id="advance" class="advanceButton"></div>
+                <div id="rollPlayer" class="rollPlayerButton"></div>
+            </div>
+
+            <div id="worldBar" class="worldBar">
+
+            </div>
+        </div>
+        <script src="js/style.js" type="text/javascript"></script>
 	</body>
