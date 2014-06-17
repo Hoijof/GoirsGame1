@@ -1,6 +1,7 @@
-var world  = new World(),
-    player = new Entity(0),
-    engine = new Engine(world, player);
+var world   = new World(),
+    player  = new Entity(0),
+    engine  = new Engine(world, player),
+    terminal;
 
 
 
@@ -12,7 +13,10 @@ world.player = world.people[0];
 $(document).ready(function (){
 
 	Math.seedrandom();
+	terminal = new Terminal($("#terminal"), true);
     engine.update();
+
+
 	$("#advance").on("click", function() {
 		Math.seedrandom();
 		world.callADay();
@@ -34,28 +38,29 @@ $(document).ready(function (){
         $(this).next().toggle();
     });
 
-    $(".consoleInput").on("keydown", function(event) {
-        console.log(event.keyCode);
+    $("#terminal > .terminalInput").on("keydown", function(event) {
+    	console.log(event.keyCode);
         if (event.keyCode === 13) {
-            engine.addDivToConsole($(this).val());
-            engine.handleCommand($(this).val());
+            terminal.handleCommand($(this).val());
             $(this).val("");
         }
         if (event.keyCode === 38) {
-            if(engine.actualTrace > 0) {
-                engine.actualTrace--;
-                engine.showActualTrace();
+            if(terminal.consoleActualTrace > 0) {
+                terminal.consoleActualTrace--;
+                terminal.showCurrentTrace();
             }
         } else if (event.keyCode === 40) {
-            if(engine.actualTrace < engine.consoleTrace.length-1) {
-                engine.actualTrace++;
-                engine.showActualTrace();
+            if(terminal.consoleActualTrace < terminal.consoleTrace.length-1) {
+                terminal.consoleActualTrace++;
+                terminal.showCurrentTrace();
             }
         }
     });
 
-    $("#console").on("click", function() {
-       $("consoleInput").focus();
+    $("#terminal").on("mouseup", function() {
+    	if(window.getSelection().type != "Range")
+			$("#terminalInput").focus();
+		return true;
     });
 });
 

@@ -50,11 +50,14 @@ body {
 
 .playerBar > table > tbody > tr:hover > td, .worldBar > table > tbody > tr:hover > td {
     color : black;
+    text-align: left;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .playerBar > table > tbody > tr > td:first-child, .worldBar > table > tbody > tr > td:first-child {
     text-align: left;
-    padding-left: 20px;
+	padding-left: 5px;
 }
 .playerBar > table > tbody > tr > td:last-child, .worldBar > table > tbody > tr > td:last-child {
     padding-right: 20px;
@@ -114,7 +117,7 @@ body {
     overflow: hidden;
     text-align: center;
 }
-.mainBody > .mainContainer > .console {
+.mainBody > .mainContainer > .terminal {
     width:700px;
     height: 400px;
     padding : 10px;
@@ -125,19 +128,14 @@ body {
     margin  : auto;
     font-family: arial sans-serif;
     font-size  : 12;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    cursor     : text;
 }
 
-.mainBody > .mainContainer > .console > div {
+.mainBody > .mainContainer > .terminal > div {
     height: 20px;
 }
 
-.consoleInput {
+.terminalInput {
     font-family: arial sans-serif;
     font-size  : 12px;
     background-color : black;
