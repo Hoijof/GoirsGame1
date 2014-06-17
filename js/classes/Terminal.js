@@ -24,6 +24,9 @@ Terminal.prototype.init = function() {
 };
 
 Terminal.prototype.handleCommand = function(command, modificator) {
+    if (command == "") return;
+    command = command.toLowerCase();
+
 	var message = "";
 
 	this.consoleTrace.push(command);
@@ -35,6 +38,11 @@ Terminal.prototype.handleCommand = function(command, modificator) {
 			this.consoleSelector.find("div").remove();
 		break;
 		case "color" :
+            var usage = "Changes backround color and text color of the terminal.\n Usage: color [options] background-color color";
+            if (typeof command[1] === 'undefined' && typeof command[2] === 'undefined'){
+                message = usage;
+                break;
+            }
 			var bc = command[1].charAt(0).toUpperCase() + command[1].slice(1),
 				c  = command[2].charAt(0).toUpperCase() + command[2].slice(1);
 
@@ -42,14 +50,14 @@ Terminal.prototype.handleCommand = function(command, modificator) {
 				this.consoleSelector.css("background-color", bc);
 				this.consoleSelector.find("input").css("background-color", bc);
 			} else {
-				message = "Changes backround color and text color of the terminal.\n Usage: color [options] background-color color";
+				message = usage + "\n Background color doesn't exists";
 			}
 
 			if (CSS_COLOR_NAMES.indexOf(c) > -1) {
 				this.consoleSelector.css("color", c);
 				this.consoleSelector.find("input").css("color", c);
 			} else {
-				message = "Changes backround color and text color of the terminal.\n Usage: color [options] background-color color";
+                message = usage + "\n Color doesn't exists";
 			}
 		break;
 		case "list" :
@@ -78,6 +86,33 @@ Terminal.prototype.handleCommand = function(command, modificator) {
 		case "reload" :
 			location.reload();
 		break;
+        case "execute" :
+            var usage = "Execute the code passed as argument \n Usage execute [options] language code \n You can insert" +
+                " the code with spaces, we handel it ;)";
+            if (typeof command[1] === 'undefined' && typeof command[2] === 'undefined'){
+                message = usage;
+                break;
+            }
+            var code = "";
+            for (var i = 2; i < command.length; ++i) {
+                code += command[i];
+            }
+
+            message = "ok";
+
+            switch (command[1]) {
+                case "javascript" :
+                    try {
+                        eval(code);
+                    } catch(e) {
+                        message = e.message;
+                    }
+                break;
+                case "css" :
+
+                break;
+            }
+        break;
 		default :
 			message = "Command " + command[0] + " not recognized";
 	}
@@ -94,11 +129,10 @@ Terminal.prototype.addContentToTerminal = function(text) {
 
 	var numberOfMessages = Math.ceil(text.length/this.LINE_SIZE);
 	for (var i = 0; i < numberOfMessages; i++) {
-		console.log(text.substring(i*this.LINE_SIZE,i*this.LINE_SIZE+this.LINE_SIZE));
 		this.consoleSelector.find("input").before("<div>" + text.substring(i*this.LINE_SIZE,i*this.LINE_SIZE+this.LINE_SIZE) + "</div>");
 	}
 };
 
 Terminal.prototype.showCurrentTrace = function() {
-	this.consoleSelector.find("input").val(this.consoleTrace[this.consoleActualTrace]);
+	this.consoleSelector.find("input").focus().val("").val(this.consoleTrace[this.consoleActualTrace]);
 };

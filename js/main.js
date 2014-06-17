@@ -39,7 +39,7 @@ $(document).ready(function (){
     });
 
     $("#terminal > .terminalInput").on("keydown", function(event) {
-    	console.log(event.keyCode);
+    	//console.log(event.keyCode);
         if (event.keyCode === 13) {
             terminal.handleCommand($(this).val());
             $(this).val("");
@@ -48,11 +48,13 @@ $(document).ready(function (){
             if(terminal.consoleActualTrace > 0) {
                 terminal.consoleActualTrace--;
                 terminal.showCurrentTrace();
+                return false;
             }
         } else if (event.keyCode === 40) {
             if(terminal.consoleActualTrace < terminal.consoleTrace.length-1) {
                 terminal.consoleActualTrace++;
                 terminal.showCurrentTrace();
+                return false;
             }
         }
     });
