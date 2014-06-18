@@ -11,7 +11,7 @@ world.player = world.people[0];
 $(document).ready(function (){
 
 	Math.seedrandom();
-	terminal = new Terminal($("#terminal"), true);
+	terminal = new Terminal($("#terminal"), false);
     engine.update();
 
 	var ctrlDown = false;
@@ -37,6 +37,7 @@ $(document).ready(function (){
 		player         = new Entity(0);
 		player.name    = "Hoijof";
         player.surname = "Golpeo";
+        player.setAllStatsToValue(100);
 		world.addPerson(player);
         engine.update();
 	});
@@ -46,7 +47,7 @@ $(document).ready(function (){
     });
 
     $("#terminal > .terminalInput").on("keydown", function(event) {
-    	console.log(event.keyCode);
+    	//console.log(event.keyCode);
         if (event.keyCode === 13) {
             terminal.handleCommand($(this).val());
             $(this).val("");

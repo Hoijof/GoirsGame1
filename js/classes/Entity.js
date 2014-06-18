@@ -5,12 +5,12 @@ function Entity (id) {
     this.id = id;
 
 	this.basics = {
-		isDead		  : false,
-        sex           : 0,
 		name          : 0,
         surname       : 0,
-		level         : 0,
+        sex           : 0,
+		isDead		  : false,
 		preferredHand : null,
+		level         : 0,
 		victories     : 0,
 		defeats       : 0,
 		experience    : 1
@@ -61,16 +61,15 @@ Entity.prototype.init = function () {
     this.attributes.faith 			= this.generateStat("faith");
 };
 
-Entity.prototype.generateStats = function() {
-	/*this.generateStat("strength");
-		endurance		: this.generateStat("endurance");
-		intelligence 	: this.generateStat("intelligence");
-		willpower		: this.generateStat("willpower");
-		agility 		: this.generateStat("agility");
-		speed 			: this.generateStat("speed");
-		stamina	 	    : this.generateStat("stamina");
-		faith 			: this.generateStat("faith");
-	}*/
+Entity.prototype.setAllStatsToValue = function(value) {
+	this.attributes.strength = value;
+	this.attributes.endurance = value;
+	this.attributes.intelligence = value;
+	this.attributes.willpower = value;
+	this.attributes.agility = value;
+	this.attributes.speed = value;
+	this.attributes.stamina = value;
+	this.attributes.faith = value;
 };
 Entity.prototype.generateStat = function(stat) {
 	var result;

@@ -118,6 +118,7 @@ body {
     text-align: center;
 }
 .mainBody > .mainContainer > .terminal {
+	position : fixed;
     width:700px;
     height: 400px;
     padding : 10px;

@@ -13,7 +13,7 @@ function World() {
 
 	this.lastId = 0;
 
-	for(var i = 1; i < this.population; i++) {
+	for(var i = 1; i < this.standard.population; i++) {
 		this.addPerson(new Entity(i));
 	}
 
@@ -102,7 +102,7 @@ World.prototype.updatePeopleHealth = function() {
 
 World.prototype.addPerson = function(person) {
     this.lastId++;
-	this.people[person.basics.id] = person;
+	this.people[person.id] = person;
 };
 
 World.prototype.getLastId = function() {
@@ -110,7 +110,7 @@ World.prototype.getLastId = function() {
 }
 
 World.prototype.removePerson = function(person) {
-	this.people[person.basics.id] = undefined;
+	this.people[person.id] = undefined;
 };
 
 World.prototype.getPersonById = function(id) {
@@ -128,7 +128,7 @@ World.prototype.getRandomPerson = function(reference) {
 		var repeated = false;
 		if(reference !== undefined) {
 			for(var i = 0; i < reference.length; ++i) {
-				if (person.basics.id == reference[i].basics.id) repeated = true;
+				if (person.id == reference[i].id) repeated = true;
 			}
 		}
 		

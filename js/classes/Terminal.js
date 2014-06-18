@@ -17,6 +17,11 @@ Terminal.prototype.init = function() {
 	} else { 
 		this.jqSelConsole.hide();
 	}
+
+	$('#terminal').css('left', $(window).width()/2 - 350);
+	$(window).resize(function() {
+        $('#terminal').css('left', $(window).width()/2 - 350);
+    });
 };
 
 Terminal.prototype.toggleVisibility = function() {
