@@ -3,8 +3,6 @@ var world   = new World(),
     engine  = new Engine(world, player),
     terminal;
 
-
-
 player.basics.name    = "Hoijof";
 player.basics.surname = "Golpeo";
 world.addPerson(player);
@@ -16,6 +14,15 @@ $(document).ready(function (){
 	terminal = new Terminal($("#terminal"), true);
     engine.update();
 
+	var ctrlDown = false;
+    var ctrlKey = 17, vKey = 86, cKey = 67;
+
+    $(document).keydown(function(e) {
+        if (e.keyCode == ctrlKey) ctrlDown = true;
+    }).keyup(function(e) {	
+        if (e.keyCode == ctrlKey) ctrlDown = false;
+        if (ctrlDown && e.keyCode == 77) terminal.toggleVisibility();
+    });
 
 	$("#advance").on("click", function() {
 		Math.seedrandom();
@@ -39,7 +46,7 @@ $(document).ready(function (){
     });
 
     $("#terminal > .terminalInput").on("keydown", function(event) {
-    	//console.log(event.keyCode);
+    	console.log(event.keyCode);
         if (event.keyCode === 13) {
             terminal.handleCommand($(this).val());
             $(this).val("");

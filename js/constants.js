@@ -53,5 +53,3 @@ var townSecondNames = ["shore", "size", "port", "fox", "ham", "mill", "mere", "g
 		"PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum","PowderBlue","Purple","Red","RosyBrown","RoyalBlue","SaddleBrown","Salmon","SandyBrown",
 		"SeaGreen","SeaShell","Sienna","Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow","SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato",
 		"Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"];
-
-	var TERMINAL_COMMANDS = ["clear", "color", "list", "show", "reload", "execute"];
