@@ -6,7 +6,7 @@ var world   = new World(),
 player.basics.name    = "Hoijof";
 player.basics.surname = "Golpeo";
 world.addPerson(player);
-world.player = world.people[0];
+world.player = player;
 
 $(document).ready(function (){
 
@@ -71,6 +71,26 @@ $(document).ready(function (){
     	if(window.getSelection().type != "Range")
 			$("#terminalInput").focus();
 		return true;
+    });
+
+    $(document).on("click", ".addPoint", function() {
+        var entity = player,
+            pointsFree = entity.getPointsFree();
+
+        if (pointsFree > 0) {
+            var siblings = $(this).siblings();
+            entity.addPointsToAttribute(1,siblings.first().html().toLowerCase());
+        }
+
+        engine.updatePlayerInfo();
+    });
+
+    $("#buttongoirs").on("click", function(){
+        for (var i = 0; i <= 120; i +=1) {
+            var things = Math.round(450*10+Math.pow(i,2))
+            console.log(things);
+        }
+
     });
 });
 

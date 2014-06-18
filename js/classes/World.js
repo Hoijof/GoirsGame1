@@ -32,6 +32,9 @@ World.prototype.callADay = function() {
 	var survivalsToday = 0;
 	console.log(fightsToday + " fights to be done");
 
+
+    this.updatePeopleHealth();
+
 	for(var i = 0; i < fightsToday; ++i) {
 		var attacker = this.getRandomPerson(undefined);
 		if (attacker == false) continue;
@@ -91,7 +94,6 @@ World.prototype.callADay = function() {
 		"Draws : "     +  todayDraws + " " +
 		"Survivals : " + survivalsToday)
 	}
-	this.updatePeopleHealth();
 };
 
 World.prototype.updatePeopleHealth = function() {
@@ -107,7 +109,7 @@ World.prototype.addPerson = function(person) {
 
 World.prototype.getLastId = function() {
 	return this.lastId;
-}
+};
 
 World.prototype.removePerson = function(person) {
 	this.people[person.id] = undefined;
@@ -144,7 +146,7 @@ World.prototype.refreshPeople = function() {
 	for (var i = 0; i < this.people.size(); i++) {
 		if (this.people[i] !== undefined){
 			peopleAux[iAux] = this.people[i];
-			peopleAux[iAux].basics.id = iAux++;
+			peopleAux[iAux].id = iAux++;
 		} 
 	}
 	this.people = peopleAux;

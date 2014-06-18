@@ -41,26 +41,37 @@ body {
     width: 220px;
     margin-left: 10px;
     margin-right: 10px;
+    cursor : default;
  }
+
+.playerBar > table > tbody > tr, .worldBar > table > tbody > tr {
+    padding: 0 5px 0 5px;
+}
 
 .playerBar > table > tbody > tr:hover, .worldBar > table > tbody > tr:hover {
     background-color: white !important;
     color : black;
+    padding: 0 5px 0 5px;
 }
 
 .playerBar > table > tbody > tr:hover > td, .worldBar > table > tbody > tr:hover > td {
     color : black;
     text-align: left;
-	padding-left: 5px;
-	padding-right: 5px;
+    padding: 0 5px 0 5px;
 }
 
 .playerBar > table > tbody > tr > td:first-child, .worldBar > table > tbody > tr > td:first-child {
     text-align: left;
+    padding-right: 1px;
 	padding-left: 5px;
 }
 .playerBar > table > tbody > tr > td:last-child, .worldBar > table > tbody > tr > td:last-child {
-    padding-right: 20px;
+    padding-right: 5px;
+    width : 100%;
+}
+
+.playerBar > table > tbody > tr > td, .worldBar > table > tbody > tr > td {
+    padding: 0 5px 0 5px;
 }
 
 .playerBar > table > tbody > .normal > td, .worldBar > table > tbody > .normal > td {
@@ -71,6 +82,16 @@ body {
 }
 .playerBar > table > tbody > .decreased > td, .worldBar > table > tbody > .decreased > td {
     color:red !important;
+}
+
+.playerBar > table > tbody > tr .addPoint {
+    cursor : pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .advanceButton {
@@ -103,7 +124,7 @@ body {
 /* MAIN BODY STYLES */
 
 .mainBody {
-    background-color: yellow;
+    background-color: sandybrown;
     float   : left;
     height: 100%;
     overflow: hidden;
@@ -117,6 +138,11 @@ body {
     overflow: hidden;
     text-align: center;
 }
+
+.mainBody > h1 {
+    text-align: center;
+}
+
 .mainBody > .mainContainer > .terminal {
 	position : fixed;
     width:700px;

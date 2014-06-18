@@ -9,12 +9,13 @@ function Entity (id) {
         surname       : 0,
         sex           : 0,
 		isDead		  : false,
-		preferredHand : null,
+		hand          : null,
 		level         : 0,
 		victories     : 0,
 		defeats       : 0,
-		experience    : 1
-	}
+		experience    : 1,
+        nextLevel     : 15
+	};
 
 	this.attributes = {
 		strength 		: 0,
@@ -25,7 +26,7 @@ function Entity (id) {
 		speed 			: 0,
 		stamina	 	    : 0,
 		faith 			: 0
-	}
+	};
 
 	this.vitalPoints = {
 		head     : MAX_ENTITY_HEALTH,
@@ -34,34 +35,68 @@ function Entity (id) {
 		rightArm : MAX_ENTITY_HEALTH,
 		leftLeg  : MAX_ENTITY_HEALTH,
 		rightLeg : MAX_ENTITY_HEALTH
-	}
+	};
 
     this.init();
-	this.basics.experience = this.basics.level*100;
 }
+
+
+Entity.prototype.getPointsFree = function () {
+    //console.log("entering with id : " + this.id);
+    //var pointsFree = (Math.floor(entity.basics.experience / EXPERIENCE_FACTOR) - entity.basics.level) > 0 ? (Math.floor(entity.basics.experience / EXPERIENCE_FACTOR) - entity.basics.level) : 0;
+    var pointsFree = 0;
+    var temporalLevelUp = this.basics.nextLevel;
+    //console.log(this.id);
+    //if(this.id == 0)console.log("Experience : " + this.basics.experience);
+    while (Math.floor(this.basics.experience) >= temporalLevelUp) {
+        //if(this.id==0)console.log(temporalLevelUp);
+        if (this.basics.level > 250) {
+            temporalLevelUp = Math.floor(temporalLevelUp*1.15+temporalLevelUp/5);
+        } else {
+            temporalLevelUp = Math.floor(temporalLevelUp+temporalLevelUp/4);
+        }
+        ++pointsFree;
+    }
+
+    return pointsFree;
+};
+
+Entity.prototype.levelUp = function () {
+    if (this.basics.experience > this.basics.nextLevel) {
+        console.log("level up");
+        if (this.basics.level > 250) {
+            this.basics.nextLevel = Math.floor(this.basics.nextLevel * 1.15 + this.basics.nextLevel / 5);
+        } else {
+            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 4);
+        }
+    }
+};
 
 Entity.prototype.init = function () {
     this.basics.isDead		  = false;
     this.basics.sex           = isAppening(50) ? "male" : "female";
     this.basics.name          = getRandomCitizenName(this.basics.sex);
     this.basics.surname       = getRandomCitizenSurname();
-    this.basics.level         = 0;
-    this.basics.preferredHand = isAppening(60) ? "right" : "left";
+    this.basics.level         = 1;
+    this.basics.hand = isAppening(60) ? "right" : "left";
     this.basics.victories     = 0;
     this.basics.defeats       = 0;
     this.basics.experience    = 1;
 
-    this.attributes.strength 		= this.generateStat("strength");
-    this.attributes.endurance		= this.generateStat("endurance");
-    this.attributes.intelligence 	= this.generateStat("intelligence");
-    this.attributes.willpower		= this.generateStat("willpower");
-    this.attributes.agility 		= this.generateStat("agility");
-    this.attributes.speed 			= this.generateStat("speed");
-    this.attributes.stamina	 	    = this.generateStat("stamina");
-    this.attributes.faith 			= this.generateStat("faith");
+    this.attributes.strength 		= 1;
+    this.attributes.endurance		= 1;
+    this.attributes.intelligence 	= 1;
+    this.attributes.willpower		= 1;
+    this.attributes.agility 		= 1;
+    this.attributes.speed 			= 1;
+    this.attributes.stamina	 	    = 1;
+    this.attributes.faith 			= 1;
+
+    this.basics.experience = getRandomInt(0,3199629);
 };
 
 Entity.prototype.setAllStatsToValue = function(value) {
+	this.attributes.strength = value;
 	this.attributes.strength = value;
 	this.attributes.endurance = value;
 	this.attributes.intelligence = value;
@@ -117,6 +152,14 @@ Entity.prototype.generateStat = function(stat) {
 	}
 };
 
+Entity.prototype.addPointsToAttribute = function(points, attribute) {
+    if (this.attributes[attribute]+points <= MAX_ATTRIBUTE_LEVEL && this.attributes[attribute]+points >= 0){
+        this.attributes[attribute] += points;
+        for(var i = 0; i < points; ++i) this.levelUp();
+        this.basics.level+=points;
+    }
+};
+
 Entity.prototype.fightAgainstEntity = function(enemy) {
 	var timesFirst = 0;
 	var timesSecond = 0;
@@ -159,8 +202,8 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 		if (this.id == 0 || enemy.id == 0) {
 			console.log(enemy.basics.name + " Wins.");
 		}
-		giveExperienceForWinning(enemy, this, turns);
-		giveExperienceForLosing(this, enemy, turns)
+        giveExperience(enemy, this, EXPERIENCE_WIN_FACTOR);
+        giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR)
 		return "defeat";
 	}	else {
 		if(isDying(enemy)) {
@@ -169,17 +212,17 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 			if (this.id == 0 || enemy.id == 0) {
 				console.log(this.basics.name + " Wins.");
 			}
-			
-			giveExperienceForWinning(this, enemy, turns)
-			giveExperienceForLosing(enemy, this, turns);
+
+            giveExperience(this, enemy, EXPERIENCE_WIN_FACTOR)
+            giveExperience(enemy, this, EXPERIENCE_LOSS_FACTOR);
 			return "victory";
 		} else {
 			if (this.id == 0 || enemy.id == 0) {
 				console.log("Nobody wins");
 			}
-			
-			giveExperienceForWinning(enemy, this, turns);
-			giveExperienceForWinning(this, enemy, turns)
+
+            giveExperience(enemy, this, EXPERIENCE_LOSS_FACTOR);
+            giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR)
 			return "draw";
 		}
 	} 

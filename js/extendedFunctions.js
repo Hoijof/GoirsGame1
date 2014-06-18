@@ -1,8 +1,8 @@
 function attack(attacker,attacked) {
 	
 	var twoLegsDown = attacker.vitalPoints.rightLeg < 0 && attacker.vitalPoints.leftLeg < 0;
-	if (attacker.vitalPoints[attacker.basics.preferredHand+"hand"] <= 0 || (twoLegsDown)){
-		if (attacker.basics.id == 0 || attacked.basics.id == 0) {
+	if (attacker.vitalPoints[attacker.basics.hand+"hand"] <= 0 || (twoLegsDown)){
+		if (attacker.id == 0 || attacked.id == 0) {
 			console.log(attacker.basics.name + " Can't attack due to injuries");
 		}
 		return;
@@ -13,7 +13,8 @@ function attack(attacker,attacked) {
 		zones.push([zone, attacked.vitalPoints[zone]]);
 	zones.sort(function(a,b) { return b[1] - a[1]});
 	//global check
-	var number = parseInt(((attacker.attributes.intelligence/attacked.attributes.intelligence) + (attacker.basics.experience/attacked.basics.experience)).map(0,8,0,8));
+	var number = parseInt(((attacker.attributes.intelligence/attacked.attributes.intelligence) +
+                 ((attacker.basics.victories+attacker.basics.defeats+1)/(attacked.basics.victories+attacked.basics.defeats+1)).map(0,8,0,8)));
 	number += getRandomInt(-1,1);
 	if (number > 5) number = 5;
 	if (number < 0) number = 0;
@@ -39,7 +40,7 @@ function attack(attacker,attacked) {
 	var legsOk = (attacked.vitalPoints.leftLeg > 0 && attacker.vitalPoints.rightLeg > 0);
 
 	if (attacked.attributes.agility/attacker.attributes.agility + getRandomInt(-2,2) > 5 && legsOk) { // TODO: take a look at it
-		if (attacker.basics.id == 0 || attacked.basics.id == 0) {
+		if (attacker.id == 0 || attacked.id == 0) {
 			console.log(attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.");
 		}
 	} else {
@@ -47,7 +48,7 @@ function attack(attacker,attacked) {
 		if (damage < 0) damage = 0;
 		attacked.vitalPoints[zoneToAttack[0]] -= damage;
 
-		if (attacker.basics.id == 0 || attacked.basics.id == 0) {
+		if (attacker.id == 0 || attacked.id == 0) {
 			console.log(attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " and deals " + damage + " points of damage. That part has " + attacked.vitalPoints[zoneToAttack[0]].toFixed(3) + " health points left.");
 		}
 	}
@@ -77,29 +78,31 @@ function dailyHealingEntity (entity) {
 	}
 }
 
-function giveExperienceForWinning (winner, loser, duration) {
-	var exp = Math.round(2*3*(1.055^loser.basics.level + 8 + 1.055^(loser.basics.level^1.085)));
-	checkLevelUp(winner);
-	checkLevelUp(loser);
-	//console.log(exp);
-	winner.basics.experience += exp;
-}
+function giveExperience (reciver, other, modificator) {
+	//var exp = Math.round( 2*3*((1.055^other.basics.level) + 8 + (1.055^(other.basics.level^1.085))))*modificator;
+    var levelDifference = reciver.basics.level-other.basics.level,
+        exp = 0;
+    if (levelDifference >= 0) {
+        exp =  Math.round(reciver.basics.level*5-Math.pow(levelDifference,2)*modificator);
+    } else {
+        exp = Math.round(reciver.basics.level*10+Math.pow(Math.abs(levelDifference),2)*modificator);
+    }
 
-function giveExperienceForLosing (winner, loser, duration) {
-	var exp = Math.round(2*3*(1.055^winner.basics.level + 8 + 1.055^(winner.basics.level^1.085)))/20;
-	checkLevelUp(winner);
-	checkLevelUp(loser);
-	//console.log(exp);
-	loser.basics.experience += exp;
+    if (exp < reciver.basics.level*5*modificator) exp = reciver.basics.level*5*modificator;
+	//console.log(modificator+"level 1 : " + reciver.basics.level + " level 2 : " + other.basics.level + " exp " + exp);
+    reciver.basics.experience += parseInt(exp);
+
+    checkLevelUp(reciver);
 }
 
 function checkLevelUp (entity) {
-	var pointsFree = (Math.floor(entity.basics.experience / (entity.basics.level*10)) - entity.basics.level) > 0 ? (Math.floor(entity.basics.experience / (entity.basics.level*10)) - entity.basics.level) : 0;
-	for (pointsFree; pointsFree > 0;) {
-		entity.attributes[getRandomAttributeName()]++;
-		entity.basics.level++;
-		pointsFree = (Math.floor(entity.basics.experience / (entity.basics.level*10)) - entity.basics.level) > 0 ? (Math.floor(entity.basics.experience / (entity.basics.level*10)) - entity.basics.level) : 0;
-	}	
+        var pointsFree = entity.getPointsFree();
+    if (entity.id > 0) {
+        for (pointsFree; pointsFree > 0; pointsFree--) {
+            entity.attributes[getRandomAttributeName()]++;
+            entity.basics.level++;
+        }
+    }
 }
 
 function getRandomAttributeName() {
