@@ -9,19 +9,26 @@ world.addPerson(player);
 world.player = player;
 
 $(document).ready(function (){
-
+    var jqSelTerminalText     = $("#terminalTextInput"),
+        jqSelTerminal         = $("#terminal"),
+        jqSelTerminalTextArea = $("#terminalTextAreaInput");
 	Math.seedrandom();
-	terminal = new Terminal($("#terminal"), false);
+	terminal = new Terminal(jqSelTerminal, jqSelTerminalText, jqSelTerminalTextArea, false);
     engine.update();
 
-	var ctrlDown = false;
+	var ctrlDown = false, shiftDown = false;
     var ctrlKey = 17, vKey = 86, cKey = 67;
 
     $(document).keydown(function(e) {
         if (e.keyCode == ctrlKey) ctrlDown = true;
-    }).keyup(function(e) {	
+    }).keyup(function(e) {
         if (e.keyCode == ctrlKey) ctrlDown = false;
-        if (ctrlDown && e.keyCode == 77) terminal.toggleVisibility();
+        if (e.ctrlKey && e.keyCode == 77) terminal.toggleVisibility();
+    });
+
+    $(document).keypress(function (e){
+        if (e.keyCode == 10) {
+        }
     });
 
 	$("#advance").on("click", function() {
@@ -46,12 +53,8 @@ $(document).ready(function (){
         $(this).next().toggle();
     });
 
-    $("#terminal > .terminalInput").on("keydown", function(event) {
+    jqSelTerminalText.on("keydown", function(event) {
     	//console.log(event.keyCode);
-        if (event.keyCode === 13) {
-            terminal.handleCommand($(this).val());
-            $(this).val("");
-        }
         if (event.keyCode === 38) {
             if(terminal.consoleActualTrace > 0) {
                 terminal.consoleActualTrace--;
@@ -63,14 +66,48 @@ $(document).ready(function (){
                 terminal.consoleActualTrace++;
                 terminal.showCurrentTrace();
                 return false;
+            } else {
+                $("#terminalTextInput").val("");
             }
+        }
+    }).keypress(function (e){
+        if (event.keyCode === 13) {
+            terminal.handleCommand($(this).val());
+            $(this).val("");
+        } else if (e.keyCode === 10){
+            return false;
         }
     });
 
-    $("#terminal").on("mouseup", function() {
-    	if(window.getSelection().type != "Range")
-			$("#terminalInput").focus();
-		return true;
+    jqSelTerminal.on("mouseup", function() {
+        if(window.getSelection().type != "Range") {
+            terminal.focusInput();
+        }
+        return true;
+    });
+
+    jqSelTerminalTextArea.on("keydown", function(event) {
+        //console.log(event.keyCode);
+        if (event.keyCode === 38) {
+            if(terminal.consoleActualTrace > 0) {
+                terminal.consoleActualTrace--;
+                terminal.showCurrentTrace();
+                return false;
+            }
+        } else if (event.keyCode === 40) {
+            if(terminal.consoleActualTrace < terminal.consoleTrace.length-1) {
+                terminal.consoleActualTrace++;
+                terminal.showCurrentTrace();
+                return false;
+            } else {
+                $("#terminalTextAreaInput").val("");
+            }
+        }
+    }).keypress(function (e){
+        if (event.keyCode === 10) {
+            terminal.handleCommand($(this).val());
+            $(this).val("");
+        }
     });
 
     $(document).on("click", ".addPoint", function() {

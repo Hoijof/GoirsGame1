@@ -3,6 +3,7 @@ function Entity (id) {
 	//stats 
 
     this.id = id;
+    this.type = WARRIOR_TYPES[getRandomInt(0,WARRIOR_TYPES.length)];
 
 	this.basics = {
 		name          : 0,
@@ -226,6 +227,12 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 			return "draw";
 		}
 	} 
+};
+
+Entity.prototype.levelUpAsType = function(type) {
+    for(var i = 0; i < FIGHTER_TYPES[type].length; i++){
+        console.log(FIGHTER_TYPES[i]);
+    }
 };
 
 Entity.prototype.report = function() {

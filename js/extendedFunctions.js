@@ -95,9 +95,14 @@ function giveExperience (reciver, other, modificator) {
     checkLevelUp(reciver);
 }
 
+function levelUpToPoints(pointsFree) {
+
+}
+
 function checkLevelUp (entity) {
         var pointsFree = entity.getPointsFree();
     if (entity.id > 0) {
+        levelUpToPoints(pointsFree);
         for (pointsFree; pointsFree > 0; pointsFree--) {
             entity.attributes[getRandomAttributeName()]++;
             entity.basics.level++;
