@@ -1,9 +1,9 @@
-function attack(attacker,attacked) {
+function attack(attacker, attacked) {
 	
 	var twoLegsDown = attacker.vitalPoints.rightLeg < 0 && attacker.vitalPoints.leftLeg < 0;
-	if (attacker.vitalPoints[attacker.basics.hand+"hand"] <= 0 || (twoLegsDown)){
+	if (attacker.vitalPoints[attacker.basics.hand+"Arm"] <= 0 || (twoLegsDown)){
 		if (attacker.id == 0 || attacked.id == 0) {
-			console.log(attacker.basics.name + " Can't attack due to injuries");
+            outputHTML += "<br>" + attacker.basics.name + " Can't attack due to injuries";
 		}
 		return;
 	}
@@ -41,19 +41,17 @@ function attack(attacker,attacked) {
 
 	if (attacked.attributes.agility/attacker.attributes.agility + getRandomInt(-2,2) > 5 && legsOk) { // TODO: take a look at it
 		if (attacker.id == 0 || attacked.id == 0) {
-			console.log(attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.");
+            outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.";
 		}
 	} else {
-		damage = (((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + attacker.attributes.agility * 0.15) * getRandom(0.8,1.1)).toFixed(3);
+		damage = ((((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10))) * getRandom(0.8,1.1)).toFixed(3);
 		if (damage < 0) damage = 0;
 		attacked.vitalPoints[zoneToAttack[0]] -= damage;
 
 		if (attacker.id == 0 || attacked.id == 0) {
-			console.log(attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " and deals " + damage + " points of damage. That part has " + attacked.vitalPoints[zoneToAttack[0]].toFixed(3) + " health points left.");
+            outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " and deals " + damage + " points of damage. That part has " + attacked.vitalPoints[zoneToAttack[0]].toFixed(3) + " health points left.";
 		}
 	}
-	
-	
 }
 
 function attackingFirstCheck(attacker, attacked) {

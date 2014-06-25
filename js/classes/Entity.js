@@ -64,7 +64,7 @@ Entity.prototype.getPointsFree = function () {
 
 Entity.prototype.levelUp = function () {
     if (this.basics.experience > this.basics.nextLevel) {
-        console.log("level up");
+        outputHTML += "<br>" + "level up!!";
         if (this.basics.level > 250) {
             this.basics.nextLevel = Math.floor(this.basics.nextLevel * 1.15 + this.basics.nextLevel / 5);
         } else {
@@ -166,8 +166,8 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 	var timesSecond = 0;
 	var turns = 0;
 
-	if (this.id == 0 || enemy.id == 0) {
-		console.log("A fight between ---- " + this.id+this.basics.name + " ---- and ----- " + enemy.id+enemy.basics.name + " ----- is going to start")
+    if (this.id == 0 || enemy.id == 0) {
+        outputHTML += "<br>" + "A fight between ---- " + this.id+this.basics.name + " ---- and ----- " + enemy.id+enemy.basics.name + " ----- is going to start";
 		this.report();
 		enemy.report();
 	}
@@ -192,8 +192,8 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 		turns++;
 	}
 	if (this.id == 0 || enemy.id == 0) {
-		console.log("Fight lasted " + turns + " turns");
-		console.log(this.basics.name + " attacked first " + timesFirst + " times and " + timesSecond + " times second");
+        outputHTML += "<br>" + "Fight lasted " + turns + " turns";
+        outputHTML += "<br>" + this.basics.name + " attacked first " + timesFirst + " times and " + timesSecond + " times second";
 	}
 	
 
@@ -201,17 +201,17 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 		this.basics.defeats++;
 		enemy.basics.victories++;
 		if (this.id == 0 || enemy.id == 0) {
-			console.log(enemy.basics.name + " Wins.");
+            outputHTML += "<br>" + enemy.basics.name + " Wins.";
 		}
         giveExperience(enemy, this, EXPERIENCE_WIN_FACTOR);
-        giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR)
+        giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR);
 		return "defeat";
 	}	else {
 		if(isDying(enemy)) {
 			enemy.basics.defeats++;
 			this.basics.victories++;
 			if (this.id == 0 || enemy.id == 0) {
-				console.log(this.basics.name + " Wins.");
+				outputHTML += "<br>" + this.basics.name + " Wins.";
 			}
 
             giveExperience(this, enemy, EXPERIENCE_WIN_FACTOR)
@@ -219,11 +219,11 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 			return "victory";
 		} else {
 			if (this.id == 0 || enemy.id == 0) {
-				console.log("Nobody wins");
+                outputHTML += "<br>" + "Nobody wins";
 			}
 
             giveExperience(enemy, this, EXPERIENCE_LOSS_FACTOR);
-            giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR)
+            giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR);
 			return "draw";
 		}
 	} 
@@ -231,17 +231,17 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 
 Entity.prototype.levelUpAsType = function(type) {
     for(var i = 0; i < FIGHTER_TYPES[type].length; i++){
-        console.log(FIGHTER_TYPES[i]);
+        outputHTML += "<br>" + FIGHTER_TYPES[i];
     }
 };
 
 Entity.prototype.report = function() {
-	console.log("---------------------------------------------------------------------------------------");
-	console.log("Starting report of Entity with id = " + this.id + " and name = " + this.basics.name + " and level of " + this.basics.level);
-	console.log("Attributes Report");
-	$.each(this.attributes, function(key, val) { 
-		console.log(key + " = " + val);
+    outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
+    outputHTML += "<br>" + "Starting report of Entity with id = " + this.id + " and name = " + this.basics.name + " and level of " + this.basics.level;
+    outputHTML += "<br>" + "Attributes Report";
+	$.each(this.attributes, function(key, val) {
+        outputHTML += "<br>" + key + " = " + val;
 	});
-	console.log("End of Attributes Report");
-	console.log("---------------------------------------------------------------------------------------");
+    outputHTML += "<br>" + "End of Attributes Report";
+    outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
 };

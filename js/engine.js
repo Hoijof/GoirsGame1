@@ -7,6 +7,7 @@ function Engine (world, player) {
 Engine.prototype.update = function(){
     this.updatePlayerInfo();
     this.updateWorldInfo();
+    this.updateMainInfo();
 };
 
 Engine.prototype.updatePlayerInfo = function () {
@@ -17,7 +18,9 @@ Engine.prototype.updatePlayerInfo = function () {
 
     selector.find("tbody tr").each(function(){
         var elem = $(this).find("td");
-        before[$(elem[0]).html().toLowerCase()] = $(elem[1]).html();
+        var name = $(elem[0]).html();
+        name = name.charAt(0).toLowerCase() + name.slice(1)
+        before[name] = $(elem[1]).html();
     });
 
     selector.html("");
@@ -36,9 +39,12 @@ Engine.prototype.updatePlayerInfo = function () {
             }
         } else {
             html +=("<td>" + player.basics[stat] + "</td>");
-            selector.append("<tr class='normal'>" + html + "</tr>")
+            if (String(player.basics[stat]) != before[stat]) {
+                selector.append("<tr class='increased'>" + html + "</tr>");
+            } else {
+                selector.append("<tr class='normal'>" + html + "</tr>");
+            }
         }
-
     }
 
     selector = $("#playerStats");
@@ -104,4 +110,8 @@ Engine.prototype.updateWorldInfo = function () {
             selector.append("<tr class='normal'>" + html + "</tr>");
         }
     }
+};
+
+Engine.prototype.updateMainInfo = function () {
+  $("#mainView").html(outputHTML);
 };

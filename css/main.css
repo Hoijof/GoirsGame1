@@ -109,7 +109,23 @@ body {
     cursor : pointer;
 }
 
-.playerBar > .playerActions > div {
+.barHolder {
+    width: 220px;
+    margin : 10px;
+}
+.dayBar {
+    width : 100%;
+    height: 10px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.playerBar > .playerActions {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.playerBar > .playerActions > .action {
     float : left;
     margin-left: 10px;
     margin-top: 10px;
@@ -124,10 +140,10 @@ body {
 /* MAIN BODY STYLES */
 
 .mainBody {
-    background-color: sandybrown;
+    background-color: white;
     float   : left;
     height: 100%;
-    overflow: hidden;
+    overflow: auto;
     margin-left: 250px;
     margin-right: 250px;
 }
@@ -135,8 +151,10 @@ body {
 .mainBody > .mainContainer {
     width : 100%;
     height : 100%;
-    overflow: hidden;
     text-align: center;
+}
+
+.mainView {
 }
 
 .mainBody > h1 {

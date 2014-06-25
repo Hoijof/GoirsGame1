@@ -30,7 +30,7 @@ World.prototype.callADay = function() {
 	var todayDefeats = 0;
 	var todayDraws = 0;
 	var survivalsToday = 0;
-	console.log(fightsToday + " fights to be done");
+	outputHTML += fightsToday + " fights to be done";
 
 
     this.updatePeopleHealth();
@@ -88,11 +88,11 @@ World.prototype.callADay = function() {
 	this.refreshPeople();
 
 	if (report) {
-		console.log ("Deaths : " + deathsToday + " " +
+        outputHTML += "<br> Deaths : " + deathsToday + " " +
 		"Victories : " + todayVictories + " " +
 		"Defeats : "   +  todayDefeats + " " +
 		"Draws : "     +  todayDraws + " " +
-		"Survivals : " + survivalsToday)
+		"Survivals : " + survivalsToday;
 	}
 };
 
@@ -150,4 +150,14 @@ World.prototype.refreshPeople = function() {
 		} 
 	}
 	this.people = peopleAux;
+};
+
+World.prototype.reportPeople = function () {
+    /*for (var elem in this.people) {
+        this.people[elem].report();
+    }*/
+    jQuery.each(this.people, function(key, value) {
+       value.report();
+    });
+    engine.update();
 };
