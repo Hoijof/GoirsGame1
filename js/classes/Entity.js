@@ -9,6 +9,7 @@ function Entity (id) {
 		name          : 0,
         surname       : 0,
         sex           : 0,
+        class         : null,
 		isDead		  : false,
 		hand          : null,
 		level         : 0,
@@ -52,9 +53,9 @@ Entity.prototype.getPointsFree = function () {
     while (Math.floor(this.basics.experience) >= temporalLevelUp) {
         //if(this.id==0)console.log(temporalLevelUp);
         if (this.basics.level > 250) {
-            temporalLevelUp = Math.floor(temporalLevelUp*1.15+temporalLevelUp/5);
+            temporalLevelUp = Math.floor(temporalLevelUp+temporalLevelUp/2);
         } else {
-            temporalLevelUp = Math.floor(temporalLevelUp+temporalLevelUp/4);
+            temporalLevelUp = Math.floor(temporalLevelUp+temporalLevelUp/8);
         }
         ++pointsFree;
     }
@@ -64,11 +65,10 @@ Entity.prototype.getPointsFree = function () {
 
 Entity.prototype.levelUp = function () {
     if (this.basics.experience > this.basics.nextLevel) {
-        outputHTML += "<br>" + "level up!!";
         if (this.basics.level > 250) {
-            this.basics.nextLevel = Math.floor(this.basics.nextLevel * 1.15 + this.basics.nextLevel / 5);
+            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 2);
         } else {
-            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 4);
+            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 8);
         }
     }
 };
@@ -76,10 +76,11 @@ Entity.prototype.levelUp = function () {
 Entity.prototype.init = function () {
     this.basics.isDead		  = false;
     this.basics.sex           = isAppening(50) ? "male" : "female";
+    this.basics.class         = getRandomKey(WARRIOR_TYPES);
     this.basics.name          = getRandomCitizenName(this.basics.sex);
     this.basics.surname       = getRandomCitizenSurname();
-    this.basics.level         = 1;
-    this.basics.hand = isAppening(60) ? "right" : "left";
+    this.basics.level         = 8;
+    this.basics.hand          = isAppening(60) ? "right" : "left";
     this.basics.victories     = 0;
     this.basics.defeats       = 0;
     this.basics.experience    = 1;
@@ -94,6 +95,8 @@ Entity.prototype.init = function () {
     this.attributes.faith 			= 1;
 
     this.basics.experience = getRandomInt(0,3199629);
+   // console.log(this.basics.experience);
+    checkLevelUp(this);
 };
 
 Entity.prototype.setAllStatsToValue = function(value) {
@@ -236,12 +239,27 @@ Entity.prototype.levelUpAsType = function(type) {
 };
 
 Entity.prototype.report = function() {
+    var basePercentages = WARRIOR_TYPES[this.basics.class],
+        percentages = calculatePercentages(this, basePercentages),
+        i;
+
     outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
     outputHTML += "<br>" + "Starting report of Entity with id = " + this.id + " and name = " + this.basics.name + " and level of " + this.basics.level;
-    outputHTML += "<br>" + "Attributes Report";
-	$.each(this.attributes, function(key, val) {
+    outputHTML += "<br>" + "---- BASICS REPORT ----";
+    $.each(this.basics, function(key, val) {
         outputHTML += "<br>" + key + " = " + val;
-	});
+    });
+    outputHTML += "<br>" + "---- ATTRIBUTES REPORT ----";
+    $.each(this.attributes, function(key, val) {
+        outputHTML += "<br>" + key + " = " + val;
+    });
     outputHTML += "<br>" + "End of Attributes Report";
+
+    outputHTML += "<br>" + "PERCENTAGES";
+    for(i = 0; i < basePercentages.length; ++i) {
+       outputHTML += "<br>" + String(basePercentages[i]-percentages[i]);
+    }
+
+
     outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
 };

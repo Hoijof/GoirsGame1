@@ -93,17 +93,53 @@ function giveExperience (reciver, other, modificator) {
     checkLevelUp(reciver);
 }
 
-function levelUpToPoints(pointsFree) {
+function calculatePercentages(entity) {
+    var i,
+        tmpPercentages = [];
 
+    for(i = 0; i < WARRIOR_TYPES[entity.basics.class].length; ++i) {
+        tmpPercentages[i] = entity.attributes[getKeyFromNumber(entity.attributes, i)]/entity.basics.level;
+    }
+
+    return tmpPercentages;
+}
+
+function incrementLowestPercentage(entity) {
+    var basePercentages = WARRIOR_TYPES[entity.basics.class],
+        i,
+        updated = false,
+        tmpPercentages = calculatePercentages(entity);
+
+    if (getRandomInt(0,1)) {
+        for(i = 0; i < basePercentages.length-1; ++i) {
+            if (basePercentages[i] > tmpPercentages[i]) {
+                entity.attributes[getKeyFromNumber(entity.attributes, i)]++;
+                updated = true;
+                break;
+            }
+        }
+    } else {
+        for(i = basePercentages.length-2; i >= 0; --i) {
+            if (basePercentages[i] > tmpPercentages[i]) {
+                entity.attributes[getKeyFromNumber(entity.attributes, i)]++;
+                updated = true;
+                break;
+            }
+        }
+    }
+    if (!updated) {
+        entity.attributes[getRandomAttributeName(i)]++;
+    }
 }
 
 function checkLevelUp (entity) {
-        var pointsFree = entity.getPointsFree();
-    if (entity.id > 0) {
-        levelUpToPoints(pointsFree);
+    var pointsFree = entity.getPointsFree();
+
+    if (entity.id > 0 || settings.autoLevelUp) {
         for (pointsFree; pointsFree > 0; pointsFree--) {
-            entity.attributes[getRandomAttributeName()]++;
+            incrementLowestPercentage(entity);
             entity.basics.level++;
+            entity.levelUp();
         }
     }
 }

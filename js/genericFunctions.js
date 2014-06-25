@@ -4,6 +4,28 @@ Array.prototype.size = function(){
 	return this.filter(function(a){return a !== undefined;}).length
 };
 
+Object.size = function(obj) {
+    var size = 0, key;
+    for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+    }
+    return size;
+};
+
+var getRandomProperty = function (obj) {
+    var keys = Object.keys(obj)
+    return obj[keys[ keys.length * Math.random() << 0]];
+};
+
+var getRandomKey = function (obj) {
+    var keys = Object.keys(obj);
+    return keys[ keys.length * Math.random() << 0];
+};
+
+function getKeyFromNumber (obj, key){
+    var keys = Object.keys(obj);
+    return keys[key];
+}
 
 Number.prototype.map = function ( in_min , in_max , out_min , out_max ) {
   return ( this - in_min ) * ( out_max - out_min ) / ( in_max - in_min ) + out_min;

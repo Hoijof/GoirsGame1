@@ -1,3 +1,7 @@
+var settings = {
+    autoLevelUp : true
+};
+
 var world   = new World(),
     player  = new Entity(0),
     engine  = new Engine(world, player),
@@ -6,10 +10,13 @@ var world   = new World(),
     playerDeadNotified = false,
     outputHTML = "";
 
+
 player.basics.name    = "Humbertiño";
 player.basics.surname = "Golpeiño :D";
 world.addPerson(player);
 world.player = player;
+
+world.reportPeople();
 
 function tick() {
     if(ticking.active === true) {

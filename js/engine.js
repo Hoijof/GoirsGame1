@@ -55,7 +55,9 @@ Engine.prototype.updatePlayerInfo = function () {
 
     selector.find("tbody tr").each(function(){
         var elem = $(this).find("td");
-        before[$(elem[0]).html().toLowerCase()] = $(elem[1]).html();
+        var name = $(elem[0]).html();
+        name = name.charAt(0).toLowerCase() + name.slice(1)
+        before[name] = $(elem[1]).html();
     });
 
     selector.html("");
@@ -77,7 +79,9 @@ Engine.prototype.updatePlayerInfo = function () {
 
     selector.find("tbody tr").each(function(){
         var elem = $(this).find("td");
-        before[$(elem[0]).html().toLowerCase()] = $(elem[1]).html();
+        var name = $(elem[0]).html();
+        name = name.charAt(0).toLowerCase() + name.slice(1)
+        before[name] = $(elem[1]).html();
     });
 
     selector.html("");
@@ -97,15 +101,25 @@ Engine.prototype.updatePlayerInfo = function () {
 
 Engine.prototype.updateWorldInfo = function () {
     var selector = $("#worldStandard"),
+        before   = [],
         html;
+
+    selector.find("tbody tr").each(function(){
+        var elem = $(this).find("td");
+        var name = $(elem[0]).html();
+        name = name.charAt(0).toLowerCase() + name.slice(1)
+        before[name] = $(elem[1]).html();
+    });
 
     selector.html("");
     for (var stat in world.standard) {
         html = ("<td>" + stat.charAt(0).toUpperCase() + stat.slice(1) + "</td>");
         html +=("<td>" + world.standard[stat] + "</td>");
 
-        if (player.basics[stat] < 0) {
+        if (world.standard[stat] < before[stat]) {
             selector.append("<tr class='decreased'>" + html + "</tr>");
+        } else if (world.standard[stat] > before[stat]) {
+            selector.append("<tr class='increased'>" + html + "</tr>");
         } else {
             selector.append("<tr class='normal'>" + html + "</tr>");
         }

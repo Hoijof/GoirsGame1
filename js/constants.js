@@ -7,8 +7,8 @@ var MAX_ENTITY_HEALTH  = 100,
 	MAX_ITERATIONS	   = 30,
 	REFRESH_COUNTER    = 3,
 
-	WORLD_MIN_SIZE     = 100,
-	WORLD_MAX_SIZE     = 500,
+	WORLD_MIN_SIZE     = 2,
+	WORLD_MAX_SIZE     = 2,
 
     EXPERIENCE_LOSS_FACTOR = 0.2,
     EXPERIENCE_WIN_FACTOR = 1,
@@ -28,13 +28,14 @@ var MAX_ENTITY_HEALTH  = 100,
  faith 			: 0*/
 
 var WARRIOR_TYPES = {
-    warrior : [0.2, 0.2, 0.02, 0.2, 0.2, 0.18, 0],
-    mage    : [0.05, 0.15, 0.4, 0.3, 0.02, 0.02, 0.16]
+    warrior : [0.2, 0.2, 0.02, 0.2, 0.2, 0.18, 0, 0],
+    mage    : [0.05, 0.15, 0.4, 0.3, 0.02, 0.02, 0.16, 0],
+    rogue   : [0.1, 0.05, 0.1, 0.15, 0.25, 0.15, 0.15, 0.05]
 };
 
 var femaleNames = ["Aekkein", "Erna", "Gica", "Iris", "Laen", "Oanei", "Urusla", "Unt", "Zy", "Giny", "Teni", "Tania",
 	"Tenisa", "Falish", "Tirs", "Bera", "Boria", "Terkia", "Tronash", "Si", "Gi", "Ti", "Fi", "Di", "Mi", "Peli", "Irnia", "Beth",
-   "Riven", "Vi", "Lio"];
+   "Riven", "Vi", "Lio", "Nayeli"];
 
 var maleNames = ["Anttirnet", "Carnil", "Estiv", "Halt", "Hoijof", "Laen", "Lisiern", "Berin", "Ton", "Shome", "Regit",
 	"Lurin", "Maers", "Musten", "Oanei", "Raesh", "Terio", "Unt", "Ust", "Redik", "James", "Loki", "Tem", "Regot",

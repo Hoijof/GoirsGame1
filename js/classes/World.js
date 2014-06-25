@@ -9,14 +9,12 @@ function World() {
     };
 
     this.people = [];
-	this.refreshCounter = REFRESH_COUNTER;
 
 	this.lastId = 0;
 
 	for(var i = 1; i < this.standard.population; i++) {
 		this.addPerson(new Entity(i));
 	}
-
 }
 
 World.prototype.callADay = function() {
