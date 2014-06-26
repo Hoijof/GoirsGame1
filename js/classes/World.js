@@ -4,7 +4,7 @@ function World() {
     this.standard = {
         day         : 0,
         deaths      : 0,
-        births      : 1,
+        births      : 0,
         population  : getRandomInt(WORLD_MIN_SIZE, WORLD_MAX_SIZE)
     };
 
@@ -33,7 +33,7 @@ World.prototype.callADay = function() {
 
     this.updatePeopleHealth();
 
-	for(var i = 0; i < fightsToday; ++i) {
+	for (var i = 0; i < fightsToday; ++i) {
 		var attacker = this.getRandomPerson(undefined);
 		if (attacker == false) continue;
 		var attacked = this.getRandomPerson([attacker]);
@@ -43,7 +43,7 @@ World.prototype.callADay = function() {
 		switch (result) {
 			case "victory" :
 				todayVictories++;
-				if ( !survivalCheck(attacked)) {
+				if (!survivalCheck(attacked)) {
 					++deathsToday;
 					attacked.basics.isDead = true;
 					this.removePerson(attacked);
@@ -55,7 +55,7 @@ World.prototype.callADay = function() {
 			break;
 			case "defeat" :
 			todayDefeats++;
-				if ( !survivalCheck(attacker)) {
+				if (!survivalCheck(attacker)) {
 					++deathsToday;
 					attacker.basics.isDead = true;
 					this.removePerson(attacker);
@@ -76,14 +76,15 @@ World.prototype.callADay = function() {
 
 
 	var birthsToday = getRandomInt(0, (this.standard.population/2)*WORLD_BIRTH_FACTOR);
-	this.standard.births += birthsToday;
+	/*this.standard.births += birthsToday;
 	for( i = 0; i < birthsToday; ++i) {
 		this.addPerson(new Entity(this.getLastId()));
-	}
+	}*/
+
+    this.refreshPeople();
 
 	this.standard.population = this.people.length = this.people.size();
 
-	this.refreshPeople();
 
 	if (report) {
         outputHTML += "<br> Deaths : " + deathsToday + " " +
@@ -141,7 +142,7 @@ World.prototype.getRandomPerson = function(reference) {
 World.prototype.refreshPeople = function() {
 	var peopleAux = Array();
 	var iAux = 0;
-	for (var i = 0; i < this.people.size(); i++) {
+	for (var i = 0; i < this.people.length; i++) {
 		if (this.people[i] !== undefined){
 			peopleAux[iAux] = this.people[i];
 			peopleAux[iAux].id = iAux++;
@@ -151,9 +152,6 @@ World.prototype.refreshPeople = function() {
 };
 
 World.prototype.reportPeople = function () {
-    /*for (var elem in this.people) {
-        this.people[elem].report();
-    }*/
     jQuery.each(this.people, function(key, value) {
        value.report();
     });

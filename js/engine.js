@@ -127,5 +127,9 @@ Engine.prototype.updateWorldInfo = function () {
 };
 
 Engine.prototype.updateMainInfo = function () {
-  $("#mainView").html(outputHTML);
+  if (activeView == null) {
+      $("#mainView").html(outputHTML);
+  } else {
+      activeView.showContent();
+  }
 };

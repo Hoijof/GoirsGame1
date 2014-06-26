@@ -1,28 +1,32 @@
 function attack(attacker, attacked) {
 	
-	var twoLegsDown = attacker.vitalPoints.rightLeg < 0 && attacker.vitalPoints.leftLeg < 0;
+	var twoLegsDown = attacker.vitalPoints.rightLeg < 0 && attacker.vitalPoints.leftLeg < 0,
+        zones, number, found, damage, legsOk, zoneToAttack, i, badHand = false;
+
 	if (attacker.vitalPoints[attacker.basics.hand+"Arm"] <= 0 || (twoLegsDown)){
+
 		if (attacker.id == 0 || attacked.id == 0) {
-            outputHTML += "<br>" + attacker.basics.name + " Can't attack due to injuries";
+            outputHTML += "<br>" + attacker.basics.name + " attacks with his bad hand.";
 		}
+        badHand = true;
 		return;
 	}
 	// select the zone to attack
-	var zones = [];
+	zones = [];
 	for (var zone in attacked.vitalPoints)
 		zones.push([zone, attacked.vitalPoints[zone]]);
 	zones.sort(function(a,b) { return b[1] - a[1]});
 	//global check
-	var number = parseInt(((attacker.attributes.intelligence/attacked.attributes.intelligence) +
+	number = parseInt(((attacker.attributes.intelligence/attacked.attributes.intelligence) +
                  ((attacker.basics.victories+attacker.basics.defeats+1)/(attacked.basics.victories+attacked.basics.defeats+1)).map(0,8,0,8)));
 	number += getRandomInt(-1,1);
 	if (number > 5) number = 5;
 	if (number < 0) number = 0;
-	var zoneToAttack = zones[number];
+	zoneToAttack = zones[number];
 
 	// progressive check
-	var found = false,
-		i = 1;
+	found = false;
+    i = 1;
 
 	while (!found && number-i > 0) {
 		if(attacked.vitalPoints[zoneToAttack[0]] > 0) found = true;
@@ -33,11 +37,11 @@ function attack(attacker, attacked) {
 	}
 
 	// damage and dodge
-	var damage = 0.0,
+	damage = 0.0,
 		dodges = false;
 
 	//chance to dodge
-	var legsOk = (attacked.vitalPoints.leftLeg > 0 && attacker.vitalPoints.rightLeg > 0);
+	legsOk = (attacked.vitalPoints.leftLeg > 0 && attacker.vitalPoints.rightLeg > 0);
 
 	if (attacked.attributes.agility/attacker.attributes.agility + getRandomInt(-2,2) > 5 && legsOk) { // TODO: take a look at it
 		if (attacker.id == 0 || attacked.id == 0) {
@@ -46,6 +50,7 @@ function attack(attacker, attacked) {
 	} else {
 		damage = ((((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10))) * getRandom(0.8,1.1)).toFixed(3);
 		if (damage < 0) damage = 0;
+        if (badHand) damage *= 0.6;
 		attacked.vitalPoints[zoneToAttack[0]] -= damage;
 
 		if (attacker.id == 0 || attacked.id == 0) {

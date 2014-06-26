@@ -214,12 +214,12 @@ Terminal.prototype.handleCommand = function(command, modificator) {
                         document.body.contentEditable='true'; document.designMode='on';
                         message = "Now you can edit any content in the page .D";
                     } else if (command[2] == "off") {
-                        document.body.contentEditable='false'; document.designMode='off';
+                        document.body.contentEditable = 'false'; document.designMode = 'off';
                     } else {
                         if (document.body.contentEditable == "true") {
-                            document.body.contentEditable='false'; document.designMode='off';
+                            document.body.contentEditable = 'false'; document.designMode = 'off';
                         } else {
-                            document.body.contentEditable='true'; document.designMode='on';
+                            document.body.contentEditable = 'true'; document.designMode = 'on';
                             message = "Now you can edit any content in the page .D";
                         }
                     }
@@ -246,7 +246,7 @@ Terminal.prototype.handleCommand = function(command, modificator) {
             that.focusInput();
         },
         _default : function () {
-            message = "Command " + command[0] + " not recognized";
+            message = "Command " + command[0] + " not recognized. Use \"list command\" for a list of all the available commands";
         }
     };
 

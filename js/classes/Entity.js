@@ -53,9 +53,9 @@ Entity.prototype.getPointsFree = function () {
     while (Math.floor(this.basics.experience) >= temporalLevelUp) {
         //if(this.id==0)console.log(temporalLevelUp);
         if (this.basics.level > 250) {
-            temporalLevelUp = Math.floor(temporalLevelUp+temporalLevelUp/2);
+            temporalLevelUp = Math.floor(temporalLevelUp+temporalLevelUp*0.1);
         } else {
-            temporalLevelUp = Math.floor(temporalLevelUp+temporalLevelUp/8);
+            temporalLevelUp = Math.floor(temporalLevelUp+temporalLevelUp*0.1);
         }
         ++pointsFree;
     }
@@ -66,7 +66,7 @@ Entity.prototype.getPointsFree = function () {
 Entity.prototype.levelUp = function () {
     if (this.basics.experience > this.basics.nextLevel) {
         if (this.basics.level > 250) {
-            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 2);
+            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 8);
         } else {
             this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 8);
         }

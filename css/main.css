@@ -149,9 +149,8 @@ body {
 }
 
 .mainBody > .mainContainer {
-    width : 100%;
-    height : 100%;
     text-align: center;
+    padding: 10px;
 }
 
 .mainView {
@@ -192,7 +191,18 @@ body {
     padding : 0;
 }
 
+.mainView > .playerFormFields > .playerFormElement {
+    float: left;
+    padding-left: 10px;
+}
 
+.mainView > .playerFormFields {
+    overflow: hidden;
+}
+
+.title {
+    text-align: justify;
+}
 
 /* WORLD BAR STYLES */
 

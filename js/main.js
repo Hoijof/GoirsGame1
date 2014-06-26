@@ -8,7 +8,8 @@ var world   = new World(),
     terminal,
     ticking = {active : false, percentage : 0, interval : null},
     playerDeadNotified = false,
-    outputHTML = "";
+    outputHTML = "",
+    activeView = null;
 
 
 player.basics.name    = "Humbertiño";
@@ -16,11 +17,13 @@ player.basics.surname = "Golpeiño :D";
 world.addPerson(player);
 world.player = player;
 
-world.reportPeople();
+//world.reportPeople();
 
 function tick() {
-    if(ticking.active === true) {
-        if(ticking.interval === null) ticking.interval = setInterval(tick,10);
+    if (ticking.active === true) {
+        if (ticking.interval === null) {
+            ticking.interval = setInterval(tick,30);
+        }
         if (ticking.percentage >= 100) {
             ticking.percentage = 0;
             outputHTML = "";
@@ -29,7 +32,7 @@ function tick() {
         } else {
             ticking.percentage += 2;
         }
-        $("#dayBar").css("width", ticking.percentage+"%");
+        $("#dayBar").css("width", ticking.percentage + "%");
 
         if (player.basics.isDead && !playerDeadNotified) {
             ticking.active = false;
@@ -43,8 +46,6 @@ function tick() {
 }
 
 $(document).ready(function(){
-    var mainView = new MainView($("#mainView"));
-    mainView.createContent();
+    activeView = new MainView($("#mainView"));
 });
-
 

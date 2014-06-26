@@ -7,8 +7,8 @@ var MAX_ENTITY_HEALTH  = 100,
 	MAX_ITERATIONS	   = 30,
 	REFRESH_COUNTER    = 3,
 
-	WORLD_MIN_SIZE     = 2,
-	WORLD_MAX_SIZE     = 2,
+	WORLD_MIN_SIZE     = 50,
+	WORLD_MAX_SIZE     = 300,
 
     EXPERIENCE_LOSS_FACTOR = 0.2,
     EXPERIENCE_WIN_FACTOR = 1,
@@ -68,3 +68,18 @@ var CSS_COLOR_NAMES = ["AliceBlue","AntiqueWhite","Aqua","Aquamarine","Azure","B
     "PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum","PowderBlue","Purple","Red","RosyBrown","RoyalBlue","SaddleBrown","Salmon","SandyBrown",
     "SeaGreen","SeaShell","Sienna","Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow","SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato",
     "Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"];
+
+var MAIN_VIEW = {
+    DESCRIPTION : "You were born in this harass land. War was your teacher since a young age and you know nothing but death and destruction. Welcome to the world.",
+    PLAYER_FORM : {
+        DESCRIPTION : "This is who you will be, choose wisely",
+        NAME : "Name",
+        SURNAME : "Surname",
+        HAND    : "Preferred hand"
+    }
+};
+
+var BASICS = {
+    LEFT : "left",
+    RIGHT: "right"
+};
