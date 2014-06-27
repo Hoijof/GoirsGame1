@@ -9,7 +9,7 @@ var world   = new World(),
     ticking = {active : false, percentage : 0, interval : null},
     playerDeadNotified = false,
     outputHTML = "",
-    activeView = null;
+    view = null;
 
 
 player.basics.name    = "Humbertiño";
@@ -46,6 +46,7 @@ function tick() {
 }
 
 $(document).ready(function(){
-    activeView = new MainView($("#mainView"));
+    view = new MainController($("#mainView"));
+    view.activeView = 'generateNewPlayerForm';
 });
 

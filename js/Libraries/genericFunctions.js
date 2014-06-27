@@ -12,6 +12,10 @@ Object.size = function(obj) {
     return size;
 };
 
+$.fn.refresh = function() {
+    return $(this.selector);
+};
+
 var getRandomProperty = function (obj) {
     var keys = Object.keys(obj)
     return obj[keys[ keys.length * Math.random() << 0]];

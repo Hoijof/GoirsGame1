@@ -37,8 +37,8 @@ function attack(attacker, attacked) {
 	}
 
 	// damage and dodge
-	damage = 0.0,
-		dodges = false;
+	damage = 0.0;
+	dodges = false;
 
 	//chance to dodge
 	legsOk = (attacked.vitalPoints.leftLeg > 0 && attacker.vitalPoints.rightLeg > 0);

@@ -19,7 +19,7 @@ Engine.prototype.updatePlayerInfo = function () {
     selector.find("tbody tr").each(function(){
         var elem = $(this).find("td");
         var name = $(elem[0]).html();
-        name = name.charAt(0).toLowerCase() + name.slice(1)
+        name = name.charAt(0).toLowerCase() + name.slice(1);
         before[name] = $(elem[1]).html();
     });
 
@@ -56,7 +56,7 @@ Engine.prototype.updatePlayerInfo = function () {
     selector.find("tbody tr").each(function(){
         var elem = $(this).find("td");
         var name = $(elem[0]).html();
-        name = name.charAt(0).toLowerCase() + name.slice(1)
+        name = name.charAt(0).toLowerCase() + name.slice(1);
         before[name] = $(elem[1]).html();
     });
 
@@ -80,7 +80,7 @@ Engine.prototype.updatePlayerInfo = function () {
     selector.find("tbody tr").each(function(){
         var elem = $(this).find("td");
         var name = $(elem[0]).html();
-        name = name.charAt(0).toLowerCase() + name.slice(1)
+        name = name.charAt(0).toLowerCase() + name.slice(1);
         before[name] = $(elem[1]).html();
     });
 
@@ -107,7 +107,7 @@ Engine.prototype.updateWorldInfo = function () {
     selector.find("tbody tr").each(function(){
         var elem = $(this).find("td");
         var name = $(elem[0]).html();
-        name = name.charAt(0).toLowerCase() + name.slice(1)
+        name = name.charAt(0).toLowerCase() + name.slice(1);
         before[name] = $(elem[1]).html();
     });
 
@@ -127,9 +127,9 @@ Engine.prototype.updateWorldInfo = function () {
 };
 
 Engine.prototype.updateMainInfo = function () {
-  if (activeView == null) {
+  if (view == null) {
       $("#mainView").html(outputHTML);
   } else {
-      activeView.showContent();
+      view.showContent();
   }
 };

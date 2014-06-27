@@ -171,7 +171,7 @@ body {
     overflow: hidden;
     margin  : auto;
     font-family: arial sans-serif;
-    font-size  : 12;
+    font-size  : 12px;
     cursor     : text;
 }
 
@@ -191,13 +191,41 @@ body {
     padding : 0;
 }
 
-.mainView > .playerFormFields > .playerFormElement {
+.hr20px {
+    margin: 20px 0;
+}
+.hr10px {
+    margin: 10px 0;
+}
+
+.mainView > .playerFormFields  .playerFormElement {
     float: left;
     padding-left: 10px;
+    margin-top: 10px;
+}
+
+.mainView > .playerFormFields .playerFormBlock {
+    overflow: hidden;
+    margin: auto;
+    width: 500px;
 }
 
 .mainView > .playerFormFields {
     overflow: hidden;
+    width: 500px;
+    margin: auto;
+}
+
+.mainView > .playerFormFields .playerFormSubmit {
+    border-radius: 11px;
+    background-color: aliceblue;
+    cursor: pointer;
+    box-shadow: 8px 5px 10px #888888;
+}
+
+.mainView > .playerFormFields .playerFormSubmit:hover {
+    background-color: dimgray;
+    color : white;
 }
 
 .title {

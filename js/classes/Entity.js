@@ -177,7 +177,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 	
 	while(!isDying(this) && !isDying(enemy)  && turns < MAX_BATTLE_TURNS) {
 		var attacker, attacked;
-		if (attackingFirstCheck(this,enemy)){
+		if (attackingFirstCheck(this,enemy)){ // Check who attacks first
 			attacker  = this;
 			attacked  = enemy;
 			timesFirst++;
@@ -217,7 +217,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 				outputHTML += "<br>" + this.basics.name + " Wins.";
 			}
 
-            giveExperience(this, enemy, EXPERIENCE_WIN_FACTOR)
+            giveExperience(this, enemy, EXPERIENCE_WIN_FACTOR);
             giveExperience(enemy, this, EXPERIENCE_LOSS_FACTOR);
 			return "victory";
 		} else {

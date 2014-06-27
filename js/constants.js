@@ -73,13 +73,25 @@ var MAIN_VIEW = {
     DESCRIPTION : "You were born in this harass land. War was your teacher since a young age and you know nothing but death and destruction. Welcome to the world.",
     PLAYER_FORM : {
         DESCRIPTION : "This is who you will be, choose wisely",
-        NAME : "Name",
+        NAME    : "Name",
         SURNAME : "Surname",
-        HAND    : "Preferred hand"
+        HAND    : "Preferred hand",
+        SEX     : "Sex"
     }
 };
 
+var EQUIVALENCES = {
+        PLAYER_FORM : {}
+    };
+
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.NAME] = "name";
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.SURNAME] = "surname";
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.HAND] = "hand";
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.SEX] = "sex";
+
 var BASICS = {
-    LEFT : "left",
-    RIGHT: "right"
+    LEFT   : "Left",
+    RIGHT  : "Right",
+    MALE   : "Male",
+    FEMALE : "Female"
 };
