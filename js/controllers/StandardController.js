@@ -29,11 +29,21 @@ StandardController.prototype.bind = function () {
     this.views[this.activeView].bind();
 };
 
+StandardController.prototype.showContent = function () {
+    this.html = "";
+
+    if(this.header) this.html += this.views.header();
+
+    this.html += this.views[this.activeView].actions[this.action]();
+    this.refresh();
+    this.views[this.activeView].bind(this);
+};
+
 StandardController.prototype.getElementsFromForm = function (selector) {
     var elems = {},
         text  = "";
 
-    selector.find('div').find('div').each(function() {
+    selector.find('div').find('div').each(function() { // get all the input type data
         $(this).find('input').each(function(){
             if ($(this).attr("type") == 'radio') {
                 if (this.checked === true) {
@@ -47,6 +57,11 @@ StandardController.prototype.getElementsFromForm = function (selector) {
                 if (text != "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0,text.length-2)]] = $(this).val();
             }
         });
+    });
+
+    selector.find(':selected').each(function() {
+        text = $(this).parent().parent().find('label').html();
+        if (text != "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0,text.length-2)]] = EQUIVALENCES.PLAYER_FORM[$(this).text()];
     });
 
     return elems;

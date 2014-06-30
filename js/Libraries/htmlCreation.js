@@ -15,3 +15,13 @@ HtmlCreation.createMonoElem = function (elem, id, className, attributes) {
 HtmlCreation.createHorizontalLine = function (className) {
     return (typeof className != 'undefined') ? '<hr class="' + className + '"/>' : '<hr/>';
 };
+
+HtmlCreation.createListFromObject = function (object, listId, listClass, translation) {
+    var html = "<select id='"+listId+"' class='"+listClass+"'>";
+
+    $.each(object, function(key, value) {
+        html += "<option value='" + key + "'>" + translation[key] + "</option>"
+    });
+
+    return html+"</select>";
+};

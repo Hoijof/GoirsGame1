@@ -126,6 +126,30 @@ Engine.prototype.updateWorldInfo = function () {
     }
 };
 
+Engine.prototype.hidePlayerBar = function () {
+    $("#playerBar").hide();
+};
+Engine.prototype.showPlayerBar = function () {
+    this.updatePlayerInfo();
+    $("#playerBar").show();
+};
+
+Engine.prototype.hideWorldBar = function () {
+    $("#worldBar").hide();
+};
+Engine.prototype.showWorldBar = function () {
+    this.updateWorldInfo();
+    $("#worldBar").show();
+};
+
+Engine.prototype.hidePlayerActions = function () {
+    $("#playerActions").hide();
+
+};
+Engine.prototype.ShowPlayerActions = function () {
+    $("#playerActions").show();
+};
+
 Engine.prototype.updateMainInfo = function () {
   if (view == null) {
       $("#mainView").html(outputHTML);

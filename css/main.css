@@ -208,6 +208,7 @@ body {
     overflow: hidden;
     margin: auto;
     width: 500px;
+    margin-bottom: 5px;
 }
 
 .mainView > .playerFormFields {
@@ -229,7 +230,6 @@ body {
 }
 
 .title {
-    text-align: justify;
 }
 
 /* WORLD BAR STYLES */

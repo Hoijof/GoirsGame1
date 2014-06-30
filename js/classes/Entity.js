@@ -1,4 +1,4 @@
-function Entity (id) {
+function Entity (id, playerClass) {
 
 	//stats 
 
@@ -9,7 +9,7 @@ function Entity (id) {
 		name          : 0,
         surname       : 0,
         sex           : 0,
-        class         : null,
+        class         : (typeof playerClass !== 'undefined') ? playerClass : null,
 		isDead		  : false,
 		hand          : null,
 		level         : 0,
@@ -76,7 +76,7 @@ Entity.prototype.levelUp = function () {
 Entity.prototype.init = function () {
     this.basics.isDead		  = false;
     this.basics.sex           = isAppening(50) ? "male" : "female";
-    this.basics.class         = getRandomKey(WARRIOR_TYPES);
+    this.basics.class         = this.basics.class === null ? getRandomKey(WARRIOR_TYPES) : this.basics.class;
     this.basics.name          = getRandomCitizenName(this.basics.sex);
     this.basics.surname       = getRandomCitizenSurname();
     this.basics.level         = 8;

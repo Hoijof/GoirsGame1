@@ -30,7 +30,8 @@ var MAX_ENTITY_HEALTH  = 100,
 var WARRIOR_TYPES = {
     warrior : [0.2, 0.2, 0.02, 0.2, 0.2, 0.18, 0, 0],
     mage    : [0.05, 0.15, 0.4, 0.3, 0.02, 0.02, 0.16, 0],
-    rogue   : [0.1, 0.05, 0.1, 0.15, 0.25, 0.15, 0.15, 0.05]
+    rogue   : [0.1, 0.05, 0.1, 0.15, 0.25, 0.15, 0.15, 0.05],
+    monk    : [0.05, 0.10, 0.2, 0.2, 0.05, 0.05, 0.35]
 };
 
 var femaleNames = ["Aekkein", "Erna", "Gica", "Iris", "Laen", "Oanei", "Urusla", "Unt", "Zy", "Giny", "Teni", "Tania",
@@ -70,14 +71,22 @@ var CSS_COLOR_NAMES = ["AliceBlue","AntiqueWhite","Aqua","Aquamarine","Azure","B
     "Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"];
 
 var MAIN_VIEW = {
-    DESCRIPTION : "You were born in this harass land. War was your teacher since a young age and you know nothing but death and destruction. Welcome to the world.",
+    TITLE       : "GOIRS'S GAME",
     PLAYER_FORM : {
-        DESCRIPTION : "This is who you will be, choose wisely",
+        DESCRIPTION : "You were born in this harass land. War was your teacher since a young age and you know nothing but death and destruction. Welcome to the world.",
+        LEGEND : "This is who you will be, choose wisely",
         NAME    : "Name",
         SURNAME : "Surname",
         HAND    : "Preferred hand",
-        SEX     : "Sex"
-    }
+        SEX     : "Sex",
+        CLASS   : "Chose your class",
+        warrior : "Warrior",
+        mage    : "Mage",
+        rogue   : "Rogue",
+        monk    : "Monk"
+    },
+    HISTORY : "You were raised by some potatoes who were outlawed by the law of Goirs. You ideals are the same " +
+              "as their, freedom for the potatoes. You, the captain potato go out in this wild world in order to avenge your potatoes.  potatoes."
 };
 
 var EQUIVALENCES = {
@@ -88,6 +97,11 @@ var EQUIVALENCES = {
     EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.SURNAME] = "surname";
     EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.HAND] = "hand";
     EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.SEX] = "sex";
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.CLASS] = "class";
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.mage] = "mage";
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.rogue] = "rogue";
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.warrior] = "warrior";
+    EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.monk] = "monk";
 
 var BASICS = {
     LEFT   : "Left",

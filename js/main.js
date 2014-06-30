@@ -19,6 +19,12 @@ world.player = player;
 
 //world.reportPeople();
 
+function init() {
+    engine.hidePlayerBar();
+    engine.hideWorldBar();
+    engine.hidePlayerActions();
+}
+
 function tick() {
     if (ticking.active === true) {
         if (ticking.interval === null) {
@@ -48,5 +54,6 @@ function tick() {
 $(document).ready(function(){
     view = new MainController($("#mainView"));
     view.activeView = 'generateNewPlayerForm';
+    init();
 });
 
