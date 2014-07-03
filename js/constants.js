@@ -85,8 +85,14 @@ var MAIN_VIEW = {
         rogue   : "Rogue",
         monk    : "Monk"
     },
-    HISTORY : "You were raised by some potatoes who were outlawed by the law of Goirs. You ideals are the same " +
-              "as their, freedom for the potatoes. You, the captain potato go out in this wild world in order to avenge your potatoes.  potatoes."
+    HISTORY : {
+        MAIN : "You were raised by some potatoes who were outlawed by the law of Goirs. Your ideals are the same " +
+            "as their, freedom for the potatoes. You, the captain potato go out in this wild world in order to avenge your potatoes.  potatoes.",
+        WAKE_UP : "You wake up and you find yourself surrounded by a forest. It's pretty deep and you can't see anything but shadows and your own feet."
+                  + " You walk for hours finding nothing but forest. At the end of the forest you find a village, what will you do?",
+        ENTER_TOWN_01 : "You enter the town and you're attacked!",
+        KEEP_GOING    : "You keep going"
+    }
 };
 
 var EQUIVALENCES = {

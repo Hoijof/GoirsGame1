@@ -22,18 +22,18 @@ World.prototype.callADay = function() {
 
 	this.standard.day++;
 
-	var fightsToday = getRandomInt(0, (this.standard.population/2)*WORLD_FIGHT_FACTOR);
+	//var fightsToday = getRandomInt(0, (this.standard.population/2)*WORLD_FIGHT_FACTOR);
 	var deathsToday = 0;
 	var todayVictories = 0;
 	var todayDefeats = 0;
 	var todayDraws = 0;
 	var survivalsToday = 0;
-	outputHTML += fightsToday + " fights to be done";
+	//outputHTML += fightsToday + " fights to be done";
 
 
     this.updatePeopleHealth();
 
-	for (var i = 0; i < fightsToday; ++i) {
+	/*for (var i = 0; i < fightsToday; ++i) {
 		var attacker = this.getRandomPerson(undefined);
 		if (attacker == false) continue;
 		var attacked = this.getRandomPerson([attacker]);
@@ -70,7 +70,7 @@ World.prototype.callADay = function() {
 				
 			break;
 		}
-	}
+	}*/
 
 	this.standard.deaths += deathsToday;
 

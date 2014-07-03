@@ -1,0 +1,33 @@
+/* GENERIC CSS */
+
+input[type=button] {
+    border-radius: 11px;
+    background-color: aliceblue;
+    cursor: pointer;
+    box-shadow: 8px 5px 10px #888888;
+}
+
+input[type=button]:hover {
+    background-color: dimgray;
+    color : white;
+}
+
+/* PLAYER FORM */
+.mainView > .playerFormFields  .playerFormElement {
+    float: left;
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+.mainView > .playerFormFields .playerFormBlock {
+    overflow: hidden;
+    margin: auto;
+    width: 500px;
+    margin-bottom: 5px;
+}
+
+.mainView > .playerFormFields {
+    overflow: hidden;
+    width: 500px;
+    margin: auto;
+}

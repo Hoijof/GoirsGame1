@@ -37,6 +37,15 @@ StandardController.prototype.showContent = function () {
     this.html += this.views[this.activeView].actions[this.action]();
     this.refresh();
     this.views[this.activeView].bind(this);
+    engine.updatePlayerInfo();
+    engine.updateWorldInfo();
+    outputHTML = "";
+};
+
+StandardController.prototype.updateSelectors = function (selectors) {
+    $.each(selectors, function(key, value) {
+        selectors[key] = value.refresh();
+    });
 };
 
 StandardController.prototype.getElementsFromForm = function (selector) {

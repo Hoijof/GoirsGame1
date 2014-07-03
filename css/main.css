@@ -14,128 +14,7 @@ body {
     overflow: hidden;
     position: relative;
 }
-/* BARS STYLES */
 
-.playerBar {
-	left     : 0;
-	top      : 0;
-	width    : 250px;
-	height   : 100%;
-	background-color : black;
-    position : absolute;
-}
-
-.playerBar > .header, .worldBar > .header{
-	top       : 0;
-	color     : white;
-	margin    : 10px;
-	text-align: center;
-	width     : 230px;
-    cursor    : pointer;
-}
-
-.playerBar > table, .worldBar > table {
-    color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-    width: 220px;
-    margin-left: 10px;
-    margin-right: 10px;
-    cursor : default;
- }
-
-.playerBar > table > tbody > tr, .worldBar > table > tbody > tr {
-    padding: 0 5px 0 5px;
-}
-
-.playerBar > table > tbody > tr:hover, .worldBar > table > tbody > tr:hover {
-    background-color: white !important;
-    color : black;
-    padding: 0 5px 0 5px;
-}
-
-.playerBar > table > tbody > tr:hover > td, .worldBar > table > tbody > tr:hover > td {
-    color : black;
-    text-align: left;
-    padding: 0 5px 0 5px;
-}
-
-.playerBar > table > tbody > tr > td:first-child, .worldBar > table > tbody > tr > td:first-child {
-    text-align: left;
-    padding-right: 1px;
-	padding-left: 5px;
-}
-.playerBar > table > tbody > tr > td:last-child, .worldBar > table > tbody > tr > td:last-child {
-    padding-right: 5px;
-    width : 100%;
-}
-
-.playerBar > table > tbody > tr > td, .worldBar > table > tbody > tr > td {
-    padding: 0 5px 0 5px;
-}
-
-.playerBar > table > tbody > .normal > td, .worldBar > table > tbody > .normal > td {
-    color : white;
-}
-.playerBar > table > tbody > .increased > td, .worldBar > table > tbody > .increased > td {
-    color:green !important;
-}
-.playerBar > table > tbody > .decreased > td, .worldBar > table > tbody > .decreased > td {
-    color:red !important;
-}
-
-.playerBar > table > tbody > tr .addPoint {
-    cursor : pointer;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.advanceButton {
-    background-image: url(../src/img/clock.png);
-    width  : 32px;
-    height : 32px;
-    cursor : pointer;
-}
-
-.rollPlayerButton {
-    background-image: url(../src/img/dice.png);
-    background-size : cover;
-    width  : 32px;
-    height : 32px;
-    cursor : pointer;
-}
-
-.barHolder {
-    width: 220px;
-    margin : 10px;
-}
-.dayBar {
-    width : 100%;
-    height: 10px;
-    background-color: white;
-    border-radius: 10px;
-}
-
-.playerBar > .playerActions {
-    overflow: hidden;
-    margin-bottom: 10px;
-}
-
-.playerBar > .playerActions > .action {
-    float : left;
-    margin-left: 10px;
-    margin-top: 10px;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
 
 /* MAIN BODY STYLES */
 
@@ -160,37 +39,6 @@ body {
     text-align: center;
 }
 
-.mainBody > .mainContainer > .terminal {
-	position : fixed;
-    width:700px;
-    height: 400px;
-    padding : 10px;
-    text-align : left;
-    background-color :  black;
-    color:lawngreen;
-    overflow: hidden;
-    margin  : auto;
-    font-family: arial sans-serif;
-    font-size  : 12px;
-    cursor     : text;
-}
-
-.mainBody > .mainContainer > .terminal > div {
-    height: 20px;
-}
-
-.terminalInput {
-    font-family: arial sans-serif;
-    font-size  : 12px;
-    background-color : black;
-    color   : lawngreen;
-    width   : 100%;
-    outline : 0;
-    border  : 0;
-    height  : 20px;
-    padding : 0;
-}
-
 .hr20px {
     margin: 20px 0;
 }
@@ -198,47 +46,18 @@ body {
     margin: 10px 0;
 }
 
-.mainView > .playerFormFields  .playerFormElement {
-    float: left;
-    padding-left: 10px;
-    margin-top: 10px;
-}
-
-.mainView > .playerFormFields .playerFormBlock {
-    overflow: hidden;
-    margin: auto;
-    width: 500px;
-    margin-bottom: 5px;
-}
-
-.mainView > .playerFormFields {
-    overflow: hidden;
-    width: 500px;
-    margin: auto;
-}
-
-.mainView > .playerFormFields .playerFormSubmit {
-    border-radius: 11px;
-    background-color: aliceblue;
-    cursor: pointer;
-    box-shadow: 8px 5px 10px #888888;
-}
-
-.mainView > .playerFormFields .playerFormSubmit:hover {
-    background-color: dimgray;
-    color : white;
-}
-
 .title {
 }
 
-/* WORLD BAR STYLES */
-
-.worldBar {
+.toastMessage {
     background-color: black;
-    color    : white;
-    width    : 250px;
-    position : absolute;
-    right    : 0;
-    height   : 100%;
+    color: white;
+    border-radius: 5px;
+    max-width: 400px;
+    position: fixed;
+    top: 0;
+    left: 47%;
+    opacity: 0.85;
+    padding: 10px;
+    display: none;
 }

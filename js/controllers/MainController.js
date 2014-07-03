@@ -89,13 +89,120 @@ MainController.prototype.generateViewsContent = function () {
             }
         },
         startHistory : {
+            selectors : {
+                jqSelHistoryNext : $("#historyButtonNext")
+            },
             actions : {
-                index : function (){
-                    return MAIN_VIEW.HISTORY;
+                index : function (context){
+                    var content = "",
+                        block   = "",
+                        elem    = "";
+
+                    block += HtmlCreation.createElem("div", "historyDiv", "historyDiv", MAIN_VIEW.HISTORY.MAIN);
+
+                    elem += HtmlCreation.createMonoElem("input","historyButtonNext", "historyButtonNext", "type='button' value='Next'");
+                    block += HtmlCreation.createElem("div", "", "", elem);
+                    elem = "";
+
+                    content += HtmlCreation.createElem("div", "historyMainContainer", "historyMainContainer", block);
+
+                    return content;
                 }
             },
             bind: function (context) {
+                context.updateSelectors(context.views.startHistory.selectors);
+                context.views.startHistory.selectors.jqSelHistoryNext.on("click", function() {
+                    context.activeView = "HistoryPlayerWakingUp";
+                    context.showContent();
+                })
+            }
+        },
+        HistoryPlayerWakingUp : {
+            selectors : {
+                historyButtonEnter : $("#historyButtonEnter"),
+                historyButtonKeepGoing : $("#historyButtonKeepGoing")
+            },
+            actions : {
+                index : function (context){
+                    var content = "",
+                        block   = "",
+                        elem    = "";
 
+                    block += HtmlCreation.createElem("div", "historyDiv", "historyDiv", MAIN_VIEW.HISTORY.WAKE_UP);
+
+                    elem += HtmlCreation.createMonoElem("input","historyButtonEnter", "historyButtonEnter", "type='button' value='Enter'");
+                    elem += HtmlCreation.createMonoElem("input","historyButtonKeepGoing", "historyButtonKeepGoing", "type='button' value='Keep Going'");
+                    block += HtmlCreation.createElem("div", "", "", elem);
+                    elem = "";
+
+                    content += HtmlCreation.createElem("div", "historyMainContainer", "historyMainContainer", block);
+
+                    return content;
+                }
+            },
+            bind: function (context) {
+                var selectors = context.views.HistoryPlayerWakingUp.selectors;
+                context.updateSelectors(context.views.HistoryPlayerWakingUp.selectors);
+                selectors.historyButtonKeepGoing.on("click", function() {
+                    context.activeView = "historyButtonKeepGoingTown01";
+                    context.showContent();
+                });
+                selectors.historyButtonEnter.on("click", function() {
+                    context.activeView = "historyButtonEnterTown01";
+                    context.showContent();
+                });
+            }
+        },
+        historyButtonEnterTown01 : {
+            selectors : {
+                fight : $("#fight")
+            },
+            actions : {
+                index : function (context){
+                    var content = "",
+                        block   = "",
+                        elem    = "";
+
+                    block += HtmlCreation.createElem("div", "historyDiv", "historyDiv", MAIN_VIEW.HISTORY.ENTER_TOWN_01);
+
+                    elem += HtmlCreation.createMonoElem("input","fight", "fight", "type='button' value='Fight!'");
+                    block += HtmlCreation.createElem("div", "", "", elem);
+                    elem = "";
+
+                    content += HtmlCreation.createElem("div", "historyMainContainer", "historyMainContainer", block);
+
+                    return content;
+                }
+            },
+            bind: function (context) {
+                var selectors = context.views.historyButtonEnterTown01.selectors;
+                context.updateSelectors(context.views.historyButtonEnterTown01.selectors);
+
+                selectors.fight.on("click", function() {
+                    var enemy = new Entity(world.getLastId());
+                    player.fightAgainstEntity(enemy);
+                    engine.showToast(outputHTML);
+                });
+            }
+        },
+        historyButtonKeepGoingTown01 : {
+            selectors : {
+            },
+            actions : {
+                index : function (context){
+                    var content = "",
+                        block   = "",
+                        elem    = "";
+
+                    block += HtmlCreation.createElem("div", "historyDiv", "historyDiv", MAIN_VIEW.HISTORY.KEEP_GOING);
+
+                    content += HtmlCreation.createElem("div", "historyMainContainer", "historyMainContainer", block);
+
+                    return content;
+                }
+            },
+            bind: function (context) {
+                context.updateSelectors(context.views.historyButtonKeepGoingTown01.selectors);
             }
         },
         error : {
@@ -103,6 +210,7 @@ MainController.prototype.generateViewsContent = function () {
 
             }
         }
+
     }
 };
 

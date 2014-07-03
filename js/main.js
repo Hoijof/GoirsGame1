@@ -54,6 +54,11 @@ function tick() {
 $(document).ready(function(){
     view = new MainController($("#mainView"));
     view.activeView = 'generateNewPlayerForm';
+    engine.jqSelToast = $("#toastMessage");
     init();
+
+    engine.jqSelToast.on("dblclick", function() {
+        $(this).fadeOut()
+    });
 });
 

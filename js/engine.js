@@ -2,6 +2,7 @@
 function Engine (world, player) {
     this.world  = world;
     this.player = player;
+    this.jqSelToast = "";
 }
 
 Engine.prototype.update = function(){
@@ -156,4 +157,15 @@ Engine.prototype.updateMainInfo = function () {
   } else {
       view.showContent();
   }
+};
+
+Engine.prototype.hideToast = function () {
+    engine.jqSelToast.fadeOut();
+};
+
+Engine.prototype.showToast = function(message) {
+    this.jqSelToast.html(message);
+    this.jqSelToast.center().fadeIn();
+    var timeout = message.split(" ").length*260;
+    setTimeout(engine.hideToast, tiemout < 8000 ? timeout : 8000 );
 };
