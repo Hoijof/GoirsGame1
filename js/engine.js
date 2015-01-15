@@ -167,5 +167,5 @@ Engine.prototype.showToast = function(message) {
     this.jqSelToast.html(message);
     this.jqSelToast.center().fadeIn();
     var timeout = message.split(" ").length*260;
-    setTimeout(engine.hideToast, tiemout < 8000 ? timeout : 8000 );
+    setTimeout(engine.hideToast, timeout < 8000 ? timeout : 8000 );
 };
