@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git+https://github.com/Hoijof/GoirsGame1.git"
   },
+  "files": [
+    "dist"
+  ],
   "author": "Humberto Gomez Lopez",
   "license": "ISC",
   "bugs": {
