@@ -1,0 +1,34 @@
+{
+  "name": "goirsgame1",
+  "version": "1.0.0",
+  "description": "GoirsGame1 ==========",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hoijof/GoirsGame1.git"
+  },
+  "author": "Humberto Gomez Lopez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hoijof/GoirsGame1/issues"
+  },
+  "homepage": "https://github.com/Hoijof/GoirsGame1#readme",
+  "dependencies": {
+    "browserify": "^14.1.0",
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.5.0",
+    "gulp-uglify": "^2.1.2",
+    "lodash.assign": "^4.2.0",
+    "random-material-color": "^1.0.3",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  },
+  "devDependencies": {
+    "gulp-clean": "^0.3.2"
+  }
+}

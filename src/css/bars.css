@@ -1,0 +1,134 @@
+/* PLAYER BAR STYLES */
+
+.playerBar {
+    left     : 0;
+    top      : 0;
+    width    : 250px;
+    height   : 100%;
+    background-color : black;
+    position : absolute;
+}
+
+.playerBar > .header, .worldBar > .header{
+    top       : 0;
+    color     : white;
+    margin    : 10px;
+    text-align: center;
+    width     : 230px;
+    cursor    : pointer;
+}
+
+.playerBar > table, .worldBar > table {
+    color: white;
+    border: 1px solid white;
+    border-radius: 5px;
+    width: 220px;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor : default;
+}
+
+.playerBar > table > tbody > tr, .worldBar > table > tbody > tr {
+    padding: 0 5px 0 5px;
+}
+
+.playerBar > table > tbody > tr:hover, .worldBar > table > tbody > tr:hover {
+    background-color: white !important;
+    color : black;
+    padding: 0 5px 0 5px;
+}
+
+.playerBar > table > tbody > tr:hover > td, .worldBar > table > tbody > tr:hover > td {
+    color : black;
+    text-align: left;
+    padding: 0 5px 0 5px;
+}
+
+.playerBar > table > tbody > tr > td:first-child, .worldBar > table > tbody > tr > td:first-child {
+    text-align: left;
+    padding-right: 1px;
+    padding-left: 5px;
+}
+.playerBar > table > tbody > tr > td:last-child, .worldBar > table > tbody > tr > td:last-child {
+    padding-right: 5px;
+    width : 100%;
+}
+
+.playerBar > table > tbody > tr > td, .worldBar > table > tbody > tr > td {
+    padding: 0 5px 0 5px;
+}
+
+.playerBar > table > tbody > .normal > td, .worldBar > table > tbody > .normal > td {
+    color : white;
+}
+.playerBar > table > tbody > .increased > td, .worldBar > table > tbody > .increased > td {
+    color:green !important;
+}
+.playerBar > table > tbody > .decreased > td, .worldBar > table > tbody > .decreased > td {
+    color:red !important;
+}
+
+.playerBar > table > tbody > tr .addPoint {
+    cursor : pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.advanceButton {
+    background-image: url(../../assets/img/clock.png);
+    width  : 32px;
+    height : 32px;
+    cursor : pointer;
+}
+
+.rollPlayerButton {
+    background-image: url(../../assets/img/dice.png);
+    background-size : cover;
+    width  : 32px;
+    height : 32px;
+    cursor : pointer;
+}
+
+.barHolder {
+    width: 220px;
+    margin : 10px;
+}
+.dayBar {
+    width : 100%;
+    height: 10px;
+    background-color: white;
+    border-radius: 10px;
+}
+
+.playerBar > .playerActions {
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.playerBar > .playerActions > .action {
+    float : left;
+    margin-left: 10px;
+    margin-top: 10px;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+/* WORLD BAR STYLES */
+
+.worldBar {
+    background-color: black;
+    color    : white;
+    width    : 250px;
+    position : absolute;
+    right    : 0;
+    height   : 100%;
+}

@@ -1,0 +1,63 @@
+/* GLOBAL STYLES */
+
+@font-face {
+	font-family : mainFont;
+	src         : url(../../assets/fonts/Dalelands.otf);
+}
+
+body {
+	font-family : mainFont;
+    margin: 0;
+}
+.mainDiv{
+    width : 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+
+/* MAIN BODY STYLES */
+
+.mainBody {
+    background-color: white;
+    float   : left;
+    height: 100%;
+    overflow: auto;
+    margin-left: 250px;
+    margin-right: 250px;
+}
+
+.mainBody > .mainContainer {
+    text-align: center;
+    padding: 10px;
+}
+
+.mainView {
+}
+
+.mainBody > h1 {
+    text-align: center;
+}
+
+.hr20px {
+    margin: 20px 0;
+}
+.hr10px {
+    margin: 10px 0;
+}
+
+.title {
+}
+
+.toastMessage {
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    max-width: 400px;
+    position: fixed;
+    top: 0;
+    left: 47%;
+    opacity: 0.85;
+    padding: 10px;
+    display: none;
+}
