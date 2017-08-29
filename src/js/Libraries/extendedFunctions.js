@@ -6,7 +6,7 @@ function attack(attacker, attacked) {
     if (attacker.vitalPoints[attacker.basics.hand + "Arm"] <= 0 || (twoLegsDown)) {
 
         if (attacker.id === 0 || attacked.id === 0) {
-            outputHTML += "<br>" + attacker.basics.name + " attacks with his bad hand.";
+            // outputHTML += "<br>" + attacker.basics.name + " attacks with his bad hand.";
         }
         badHand = true;
         return;
@@ -20,7 +20,8 @@ function attack(attacker, attacked) {
     });
     //global check
     number = parseInt(((attacker.attributes.intelligence / attacked.attributes.intelligence) +
-        ((attacker.basics.victories + attacker.basics.defeats + 1) / (attacked.basics.victories + attacked.basics.defeats + 1)).map(0, 8, 0, 8)));
+        ((attacker.basics.victories + attacker.basics.defeats + 1) / (attacked.basics.victories +
+            attacked.basics.defeats + 1)).map(0, 8, 0, 8)));
     number += getRandomInt(-1, 1);
     if (number > 5) number = 5;
     if (number < 0) number = 0;
@@ -56,7 +57,7 @@ function attack(attacker, attacked) {
         attacked.vitalPoints[zoneToAttack[0]] -= damage;
 
         if (attacker.id === 0 || attacked.id === 0) {
-            outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " and deals " + damage + " points of damage. That part has " + attacked.vitalPoints[zoneToAttack[0]].toFixed(3) + " health points left.";
+            // outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " and deals " + damage + " points of damage. That part has " + attacked.vitalPoints[zoneToAttack[0]].toFixed(3) + " health points left.";
         }
     }
 }

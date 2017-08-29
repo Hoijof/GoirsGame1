@@ -17,6 +17,7 @@ function Entity(id, playerClass) {
         victories: 0,
         defeats: 0,
         avoidedDeath: 0,
+        coins: 0,
         experience: 1,
         nextLevel: 15
     };
@@ -84,6 +85,7 @@ Entity.prototype.init = function() {
     this.basics.victories = 0;
     this.basics.defeats = 0;
     this.basics.experience = 100;
+    this.basics.coins = this.getBaseCoins();
 
     this.attributes.strength = 1;
     this.attributes.endurance = 1;
@@ -228,11 +230,16 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
     if (isDying(this)) {
         this.basics.defeats++;
         enemy.basics.victories++;
+
         if (this.id === 0 || enemy.id === 0) {
             outputHTML += "<br>" + enemy.basics.name + " Wins.";
         }
+
         giveExperience(enemy, this, EXPERIENCE_WIN_FACTOR);
         giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR);
+
+        enemy.stealCoins(this);
+
         return "defeat";
     } else {
         if (isDying(enemy)) {
@@ -244,6 +251,9 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 
             giveExperience(this, enemy, EXPERIENCE_WIN_FACTOR);
             giveExperience(enemy, this, EXPERIENCE_LOSS_FACTOR);
+
+            this.stealCoins(enemy);
+
             return "victory";
         } else {
             if (this.id === 0 || enemy.id === 0) {
@@ -291,4 +301,19 @@ Entity.prototype.report = function() {
 
 
     outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
+};
+
+// Coins
+Entity.prototype.getBaseCoins = function() {
+  return 50;
+};
+
+Entity.prototype.stealCoins = function(objective) {
+    //base case TODO: Add concealed money.
+  this.basics.coins += objective.basics.coins;
+  objective.basics.coins = 0;
+};
+
+Entity.prototype.earnPassiveCoins = function() {
+  this.basics.coins += 5;
 };

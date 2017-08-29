@@ -34,7 +34,7 @@ World.prototype.callADay = function() {
 
     this.updatePeopleHealth();
 
-    this.givePassiveExp();
+    this.givePassives();
 
     let fightResult = this.fight(fightsToday);
 
@@ -110,9 +110,10 @@ World.prototype.fight = function(fightsToday) {
     return res;
 };
 
-World.prototype.givePassiveExp = function() {
+World.prototype.givePassives = function() {
   this.people.forEach((person) => {
       person.earnPassiveExp();
+      person.earnPassiveCoins();
   })
 };
 
