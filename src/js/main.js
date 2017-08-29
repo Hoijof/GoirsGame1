@@ -28,7 +28,7 @@ function init() {
 function tick() {
     if (ticking.active === true) {
         if (ticking.interval === null) {
-            ticking.interval = setInterval(tick, 50);
+            ticking.interval = setInterval(tick, 30);
         }
         if (ticking.percentage >= 100) {
             ticking.percentage = 0;
