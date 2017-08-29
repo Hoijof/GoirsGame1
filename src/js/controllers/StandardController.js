@@ -49,7 +49,7 @@ StandardController.prototype.updateSelectors = function (selectors) {
 };
 
 StandardController.prototype.getElementsFromForm = function (selector) {
-    var elems = {},
+    let elems = {},
         text  = "";
 
     selector.find('div').find('div').each(function() { // get all the input type data

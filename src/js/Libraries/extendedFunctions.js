@@ -5,7 +5,7 @@ function attack(attacker, attacked) {
 
     if (attacker.vitalPoints[attacker.basics.hand + "Arm"] <= 0 || (twoLegsDown)) {
 
-        if (attacker.id == 0 || attacked.id == 0) {
+        if (attacker.id === 0 || attacked.id === 0) {
             outputHTML += "<br>" + attacker.basics.name + " attacks with his bad hand.";
         }
         badHand = true;
@@ -40,13 +40,13 @@ function attack(attacker, attacked) {
 
     // damage and dodge
     damage = 0.0;
-    dodges = false;
+    let dodges = false;
 
     //chance to dodge
     legsOk = (attacked.vitalPoints.leftLeg > 0 && attacker.vitalPoints.rightLeg > 0);
 
     if (attacked.attributes.agility / attacker.attributes.agility + getRandomInt(-2, 2) > 5 && legsOk) { // TODO: take a look at it
-        if (attacker.id == 0 || attacked.id == 0) {
+        if (attacker.id === 0 || attacked.id === 0) {
             outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.";
         }
     } else {
@@ -55,7 +55,7 @@ function attack(attacker, attacked) {
         if (badHand) damage *= 0.6;
         attacked.vitalPoints[zoneToAttack[0]] -= damage;
 
-        if (attacker.id == 0 || attacked.id == 0) {
+        if (attacker.id === 0 || attacked.id === 0) {
             outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " and deals " + damage + " points of damage. That part has " + attacked.vitalPoints[zoneToAttack[0]].toFixed(3) + " health points left.";
         }
     }

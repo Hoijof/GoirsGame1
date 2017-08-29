@@ -13,7 +13,7 @@ MainController.prototype = new StandardController;
 MainController.prototype.generateViewsContent = function() {
     this.views = {
         header: function() {
-            var html = "";
+            let html = "";
             html += HtmlCreation.createElem("div", "mainDivTitle", "title", MAIN_VIEW.TITLE);
             html += HtmlCreation.createHorizontalLine("hr20px");
 
@@ -23,7 +23,7 @@ MainController.prototype.generateViewsContent = function() {
             formSubmitSelector: $("#playerFormSubmit"),
             actions: {
                 index: function(context) {
-                    var content = "",
+                    let content = "",
                         formData = "",
                         formElements = "",
                         formBlocks = "";
@@ -107,7 +107,7 @@ MainController.prototype.generateViewsContent = function() {
             },
             actions: {
                 index: function(context) {
-                    var content = "",
+                    let content = "",
                         block = "",
                         elem = "";
 
@@ -137,7 +137,7 @@ MainController.prototype.generateViewsContent = function() {
             },
             actions: {
                 index: function(context) {
-                    var content = "",
+                    let content = "",
                         block = "",
                         elem = "";
 
@@ -154,7 +154,7 @@ MainController.prototype.generateViewsContent = function() {
                 }
             },
             bind: function(context) {
-                var selectors = context.views.HistoryPlayerWakingUp.selectors;
+                let selectors = context.views.HistoryPlayerWakingUp.selectors;
                 context.updateSelectors(context.views.HistoryPlayerWakingUp.selectors);
                 selectors.historyButtonKeepGoing.on("click", function() {
                     context.activeView = "historyButtonKeepGoingTown01";
@@ -172,7 +172,7 @@ MainController.prototype.generateViewsContent = function() {
             },
             actions: {
                 index: function(context) {
-                    var content = "",
+                    let content = "",
                         block = "",
                         elem = "";
 
@@ -188,11 +188,11 @@ MainController.prototype.generateViewsContent = function() {
                 }
             },
             bind: function(context) {
-                var selectors = context.views.historyButtonEnterTown01.selectors;
+                let selectors = context.views.historyButtonEnterTown01.selectors;
                 context.updateSelectors(context.views.historyButtonEnterTown01.selectors);
 
                 selectors.fight.on("click", function() {
-                    var enemy = new Entity(world.getLastId());
+                    let enemy = new Entity(world.getLastId());
                     player.fightAgainstEntity(enemy);
                     engine.showToast(outputHTML);
                 });
@@ -202,7 +202,7 @@ MainController.prototype.generateViewsContent = function() {
             selectors: {},
             actions: {
                 index: function(context) {
-                    var content = "",
+                    let content = "",
                         block = "",
                         elem = "";
 
@@ -227,7 +227,7 @@ MainController.prototype.generateViewsContent = function() {
 };
 
 MainController.prototype.checkNewPlayerForm = function() {
-    var params = this.getElementsFromForm($("#playerFormFields"));
+    let params = this.getElementsFromForm($("#playerFormFields"));
 
     player = new Entity(0, params.class);
     world.addPerson(player);

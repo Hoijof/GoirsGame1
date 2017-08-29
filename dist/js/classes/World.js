@@ -17,7 +17,7 @@ function World() {
 
     this.lastId = 0;
 
-    for (var i = 1; i < this.standard.population; i++) {
+    for (let i = 1; i < this.standard.population; i++) {
         this.addPerson(new Entity(i));
     }
 }
@@ -128,7 +128,7 @@ World.prototype.birthPeople = function() {
 };
 
 World.prototype.updatePeopleHealth = function() {
-    for (var i = 0; i < this.people.length; i++) {
+    for (let i = 0; i < this.people.length; i++) {
         dailyHealingEntity(this.people[i]);
     }
 };
@@ -152,15 +152,15 @@ World.prototype.getPersonById = function(id) {
 
 World.prototype.getRandomPerson = function(reference) {
     if (this.people.length < 2) return false;
-    var maxIterations = MAX_ITERATIONS;
+    let maxIterations = MAX_ITERATIONS;
     while (maxIterations > 0) {
         maxIterations--;
-        var person = this.people[getRandomInt(0, this.people.size())];
+        let person = this.people[getRandomInt(0, this.people.size())];
         if (person === undefined) continue;
 
-        var repeated = false;
+        let repeated = false;
         if (reference !== undefined) {
-            for (var i = 0; i < reference.length; ++i) {
+            for (let i = 0; i < reference.length; ++i) {
                 if (person.id === reference[i].id) repeated = true;
             }
         }
@@ -172,9 +172,9 @@ World.prototype.getRandomPerson = function(reference) {
 };
 
 World.prototype.refreshPeople = function() {
-    var peopleAux = [];
-    var iAux = 0;
-    for (var i = 0; i < this.people.length; i++) {
+    let peopleAux = [];
+    let iAux = 0;
+    for (let i = 0; i < this.people.length; i++) {
         if (this.people[i] !== undefined) {
             peopleAux[iAux] = this.people[i];
             peopleAux[iAux].id = iAux++;

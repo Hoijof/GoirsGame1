@@ -47,10 +47,8 @@ function Entity(id, playerClass) {
 
 Entity.prototype.getPointsFree = function() {
     //console.log("entering with id : " + this.id);
-    // var pointsFree = (Math.floor(this.basics.experience / EXPERIENCE_FACTOR) - this.basics.level) > 0 ? (Math.floor(this.basics.experience / EXPERIENCE_FACTOR) - this.basics.level) : 0;
-    var pointsFree = 0;
-    var temporalLevelUp = this.basics.nextLevel;
-    //console.log(this.id);
+    let pointsFree = 0;
+    let temporalLevelUp = this.basics.nextLevel;
     //if(this.id == 0)console.log("Experience : " + this.basics.experience);
     while (Math.floor(this.basics.experience) >= temporalLevelUp) {
         //if(this.id==0)console.log(temporalLevelUp);
@@ -136,7 +134,7 @@ Entity.prototype.setAllStatsToValue = function(value) {
     this.attributes.faith = value;
 };
 Entity.prototype.generateStat = function(stat) {
-    var result;
+    let result;
 
     switch (stat) {
         case "strength":
@@ -184,15 +182,15 @@ Entity.prototype.generateStat = function(stat) {
 Entity.prototype.addPointsToAttribute = function(points, attribute) {
     if (this.attributes[attribute] + points <= MAX_ATTRIBUTE_LEVEL && this.attributes[attribute] + points >= 0) {
         this.attributes[attribute] += points;
-        for (var i = 0; i < points; ++i) this.levelUp();
+        for (let i = 0; i < points; ++i) this.levelUp();
         this.basics.level += points;
     }
 };
 
 Entity.prototype.fightAgainstEntity = function(enemy) {
-    var timesFirst = 0;
-    var timesSecond = 0;
-    var turns = 0;
+    let timesFirst = 0;
+    let timesSecond = 0;
+    let turns = 0;
 
     if (this.id === 0 || enemy.id === 0) {
         outputHTML += "<br>" + "A fight between ---- " + this.id + this.basics.name + " ---- and ----- " + enemy.id + enemy.basics.name + " ----- is going to start";
@@ -201,7 +199,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
     }
 
     while (!isDying(this) && !isDying(enemy) && turns < MAX_BATTLE_TURNS) {
-        var attacker, attacked;
+        let attacker, attacked;
         if (attackingFirstCheck(this, enemy)) { // Check who attacks first
             attacker = this;
             attacked = enemy;
@@ -264,13 +262,13 @@ Entity.prototype.earnPassiveExp = function() {
 };
 
 Entity.prototype.levelUpAsType = function(type) {
-    for (var i = 0; i < FIGHTER_TYPES[type].length; i++) {
+    for (let i = 0; i < FIGHTER_TYPES[type].length; i++) {
         outputHTML += "<br>" + FIGHTER_TYPES[i];
     }
 };
 
 Entity.prototype.report = function() {
-    var basePercentages = WARRIOR_TYPES[this.basics.class],
+    let basePercentages = WARRIOR_TYPES[this.basics.class],
         percentages = calculatePercentages(this, basePercentages),
         i;
 

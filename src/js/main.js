@@ -1,12 +1,12 @@
 var settings = {
-    autoLevelUp : true
+    autoLevelUp: true
 };
 
-var world   = new World(),
-    player  = new Entity(0),
-    engine  = new Engine(world, player),
+var world = new World(),
+    player = new Entity(0),
+    engine = new Engine(world, player),
     terminal,
-    ticking = {active : false, percentage : 0, interval : null},
+    ticking = {active: false, percentage: 0, interval: null},
     playerDeadNotified = false,
     outputHTML = "",
     view = null;
@@ -28,7 +28,7 @@ function init() {
 function tick() {
     if (ticking.active === true) {
         if (ticking.interval === null) {
-            ticking.interval = setInterval(tick, 10);
+            ticking.interval = setInterval(tick, 50);
         }
         if (ticking.percentage >= 100) {
             ticking.percentage = 0;
@@ -51,7 +51,7 @@ function tick() {
     }
 }
 
-$(document).ready(function(){
+$(document).ready(function() {
     view = new MainController($("#mainView"));
     view.activeView = 'generateNewPlayerForm';
     engine.jqSelToast = $("#toastMessage");
