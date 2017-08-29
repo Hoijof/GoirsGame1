@@ -288,7 +288,7 @@ Entity.prototype.report = function() {
     $.each(this.basics, function(key, val) {
         outputHTML += "<br>" + key + " = " + val;
     });
-    outputHTML += "<br>" + "---- ATTRIBUTES REPORT ----";
+    /*outputHTML += "<br>" + "---- ATTRIBUTES REPORT ----";
     $.each(this.attributes, function(key, val) {
         outputHTML += "<br>" + key + " = " + val;
     });
@@ -297,10 +297,10 @@ Entity.prototype.report = function() {
     outputHTML += "<br>" + "PERCENTAGES";
     for (i = 0; i < basePercentages.length; ++i) {
         outputHTML += "<br>" + String(basePercentages[i] - percentages[i]);
-    }
+    }*/
 
 
-    outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
+    // outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
 };
 
 // Coins

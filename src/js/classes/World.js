@@ -27,7 +27,7 @@ World.prototype.callADay = function() {
 
     this.standard.day++;
 
-    const fightsToday = getRandomInt(1, (this.standard.population / 2) * WORLD_FIGHT_FACTOR);
+    const fightsToday = getRandomInt(this.standard.population * 0.1, (this.standard.population / 2) * WORLD_FIGHT_FACTOR);
 
     outputHTML += fightsToday + " fights to be done";
 

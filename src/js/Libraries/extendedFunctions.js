@@ -48,14 +48,15 @@ function attack(attacker, attacked) {
 
     if (attacked.attributes.agility / attacker.attributes.agility + getRandomInt(-2, 2) > 5 && legsOk) { // TODO: take a look at it
         if (attacker.id === 0 || attacked.id === 0) {
-            outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.";
+            // outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.";
+            totals.dodges++;
         }
     } else {
         damage = ((((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10))) * getRandom(0.8, 1.1)).toFixed(3);
         if (damage < 0) damage = 0;
         if (badHand) damage *= 0.6;
         attacked.vitalPoints[zoneToAttack[0]] -= damage;
-
+        totals.attacks++;
         if (attacker.id === 0 || attacked.id === 0) {
             // outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " and deals " + damage + " points of damage. That part has " + attacked.vitalPoints[zoneToAttack[0]].toFixed(3) + " health points left.";
         }
@@ -75,7 +76,15 @@ function survivalCheck(entity) {
         check += 10;
     }
 
-    return isAppening(check);
+    let res = isAppening(check);
+
+    if (res) {
+        totals.survivals++;
+    } else {
+        totals.deaths++;
+    }
+
+    return res;
 }
 
 function isDying(entity) {
