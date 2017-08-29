@@ -11,9 +11,6 @@ var world = new World(),
     outputHTML = "",
     view = null;
 
-
-// player.basics.name    = "Humbertiño";
-// player.basics.surname = "Golpeiño :D";
 world.addPerson(player);
 world.player = player;
 
@@ -28,7 +25,7 @@ function init() {
 function tick() {
     if (ticking.active === true) {
         if (ticking.interval === null) {
-            ticking.interval = setInterval(tick, 50);
+            ticking.interval = setInterval(tick, 30);
         }
         if (ticking.percentage >= 100) {
             ticking.percentage = 0;

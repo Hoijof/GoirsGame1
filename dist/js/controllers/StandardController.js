@@ -1,38 +1,44 @@
-function StandardController (jqSel) {
+function StandardController(jqSel) {
 
-    this.html       = "";
-    this.header     = true;
-    this.jqSel      = jqSel;
+    this.html = "";
+    this.header = true;
+    this.jqSel = jqSel;
     this.activeView = null;
-    this.action     = 'index';
+    this.action = 'index';
 }
 
-StandardController.prototype.setJqSel = function (jqSel){
+StandardController.prototype.setJqSel = function(jqSel) {
     this.jqSel = jqSel;
 
     return true;
 };
 
-StandardController.prototype.getJqSel = function () {
+StandardController.prototype.getJqSel = function() {
     return this.jqSel;
 };
 
-StandardController.prototype.getVersion = function () {
+StandardController.prototype.getVersion = function() {
     return this.version;
 };
 
-StandardController.prototype.refresh = function () {
-  this.jqSel.html(this.html);
+StandardController.prototype.refresh = function() {
+    let result = this.views[this.activeView].update && this.views[this.activeView].update(this);
+
+    if (typeof result !== 'undefined') {
+        this.html = result;
+    }
+
+    this.jqSel.html(this.html);
 };
 
-StandardController.prototype.bind = function () {
+StandardController.prototype.bind = function() {
     this.views[this.activeView].bind();
 };
 
-StandardController.prototype.showContent = function () {
+StandardController.prototype.showContent = function() {
     this.html = "";
 
-    if(this.header) this.html += this.views.header();
+    if (this.header) this.html += this.views.header();
 
     this.html += this.views[this.activeView].actions[this.action]();
     this.refresh();
@@ -42,35 +48,35 @@ StandardController.prototype.showContent = function () {
     outputHTML = "";
 };
 
-StandardController.prototype.updateSelectors = function (selectors) {
+StandardController.prototype.updateSelectors = function(selectors) {
     $.each(selectors, function(key, value) {
         selectors[key] = value.refresh();
     });
 };
 
-StandardController.prototype.getElementsFromForm = function (selector) {
+StandardController.prototype.getElementsFromForm = function(selector) {
     let elems = {},
-        text  = "";
+        text = "";
 
     selector.find('div').find('div').each(function() { // get all the input type data
-        $(this).find('input').each(function(){
+        $(this).find('input').each(function() {
             if ($(this).attr("type") === 'radio') {
                 if (this.checked === true) {
                     text = $(this).parent().find('label').html();
-                    if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0,text.length-2)]] = $(this).val();
+                    if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
                 } else {
 
                 }
             } else {
                 text = $(this).parent().find('label').html();
-                if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0,text.length-2)]] = $(this).val();
+                if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
             }
         });
     });
 
     selector.find(':selected').each(function() {
         text = $(this).parent().parent().find('label').html();
-        if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0,text.length-2)]] = EQUIVALENCES.PLAYER_FORM[$(this).text()];
+        if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = EQUIVALENCES.PLAYER_FORM[$(this).text()];
     });
 
     return elems;

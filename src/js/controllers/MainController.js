@@ -99,6 +99,11 @@ MainController.prototype.generateViewsContent = function() {
             },
             bind: function(context) {
 
+            },
+            update: function(context) {
+                if (outputHTML !== "") {
+                    return outputHTML;
+                }
             }
         },
         startHistory: {

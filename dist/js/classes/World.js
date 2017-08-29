@@ -117,7 +117,7 @@ World.prototype.givePassiveExp = function() {
 };
 
 World.prototype.birthPeople = function() {
-    let birthsToday = getRandomInt(0, (this.standard.population / 2) * WORLD_BIRTH_FACTOR);
+    let birthsToday = getRandomInt(0, Math.floor(this.standard.population / 2) * WORLD_BIRTH_FACTOR);
 
     this.standard.birthsToday = birthsToday;
     this.standard.births += birthsToday;

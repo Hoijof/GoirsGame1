@@ -30,7 +30,7 @@ $(document).ready(function() {
         Math.seedrandom();
         ticking.active = !ticking.active;
         tick();
-        engine.update();
+        // engine.update();
     });
 
     $("#rollPlayer").on("click", function() {

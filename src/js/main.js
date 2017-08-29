@@ -11,9 +11,6 @@ var world = new World(),
     outputHTML = "",
     view = null;
 
-
-// player.basics.name    = "Humbertiño";
-// player.basics.surname = "Golpeiño :D";
 world.addPerson(player);
 world.player = player;
 
