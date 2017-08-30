@@ -37,7 +37,7 @@ World.prototype.callADay = function() {
 
     this.standard.day++;
 
-    const fightsToday = gf.getRandomInt((this.standard.population/2) * 0.05, (this.standard.population / 2) * BASICS.WORLD_FIGHT_FACTOR);
+    const fightsToday = gf.getRandomInt((this.standard.population / 2) * 0.05, (this.standard.population / 2) * BASICS.WORLD_FIGHT_FACTOR);
 
     gg.outputHTML += fightsToday + " fights to be done";
 
@@ -61,7 +61,7 @@ World.prototype.callADay = function() {
     this.standard.populationChange = this.people.size() - this.standard.population;
 
     // REPORTING
-    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    // window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
 
     this.standard.population = this.people.length = this.people.size();
 

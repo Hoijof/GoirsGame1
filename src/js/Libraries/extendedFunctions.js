@@ -95,7 +95,7 @@ function isDying(entity) {
 }
 
 function dailyHealingEntity(entity) {
-    let toHeal = (entity.attributes.endurance * 0.15 + entity.attributes.stamina * 0.15 + entity.attributes.willpower * 0.4 + entity.attributes.faith * 0.2) / 2;
+    let toHeal = (entity.attributes.endurance * 0.2 + entity.attributes.stamina * 0.2 + entity.attributes.willpower * 0.5 + entity.attributes.faith * 0.5) / 2;
     for (let part in entity.vitalPoints) {
         entity.vitalPoints[part] += toHeal;
         if (entity.vitalPoints[part] > BASICS.MAX_ENTITY_HEALTH) entity.vitalPoints[part] = BASICS.MAX_ENTITY_HEALTH;

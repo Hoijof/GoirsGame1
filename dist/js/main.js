@@ -8,7 +8,9 @@ gg.totals = {
 };
 
 gg.settings = {
-    autoLevelUp: true
+    autoLevelUp: true,
+    tickingInterval: 30,
+    tickingIncrement: 2
 };
 
 window.stats = [];
@@ -53,7 +55,7 @@ gg.initGameUI = function init() {
 gg.tick = function tick() {
     if (gg.ticking.active === true) {
         if (gg.ticking.interval === null) {
-            gg.ticking.interval = setInterval(tick, 30);
+            gg.ticking.interval = setInterval(tick, gg.settings.tickingInterval);
         }
         if (gg.ticking.percentage >= 100) {
             gg.ticking.percentage = 0;
@@ -61,7 +63,7 @@ gg.tick = function tick() {
             gg.world.callADay();
             gg.engine.update();
         } else {
-            gg.ticking.percentage += 3;
+            gg.ticking.percentage += gg.settings.tickingIncrement;
         }
         $("#dayBar").css("width", gg.ticking.percentage + "%");
 
@@ -95,4 +97,5 @@ window.downloadCSV = function downloadCSV(stats) {
 
     let encodedUri = encodeURI(res);
     window.open(encodedUri);
-}
+    return encodedUri;
+};

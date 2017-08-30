@@ -144,7 +144,7 @@ function isDying(entity) {
 }
 
 function dailyHealingEntity(entity) {
-    var toHeal = (entity.attributes.endurance * 0.15 + entity.attributes.stamina * 0.15 + entity.attributes.willpower * 0.4 + entity.attributes.faith * 0.2) / 2;
+    var toHeal = (entity.attributes.endurance * 0.2 + entity.attributes.stamina * 0.2 + entity.attributes.willpower * 0.5 + entity.attributes.faith * 0.5) / 2;
     for (var part in entity.vitalPoints) {
         entity.vitalPoints[part] += toHeal;
         if (entity.vitalPoints[part] > _constants.BASICS.MAX_ENTITY_HEALTH) entity.vitalPoints[part] = _constants.BASICS.MAX_ENTITY_HEALTH;
@@ -760,7 +760,7 @@ Entity.prototype.report = function () {
         gg.outputHTML += "<br>" + key + " = " + val;
     });
     gg.outputHTML += "<br>" + "End of Attributes Report";
-     gg.outputHTML += "<br>" + "PERCENTAGES";
+      gg.outputHTML += "<br>" + "PERCENTAGES";
     for (i = 0; i < basePercentages.length; ++i) {
         gg.outputHTML += "<br>" + String(basePercentages[i] - percentages[i]);
     }*/
@@ -1073,9 +1073,9 @@ Object.defineProperty(exports, "__esModule", {
 var BASICS = exports.BASICS = {
     MAX_ENTITY_HEALTH: 100,
 
-    WORLD_FIGHT_FACTOR: 0.3,
-    WORLD_BIRTH_FACTOR: 0.15,
-    MAX_BATTLE_TURNS: 100,
+    WORLD_FIGHT_FACTOR: 0.35,
+    WORLD_BIRTH_FACTOR: 0.10,
+    MAX_BATTLE_TURNS: 50,
     MAX_ITERATIONS: 30,
     REFRESH_COUNTER: 3,
 
@@ -1753,7 +1753,9 @@ gg.totals = {
 };
 
 gg.settings = {
-    autoLevelUp: true
+    autoLevelUp: true,
+    tickingInterval: 30,
+    tickingIncrement: 2
 };
 
 window.stats = [];
@@ -1795,7 +1797,7 @@ gg.initGameUI = function init() {
 gg.tick = function tick() {
     if (gg.ticking.active === true) {
         if (gg.ticking.interval === null) {
-            gg.ticking.interval = setInterval(tick, 30);
+            gg.ticking.interval = setInterval(tick, gg.settings.tickingInterval);
         }
         if (gg.ticking.percentage >= 100) {
             gg.ticking.percentage = 0;
@@ -1803,7 +1805,7 @@ gg.tick = function tick() {
             gg.world.callADay();
             gg.engine.update();
         } else {
-            gg.ticking.percentage += 3;
+            gg.ticking.percentage += gg.settings.tickingIncrement;
         }
         $("#dayBar").css("width", gg.ticking.percentage + "%");
 
@@ -1837,6 +1839,7 @@ window.downloadCSV = function downloadCSV(stats) {
 
     var encodedUri = encodeURI(res);
     window.open(encodedUri);
+    return encodedUri;
 };
 
 },{"./bindings":4,"./classes/Entity":5,"./classes/World":8,"./controllers/MainController":10,"./engine":12}]},{},[13]);
