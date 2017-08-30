@@ -11,8 +11,6 @@ gg.settings = {
     autoLevelUp: true
 };
 // Libraries
-import './Libraries/HtmlCreation';
-import './Libraries/jqueryFunctions';
 // CLASSES
 import World from './classes/World';
 import Entity from './classes/Entity';

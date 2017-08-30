@@ -1,4 +1,4 @@
-import {BASICS, MAIN_VIEW, WARRIOR_TYPES} from '../constants';
+import {MAIN_VIEW, TRANSLATIONS, WARRIOR_TYPES} from '../constants';
 
 import StandardController from './StandardController';
 import HtmlCreation from '../Libraries/HtmlCreation';
@@ -53,16 +53,16 @@ MainController.prototype.generateViewsContent = function() {
                     formElements = "";
 
                     formData += HtmlCreation.createElem("label", "", "playerFormLabel", MAIN_VIEW.PLAYER_FORM.HAND + ": ", "for='IPlayerFormPlayerHand'");
-                    formData += HtmlCreation.createElem("input", "", "", BASICS.LEFT, "type='radio' value='left' name ='hand' checked='checked'");
-                    formData += HtmlCreation.createElem("input", "", "", BASICS.RIGHT, "type='radio' value='right' name ='hand'");
+                    formData += HtmlCreation.createElem("input", "", "", TRANSLATIONS.LEFT, "type='radio' value='left' name ='hand' checked='checked'");
+                    formData += HtmlCreation.createElem("input", "", "", TRANSLATIONS.RIGHT, "type='radio' value='right' name ='hand'");
                     formElements += HtmlCreation.createElem("div", "playerFormPlayerHand", "playerFormElement", formData);
                     formData = "";
                     formBlocks += HtmlCreation.createElem("div", "playerFormHandBlock", "playerFormBlock", formElements); //   hand
                     formElements = "";
 
                     formData += HtmlCreation.createElem("label", "", "playerFormLabel", MAIN_VIEW.PLAYER_FORM.SEX + ": ", "for='IPlayerFormPlayerSex'");
-                    formData += HtmlCreation.createElem("input", "", "", BASICS.MALE, "type='radio' value='male' name ='sex' checked='checked'");
-                    formData += HtmlCreation.createElem("input", "", "", BASICS.FEMALE, "type='radio' value='female' name ='sex'");
+                    formData += HtmlCreation.createElem("input", "", "", TRANSLATIONS.MALE, "type='radio' value='male' name ='sex' checked='checked'");
+                    formData += HtmlCreation.createElem("input", "", "", TRANSLATIONS.FEMALE, "type='radio' value='female' name ='sex'");
                     formElements += HtmlCreation.createElem("div", "playerFormPlayerSex", "playerFormElement", formData);
                     formData = "";
                     formBlocks += HtmlCreation.createElem("div", "playerFormSexBlock", "playerFormBlock", formElements); //   hand

@@ -262,7 +262,7 @@ exports.default = {
     survivalCheck: survivalCheck
 };
 
-},{"../constants":10,"./genericFunctions":3}],3:[function(require,module,exports){
+},{"../constants":9,"./genericFunctions":3}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -377,25 +377,7 @@ exports.default = {
     getKeyFromNumber: getKeyFromNumber
 };
 
-},{"../constants":10}],4:[function(require,module,exports){
-"use strict";
-
-jQuery.fn.center = function (parent) {
-    if (parent) {
-        parent = this.parent();
-    } else {
-        parent = window;
-    }
-    this.css({
-        "position": "absolute",
-        "top": ($(parent).height() - this.outerHeight()) / 2 + $(parent).scrollTop() + "px",
-        "left": ($(parent).width() - this.outerWidth()) / 2 + $(parent).scrollLeft() + "px"
-    });
-
-    return this;
-};
-
-},{}],5:[function(require,module,exports){
+},{"../constants":9}],4:[function(require,module,exports){
 "use strict";
 
 var _Entity = require("./classes/Entity");
@@ -463,7 +445,7 @@ $(document).ready(function () {
      * Created by humberto.gomez on 25/06/2014.
      */
 
-},{"./classes/Entity":6}],6:[function(require,module,exports){
+},{"./classes/Entity":5}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -803,7 +785,7 @@ Entity.prototype.earnPassiveCoins = function () {
 
 exports.default = Entity;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants":10}],7:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants":9}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -813,7 +795,7 @@ var Quest = {};
 
 exports.default = Quest;
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -848,7 +830,7 @@ var QuestManager = {
 
 exports.default = QuestManager;
 
-},{"./Quest":7}],9:[function(require,module,exports){
+},{"./Quest":6}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1074,7 +1056,7 @@ World.prototype.giveQuestToEntity = function (entity) {
 
 exports.default = World;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants":10,"./Entity":6,"./QuestManager":8}],10:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants":9,"./Entity":5,"./QuestManager":7}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1175,7 +1157,7 @@ var TRANSLATIONS = exports.TRANSLATIONS = {
     FEMALE: "Female"
 };
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1247,16 +1229,16 @@ MainController.prototype.generateViewsContent = function () {
                     formElements = "";
 
                     formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.HAND + ": ", "for='IPlayerFormPlayerHand'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.BASICS.LEFT, "type='radio' value='left' name ='hand' checked='checked'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.BASICS.RIGHT, "type='radio' value='right' name ='hand'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.TRANSLATIONS.LEFT, "type='radio' value='left' name ='hand' checked='checked'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.TRANSLATIONS.RIGHT, "type='radio' value='right' name ='hand'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerHand", "playerFormElement", formData);
                     formData = "";
                     formBlocks += _HtmlCreation2.default.createElem("div", "playerFormHandBlock", "playerFormBlock", formElements); //   hand
                     formElements = "";
 
                     formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.SEX + ": ", "for='IPlayerFormPlayerSex'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.BASICS.MALE, "type='radio' value='male' name ='sex' checked='checked'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.BASICS.FEMALE, "type='radio' value='female' name ='sex'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.TRANSLATIONS.MALE, "type='radio' value='male' name ='sex' checked='checked'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.TRANSLATIONS.FEMALE, "type='radio' value='female' name ='sex'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerSex", "playerFormElement", formData);
                     formData = "";
                     formBlocks += _HtmlCreation2.default.createElem("div", "playerFormSexBlock", "playerFormBlock", formElements); //   hand
@@ -1447,7 +1429,7 @@ MainController.prototype.generateTopBar = function () {};
 
 exports.default = MainController;
 
-},{"../Libraries/HtmlCreation":1,"../classes/Entity":6,"../constants":10,"./StandardController":12}],12:[function(require,module,exports){
+},{"../Libraries/HtmlCreation":1,"../classes/Entity":5,"../constants":9,"./StandardController":11}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1543,7 +1525,7 @@ StandardController.version = "0.0.1";
 
 exports.default = StandardController;
 
-},{"../constants":10}],13:[function(require,module,exports){
+},{"../constants":9}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1729,12 +1711,8 @@ Engine.prototype.showToast = function (message) {
 
 exports.default = Engine;
 
-},{"./constants":10,"./controllers/MainController":11}],14:[function(require,module,exports){
+},{"./constants":9,"./controllers/MainController":10}],13:[function(require,module,exports){
 'use strict';
-
-require('./Libraries/HtmlCreation');
-
-require('./Libraries/jqueryFunctions');
 
 var _World = require('./classes/World');
 
@@ -1768,15 +1746,10 @@ gg.totals = {
 gg.settings = {
     autoLevelUp: true
 };
-
 // Libraries
-
-
 // CLASSES
 
-
 // CONTROLLERS
-
 
 // BINDINGS
 
@@ -1835,4 +1808,4 @@ gg.tick = function tick() {
     }
 };
 
-},{"./Libraries/HtmlCreation":1,"./Libraries/jqueryFunctions":4,"./bindings":5,"./classes/Entity":6,"./classes/World":9,"./controllers/MainController":11,"./engine":13}]},{},[14]);
+},{"./bindings":4,"./classes/Entity":5,"./classes/World":8,"./controllers/MainController":10,"./engine":12}]},{},[13]);

@@ -10,20 +10,14 @@ gg.totals = {
 gg.settings = {
     autoLevelUp: true
 };
-
 // Libraries
-import './Libraries/HtmlCreation';
-import './Libraries/jqueryFunctions';
-
 // CLASSES
 import World from './classes/World';
 import Entity from './classes/Entity';
 
 import Engine from './engine';
-
 // CONTROLLERS
 import MainController from './controllers/MainController';
-
 // BINDINGS
 import './bindings';
 
