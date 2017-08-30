@@ -1,3 +1,5 @@
+import MainController from './controllers/MainController';
+
 function Engine(world, player) {
     this.world = world;
     this.player = player;
@@ -24,22 +26,22 @@ Engine.prototype.updatePlayerInfo = function() {
     });
 
     selector.html("");
-    for (let stat in player.basics) {
-        html = ("<td>" + stat.charAt(0).toUpperCase() + stat.slice(1) + "</td>");
+    for (let stat in gg.player.basics) {
+        html = (`<td>${stat.charAt(0).toUpperCase()}${stat.slice(1)}</td>`);
 
-        if (typeof player.basics[stat] === 'number') {
-            html += ("<td>" + parseInt(player.basics[stat]) + "</td>");
+        if (typeof gg.player.basics[stat] === 'number') {
+            html += (`<td>${parseInt(gg.player.basics[stat])}</td>`);
 
-            if (player.basics[stat] < before[stat]) {
+            if (gg.player.basics[stat] < before[stat]) {
                 selector.append("<tr class='decreased'>" + html + "</tr>");
-            } else if (player.basics[stat] > before[stat] && typeof player.basics[stat] === 'number') {
+            } else if (gg.player.basics[stat] > before[stat] && typeof gg.player.basics[stat] === 'number') {
                 selector.append("<tr class='increased'>" + html + "</tr>");
             } else {
                 selector.append("<tr class='normal'>" + html + "</tr>");
             }
         } else {
-            html += ("<td>" + player.basics[stat] + "</td>");
-            if (String(player.basics[stat]) != before[stat]) {
+            html += ("<td>" + gg.player.basics[stat] + "</td>");
+            if (String(gg.player.basics[stat]) !== before[stat]) {
                 selector.append("<tr class='increased'>" + html + "</tr>");
             } else {
                 selector.append("<tr class='normal'>" + html + "</tr>");
@@ -48,7 +50,7 @@ Engine.prototype.updatePlayerInfo = function() {
     }
 
     selector = $("#playerStats");
-    let pointsFree = player.getPointsFree();
+    let pointsFree = gg.player.getPointsFree();
 
     if (pointsFree > 0) $("#headerStats").html(PLAYER_BASICS + " <span style='color:green;'>+" + pointsFree + "</span>");
     else $("#headerStats").html(PLAYER_BASICS);
@@ -61,14 +63,14 @@ Engine.prototype.updatePlayerInfo = function() {
     });
 
     selector.html("");
-    for (stat in player.attributes) {
+    for (let stat in gg.player.attributes) {
         html = ("<td>" + stat.charAt(0).toUpperCase() + stat.slice(1) + "</td>");
-        html += ("<td>" + parseInt(player.attributes[stat]) + "</td>");
+        html += ("<td>" + parseInt(gg.player.attributes[stat]) + "</td>");
         if (pointsFree) html += ("<td class='addPoint'>+</td>");
 
-        if (player.attributes[stat] < before[stat]) {
+        if (gg.player.attributes[stat] < before[stat]) {
             selector.append("<tr class='decreased'>" + html + "</tr>");
-        } else if (player.attributes[stat] > before[stat]) {
+        } else if (gg.player.attributes[stat] > before[stat]) {
             selector.append("<tr class='increased'>" + html + "</tr>");
         } else {
             selector.append("<tr class='normal'>" + html + "</tr>");
@@ -85,13 +87,13 @@ Engine.prototype.updatePlayerInfo = function() {
     });
 
     selector.html("");
-    for (stat in player.vitalPoints) {
+    for (let stat in gg.player.vitalPoints) {
         html = ("<td>" + stat.charAt(0).toUpperCase() + stat.slice(1) + "</td>");
-        html += ("<td>" + parseInt(player.vitalPoints[stat]) + "</td>");
+        html += ("<td>" + parseInt(gg.player.vitalPoints[stat]) + "</td>");
 
-        if (player.vitalPoints[stat] < before[stat]) {
+        if (gg.player.vitalPoints[stat] < before[stat]) {
             selector.append("<tr class='decreased'>" + html + "</tr>");
-        } else if (player.vitalPoints[stat] > before[stat]) {
+        } else if (gg.player.vitalPoints[stat] > before[stat]) {
             selector.append("<tr class='increased'>" + html + "</tr>");
         } else {
             selector.append("<tr class='normal'>" + html + "</tr>");
@@ -112,13 +114,13 @@ Engine.prototype.updateWorldInfo = function() {
     });
 
     selector.html("");
-    for (let stat in world.standard) {
+    for (let stat in gg.world.standard) {
         html = ("<td>" + stat.charAt(0).toUpperCase() + stat.slice(1) + "</td>");
-        html += ("<td>" + world.standard[stat] + "</td>");
+        html += ("<td>" + gg.world.standard[stat] + "</td>");
 
-        if (world.standard[stat] < before[stat]) {
+        if (gg.world.standard[stat] < before[stat]) {
             selector.append("<tr class='decreased'>" + html + "</tr>");
-        } else if (world.standard[stat] > before[stat]) {
+        } else if (gg.world.standard[stat] > before[stat]) {
             selector.append("<tr class='increased'>" + html + "</tr>");
         } else {
             selector.append("<tr class='normal'>" + html + "</tr>");
@@ -151,20 +153,22 @@ Engine.prototype.showPlayerActions = function() {
 };
 
 Engine.prototype.updateMainInfo = function() {
-    if (view === null) {
-        $("#mainView").html(outputHTML);
+    if (MainController.view === null) {
+        $("#mainView").html(gg.outputHTML);
     } else {
-        view.showContent();
+        MainController.view.showContent();
     }
 };
 
 Engine.prototype.hideToast = function() {
-    engine.jqSelToast.fadeOut();
+    gg.engine.jqSelToast.fadeOut();
 };
 
 Engine.prototype.showToast = function(message) {
     this.jqSelToast.html(message);
     this.jqSelToast.center().fadeIn();
     let timeout = message.split(" ").length * 260;
-    setTimeout(engine.hideToast, timeout < 8000 ? timeout : 8000);
+    setTimeout(gg.engine.hideToast, timeout < 8000 ? timeout : 8000);
 };
+
+export default Engine;

@@ -25,3 +25,5 @@ HtmlCreation.createListFromObject = function(object, listId, listClass, translat
 
     return html + "</select>";
 };
+
+export default HtmlCreation;

@@ -43,9 +43,9 @@ StandardController.prototype.showContent = function() {
     this.html += this.views[this.activeView].actions[this.action]();
     this.refresh();
     this.views[this.activeView].bind(this);
-    // engine.updatePlayerInfo();
-    // engine.updateWorldInfo();
-    outputHTML = "";
+    // gg.engine.updatePlayerInfo();
+    // gg.engine.updateWorldInfo();
+    gg.outputHTML = "";
 };
 
 StandardController.prototype.updateSelectors = function(selectors) {
@@ -83,3 +83,5 @@ StandardController.prototype.getElementsFromForm = function(selector) {
 };
 
 StandardController.version = "0.0.1";
+
+export default StandardController;

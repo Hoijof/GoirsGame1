@@ -1,3 +1,7 @@
+import StandardController from './StandardController';
+import HtmlCreation from '../Libraries/HtmlCreation';
+import Entity from '../classes/Entity';
+
 function MainController(jqSel) {
     this.name = "MainController";
 
@@ -79,9 +83,9 @@ MainController.prototype.generateViewsContent = function() {
                 context.views.generateNewPlayerForm.formSubmitSelector = context.views.generateNewPlayerForm.formSubmitSelector.refresh();
                 context.views.generateNewPlayerForm.formSubmitSelector.on("click", function() {
                     if (context.checkNewPlayerForm()) {
-                        engine.showPlayerBar();
-                        engine.showWorldBar();
-                        engine.showPlayerActions();
+                        gg.engine.showPlayerBar();
+                        gg.engine.showWorldBar();
+                        gg.engine.showPlayerActions();
                         context.activeView = "defaultWorld";
                         context.showContent();
                     } else {
@@ -101,8 +105,8 @@ MainController.prototype.generateViewsContent = function() {
 
             },
             update: function(context) {
-                if (outputHTML !== "") {
-                    return outputHTML;
+                if (gg.outputHTML !== "") {
+                    return gg.outputHTML;
                 }
             }
         },
@@ -197,9 +201,9 @@ MainController.prototype.generateViewsContent = function() {
                 context.updateSelectors(context.views.historyButtonEnterTown01.selectors);
 
                 selectors.fight.on("click", function() {
-                    let enemy = new Entity(world.getLastId());
-                    player.fightAgainstEntity(enemy);
-                    engine.showToast(outputHTML);
+                    let enemy = new Entity(gg.world.getLastId());
+                    gg.player.fightAgainstEntity(enemy);
+                    gg.engine.showToast(gg.outputHTML);
                 });
             }
         },
@@ -234,11 +238,11 @@ MainController.prototype.generateViewsContent = function() {
 MainController.prototype.checkNewPlayerForm = function() {
     let params = this.getElementsFromForm($("#playerFormFields"));
 
-    player = new Entity(0, params.class);
-    world.addPerson(player);
+    gg.player = new Entity(0, params.class);
+    gg.world.addPerson(gg.player);
 
     $.each(params, function(key, value) {
-        player.basics[key] = value;
+        gg.player.basics[key] = value;
     });
 
     return true;
@@ -254,3 +258,5 @@ MainController.prototype.createPlayer = function() {
 MainController.prototype.generateTopBar = function() {
 
 };
+
+export default MainController;

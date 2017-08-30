@@ -1,68 +1,86 @@
-var settings = {
-    autoLevelUp: true
-};
+window.gg = {};
 
-var totals = {
+gg.totals = {
     attacks: 0,
     dodges: 0,
     survivals: 0,
     deaths: 0
 };
 
-var world = new World(),
-    player = new Entity(0),
-    engine = new Engine(world, player),
-    terminal,
-    ticking = {active: false, percentage: 0, interval: null},
-    playerDeadNotified = false,
-    outputHTML = "",
-    view = null;
+gg.settings = {
+    autoLevelUp: true
+};
 
-world.addPerson(player);
-world.player = player;
 
-// world.reportPeople();
+// Libraries
+import genericFunctions from './Libraries/genericFunctions';
+import extendedFunction from './Libraries/extendedFunctions';
+import './Libraries/HtmlCreation';
+import './Libraries/jqueryFunctions';
 
-function init() {
-    engine.hidePlayerBar();
-    engine.hideWorldBar();
-    engine.hidePlayerActions();
-}
+Object.assign(window, extendedFunction, genericFunctions);
+// CLASSES
+import World from './classes/World';
+import Entity from './classes/Entity';
 
-function tick() {
-    if (ticking.active === true) {
-        if (ticking.interval === null) {
-            ticking.interval = setInterval(tick, 30);
-        }
-        if (ticking.percentage >= 100) {
-            ticking.percentage = 0;
-            outputHTML = "";
-            world.callADay();
-            engine.update();
-        } else {
-            ticking.percentage += 2;
-        }
-        $("#dayBar").css("width", ticking.percentage + "%");
+import Engine from './engine';
 
-        if (player.basics.isDead && !playerDeadNotified) {
-            ticking.active = false;
-            alert("You lasted " + world.standard.day + " days in this cruel world.\n You finished as the " + (world.standard.population + 1) + "th last human.");
-            playerDeadNotified = true;
-        }
-    } else {
-        clearInterval(ticking.interval);
-        ticking.interval = null;
-    }
-}
+// CONTROLLERS
+import MainController from './controllers/MainController';
 
-$(document).ready(function() {
-    view = new MainController($("#mainView"));
-    view.activeView = 'generateNewPlayerForm';
-    engine.jqSelToast = $("#toastMessage");
-    init();
+// BINDINGS
+import './bindings';
 
-    engine.jqSelToast.on("dblclick", function() {
+gg.world = new World();
+gg.player = new Entity(0);
+gg.engine = new Engine(gg.world, gg.player);
+gg.ticking = {active: false, percentage: 0, interval: null};
+gg.playerDeadNotified = false;
+gg.outputHTML = "";
+gg.view = MainController.view = null;
+
+gg.world.addPerson(gg.player);
+gg.world.player = gg.player;
+
+// gg.world.reportPeople();
+
+gg.initGameUI = function init() {
+    MainController.view = new MainController($("#mainView"));
+    MainController.view.activeView = 'generateNewPlayerForm';
+    gg.engine.jqSelToast = $("#toastMessage");
+
+    gg.engine.hidePlayerBar();
+    gg.engine.hideWorldBar();
+    gg.engine.hidePlayerActions();
+
+    gg.engine.jqSelToast.on("dblclick", function() {
         $(this).fadeOut()
     });
-});
+};
 
+gg.tick = function tick() {
+    if (gg.ticking.active === true) {
+        if (gg.ticking.interval === null) {
+            gg.ticking.interval = setInterval(tick, 30);
+        }
+        if (gg.ticking.percentage >= 100) {
+            gg.ticking.percentage = 0;
+            gg.outputHTML = "";
+            gg.world.callADay();
+            gg.engine.update();
+        } else {
+            // gg.ticking.percentage += 2;
+            gg.ticking.percentage += 10;
+        }
+        $("#dayBar").css("width", gg.ticking.percentage + "%");
+
+        if (gg.player.basics.isDead && !gg.playerDeadNotified) {
+            gg.ticking.active = false;
+            alert("You lasted " + gg.world.standard.day + " days in this cruel world.\n You finished as the " + (gg.world.standard.population + 1) + "th last human.");
+            gg.playerDeadNotified = true;
+        }
+    } else {
+        clearInterval(gg.ticking.interval);
+        gg.ticking.interval = null;
+    }
+};

@@ -1,3 +1,6 @@
+import QuestManager from './QuestManager';
+import Entity from './Entity';
+
 function World() {
     this.player = null;
 
@@ -17,6 +20,8 @@ function World() {
 
     this.lastId = 0;
 
+    this.questManager = Object.create(QuestManager).init();
+
     for (let i = 1; i < this.standard.population; i++) {
         this.addPerson(new Entity(i));
     }
@@ -29,7 +34,7 @@ World.prototype.callADay = function() {
 
     const fightsToday = getRandomInt(this.standard.population * 0.1, (this.standard.population / 2) * WORLD_FIGHT_FACTOR);
 
-    outputHTML += fightsToday + " fights to be done";
+    gg.outputHTML += fightsToday + " fights to be done";
 
 
     this.updatePeopleHealth();
@@ -45,6 +50,7 @@ World.prototype.callADay = function() {
     this.standard.deaths += fightResult.deathsToday;
 
     this.birthPeople();
+
     this.refreshPeople();
 
     this.standard.populationChange = this.people.size() - this.standard.population;
@@ -52,7 +58,7 @@ World.prototype.callADay = function() {
 
 
     if (report) {
-        outputHTML += "<br> Deaths : " + fightResult.deathsToday + " " +
+        gg.outputHTML += "<br> Deaths : " + fightResult.deathsToday + " " +
             "Victories : " + fightResult.todayVictories + " " +
             "Defeats : " + fightResult.todayDefeats + " " +
             "Draws : " + fightResult.todayDraws + " " +
@@ -113,7 +119,8 @@ World.prototype.fight = function(fightsToday) {
 World.prototype.givePassives = function() {
   this.people.forEach((person) => {
       person.earnPassiveExp();
-      person.earnPassiveCoins();
+      this.giveQuestToEntity(person);
+      // person.earnPassiveCoins();
   })
 };
 
@@ -188,5 +195,11 @@ World.prototype.reportPeople = function() {
     this.people.forEach(function(value, key) {
         value.report();
     });
-    engine.update();
+    gg.engine.update();
 };
+
+World.prototype.giveQuestToEntity = function(entity) {
+    let quest = this.questManager.createQuest();
+};
+
+export default World;

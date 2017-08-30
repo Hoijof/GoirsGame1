@@ -287,3 +287,5 @@ Terminal.prototype.showCurrentTrace = function() {
     this.jqSelTerminal.find("input").focus().val("").val(this.consoleTrace[this.consoleActualTrace]);
 };
 //adm@ww9
+
+export default Terminal;

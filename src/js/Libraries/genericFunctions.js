@@ -69,7 +69,7 @@ function loadjsfile(filename) {
 }
 
 function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 function getRandom(min, max) {
@@ -107,7 +107,7 @@ function getDateFromTime(time) {
 }
 
 function getAgeFromTime(time) {
-    let age = world.getActualTime() - time;
+    let age = gg.world.getActualTime() - time;
     age = age / (daysInAMonth * monthsInAYear);
 
     return Math.floor(age);
@@ -150,4 +150,17 @@ function readFile(fileName) {
         console.log('Your browser doesn\'t support the FileReader functionality of HTML5, you\'re not suited to be' +
             'part of the testing team, sorry');
     }
+}
+
+export default {
+    getRandomInt: getRandomInt,
+    isAppening: isAppening,
+    getRandomProperty: getRandomProperty,
+    getRandomKey: getRandomKey,
+    getRandom: getRandom,
+    getRandomCitizenName: getRandomCitizenName,
+    getRandomCitizenSurname: getRandomCitizenSurname,
+    getDateFromTime: getDateFromTime,
+    getAgeFromTime: getAgeFromTime,
+    getKeyFromNumber: getKeyFromNumber
 }

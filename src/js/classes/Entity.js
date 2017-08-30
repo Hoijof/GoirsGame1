@@ -195,7 +195,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
     let turns = 0;
 
     if (this.id === 0 || enemy.id === 0) {
-        outputHTML += "<br>" + "A fight between ---- " + this.id + this.basics.name + " ---- and ----- " + enemy.id + enemy.basics.name + " ----- is going to start";
+        gg.outputHTML += "<br>" + "A fight between ---- " + this.id + this.basics.name + " ---- and ----- " + enemy.id + enemy.basics.name + " ----- is going to start";
         this.report();
         enemy.report();
     }
@@ -220,8 +220,8 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
         turns++;
     }
     if (this.id === 0 || enemy.id === 0) {
-        outputHTML += "<br>" + "Fight lasted " + turns + " turns";
-        outputHTML += "<br>" + this.basics.name + " attacked first " + timesFirst + " times and " + timesSecond + " times second";
+        gg.outputHTML += "<br>" + "Fight lasted " + turns + " turns";
+        gg.outputHTML += "<br>" + this.basics.name + " attacked first " + timesFirst + " times and " + timesSecond + " times second";
     }
 
     this.basics.fights++;
@@ -232,7 +232,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
         enemy.basics.victories++;
 
         if (this.id === 0 || enemy.id === 0) {
-            outputHTML += "<br>" + enemy.basics.name + " Wins.";
+            gg.outputHTML += "<br>" + enemy.basics.name + " Wins.";
         }
 
         giveExperience(enemy, this, EXPERIENCE_WIN_FACTOR);
@@ -246,7 +246,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
             enemy.basics.defeats++;
             this.basics.victories++;
             if (this.id === 0 || enemy.id === 0) {
-                outputHTML += "<br>" + this.basics.name + " Wins.";
+                gg.outputHTML += "<br>" + this.basics.name + " Wins.";
             }
 
             giveExperience(this, enemy, EXPERIENCE_WIN_FACTOR);
@@ -257,7 +257,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
             return "victory";
         } else {
             if (this.id === 0 || enemy.id === 0) {
-                outputHTML += "<br>" + "Nobody wins";
+                gg.outputHTML += "<br>" + "Nobody wins";
             }
 
             giveExperience(enemy, this, EXPERIENCE_LOSS_FACTOR);
@@ -273,7 +273,7 @@ Entity.prototype.earnPassiveExp = function() {
 
 Entity.prototype.levelUpAsType = function(type) {
     for (let i = 0; i < FIGHTER_TYPES[type].length; i++) {
-        outputHTML += "<br>" + FIGHTER_TYPES[i];
+        gg.outputHTML += "<br>" + FIGHTER_TYPES[i];
     }
 };
 
@@ -282,25 +282,25 @@ Entity.prototype.report = function() {
         percentages = calculatePercentages(this, basePercentages),
         i;
 
-    outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
-    outputHTML += "<br>" + "Starting report of Entity with id = " + this.id + " and name = " + this.basics.name + " and level of " + this.basics.level;
-    outputHTML += "<br>" + "---- BASICS REPORT ----";
+    gg.outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
+    gg.outputHTML += "<br>" + "Starting report of Entity with id = " + this.id + " and name = " + this.basics.name + " and level of " + this.basics.level;
+    gg.outputHTML += "<br>" + "---- BASICS REPORT ----";
     $.each(this.basics, function(key, val) {
-        outputHTML += "<br>" + key + " = " + val;
+        gg.outputHTML += "<br>" + key + " = " + val;
     });
-    /*outputHTML += "<br>" + "---- ATTRIBUTES REPORT ----";
+    /*gg.outputHTML += "<br>" + "---- ATTRIBUTES REPORT ----";
     $.each(this.attributes, function(key, val) {
-        outputHTML += "<br>" + key + " = " + val;
+        gg.outputHTML += "<br>" + key + " = " + val;
     });
-    outputHTML += "<br>" + "End of Attributes Report";
+    gg.outputHTML += "<br>" + "End of Attributes Report";
 
-    outputHTML += "<br>" + "PERCENTAGES";
+    gg.outputHTML += "<br>" + "PERCENTAGES";
     for (i = 0; i < basePercentages.length; ++i) {
-        outputHTML += "<br>" + String(basePercentages[i] - percentages[i]);
+        gg.outputHTML += "<br>" + String(basePercentages[i] - percentages[i]);
     }*/
 
 
-    // outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
+    // gg.outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
 };
 
 // Coins
@@ -317,3 +317,5 @@ Entity.prototype.stealCoins = function(objective) {
 Entity.prototype.earnPassiveCoins = function() {
   this.basics.coins += 5;
 };
+
+export default Entity;
