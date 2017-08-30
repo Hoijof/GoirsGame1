@@ -2,6 +2,13 @@ var settings = {
     autoLevelUp: true
 };
 
+var totals = {
+    attacks: 0,
+    dodges: 0,
+    survivals: 0,
+    deaths: 0
+};
+
 var world = new World(),
     player = new Entity(0),
     engine = new Engine(world, player),

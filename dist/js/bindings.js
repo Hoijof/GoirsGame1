@@ -37,7 +37,7 @@ $(document).ready(function() {
         player = new Entity(0);
         player.name = "Hoijof";
         player.surname = "Golpeo";
-        // player.setAllStatsToValue(100);
+        player.setAllStatsToValue(100);
         world.addPerson(player);
         engine.update();
     });
