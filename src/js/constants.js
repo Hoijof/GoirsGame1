@@ -1,21 +1,24 @@
-const MAX_ENTITY_HEALTH = 100,
+export const BASICS = {
+    MAX_ENTITY_HEALTH: 100,
 
-    WORLD_FIGHT_FACTOR = 0.6,
-    WORLD_BIRTH_FACTOR = 0.1,
-    MAX_BATTLE_TURNS = 100,
-    MAX_ITERATIONS = 30,
-    REFRESH_COUNTER = 3,
+    WORLD_FIGHT_FACTOR: 0.6,
+    WORLD_BIRTH_FACTOR: 0.1,
+    MAX_BATTLE_TURNS: 100,
+    MAX_ITERATIONS: 30,
+    REFRESH_COUNTER: 3,
 
-    WORLD_MIN_SIZE = 50,
-    WORLD_MAX_SIZE = 300,
+    WORLD_MIN_SIZE: 50,
+    WORLD_MAX_SIZE: 300,
 
-    EXPERIENCE_LOSS_FACTOR = 0.2,
-    EXPERIENCE_WIN_FACTOR = 1,
-    MAX_ATTRIBUTE_LEVEL = 500,
+    EXPERIENCE_LOSS_FACTOR: 0.2,
+    EXPERIENCE_WIN_FACTOR: 1,
+    MAX_ATTRIBUTE_LEVEL: 500,
 
 
-    PLAYER_BASICS = "PLAYER BASICS",
-    UNUSED_VAR = null;
+    PLAYER_BASICS: "PLAYER BASICS",
+    FIGHTER_TYPES: [],
+    UNUSED_VAR: null
+};
 
 /*strength 		: 0,
  endurance		: 0,
@@ -26,36 +29,36 @@ const MAX_ENTITY_HEALTH = 100,
  stamina	 	    : 0,
  faith 			: 0*/
 
-const WARRIOR_TYPES = {
+export const WARRIOR_TYPES = {
     warrior: [0.2, 0.2, 0.02, 0.2, 0.2, 0.18, 0, 0],
     mage: [0.05, 0.15, 0.4, 0.3, 0.02, 0.02, 0.16, 0],
     rogue: [0.1, 0.05, 0.1, 0.15, 0.25, 0.15, 0.15, 0.05],
     monk: [0.05, 0.10, 0.2, 0.2, 0.05, 0.05, 0.35]
 };
 
-const femaleNames = ["Aekkein", "Erna", "Gica", "Iris", "Laen", "Oanei", "Urusla", "Unt", "Zy", "Giny", "Teni", "Tania",
+export const femaleNames = ["Aekkein", "Erna", "Gica", "Iris", "Laen", "Oanei", "Urusla", "Unt", "Zy", "Giny", "Teni", "Tania",
     "Tenisa", "Falish", "Tirs", "Bera", "Boria", "Terkia", "Tronash", "Si", "Gi", "Ti", "Fi", "Di", "Mi", "Peli", "Irnia", "Beth",
     "Riven", "Vi", "Lio", "Nayeli"];
 
-const maleNames = ["Anttirnet", "Carnil", "Estiv", "Halt", "Hoijof", "Laen", "Lisiern", "Berin", "Ton", "Shome", "Regit",
+export const maleNames = ["Anttirnet", "Carnil", "Estiv", "Halt", "Hoijof", "Laen", "Lisiern", "Berin", "Ton", "Shome", "Regit",
     "Lurin", "Maers", "Musten", "Oanei", "Raesh", "Terio", "Unt", "Ust", "Redik", "James", "Loki", "Tem", "Regot",
     "Josh", "Tom", "Jei", "Lioth"];
 
-const surnames = ["Golpeo", "Anorda", "Severnin", "Part", "Kek-vek-loah", "Vaen", "Nerivin", "Haeshi", "Vin-ti-selh",
+export const surnames = ["Golpeo", "Anorda", "Severnin", "Part", "Kek-vek-loah", "Vaen", "Nerivin", "Haeshi", "Vin-ti-selh",
     "Ver-to", "Vintoret", "Da Teri", "Von Bien", "Maer", "Serisn", "Vintaren", "Bertis", "Tetirit", "Tornet", "Bellabi",
     "Geron", "Tornes", "Gorez", "Lorez", "Gareth"];
 
-const townNames = ["Laptius", "Birnicie", "Gerina", "Olvinast", "Maktius", "New Berinet", "Berinet", "Old Berinet",
+export const townNames = ["Laptius", "Birnicie", "Gerina", "Olvinast", "Maktius", "New Berinet", "Berinet", "Old Berinet",
     "Not So Old Berinet", "Dantias", "Maktius", "Bluelake", "Pryland", "Crystalsage"];
 
-const townFirstNames = ["Great", "Big", "Blue", "Black", "Greay", "Nordic", "Rapid", "Shadow", "Violet", "White", "Gold", "Silver",
+export const townFirstNames = ["Great", "Big", "Blue", "Black", "Greay", "Nordic", "Rapid", "Shadow", "Violet", "White", "Gold", "Silver",
     "Bronze", "Iron", "Stone", "Water", "Rose", "Cold", "Cor", "Coast", "Bright", "Well", "Butter", "Dork", "Wind", "Orba", "North",
     "Wolf", "South", "East", "West"];
 
-const townSecondNames = ["shore", "size", "port", "fox", "ham", "mill", "mere", "gate", "bush", "bank", "way", "dedge",
+export const townSecondNames = ["shore", "size", "port", "fox", "ham", "mill", "mere", "gate", "bush", "bank", "way", "dedge",
     "keep", "cliff", "row", "mount", "river", "sea", "fall", "flea", "wald", "crest", "wick", "well", "mead"];
 
-const CSS_COLOR_NAMES = ["AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", "Black", "BlanchedAlmond", "Blue",
+export const CSS_COLOR_NAMES = ["AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", "Black", "BlanchedAlmond", "Blue",
     "BlueViolet", "Brown", "BurlyWood", "CadetBlue", "Chartreuse", "Chocolate", "Coral", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue",
     "DarkCyan", "DarkGoldenRod", "DarkGray", "DarkGrey", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", "Darkorange", "DarkOrchid", "DarkRed",
     "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", "DarkSlateGrey", "DarkTurquoise", "DarkViolet", "DeepPink", "DeepSkyBlue", "DimGray",
@@ -69,7 +72,7 @@ const CSS_COLOR_NAMES = ["AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azu
     "SeaGreen", "SeaShell", "Sienna", "Silver", "SkyBlue", "SlateBlue", "SlateGray", "SlateGrey", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", "Thistle", "Tomato",
     "Turquoise", "Violet", "Wheat", "White", "WhiteSmoke", "Yellow", "YellowGreen"];
 
-const MAIN_VIEW = {
+export const MAIN_VIEW = {
     TITLE: "GOIRS'S GAME",
     PLAYER_FORM: {
         DESCRIPTION: "You were born in this harass land. War was your teacher since a young age and you know nothing but death and destruction. Welcome to the world.",
@@ -94,7 +97,7 @@ const MAIN_VIEW = {
     }
 };
 
-const EQUIVALENCES = {
+export const EQUIVALENCES = {
     PLAYER_FORM: {}
 };
 
@@ -108,7 +111,7 @@ EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.rogue] = "rogue";
 EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.warrior] = "warrior";
 EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.monk] = "monk";
 
-const BASICS = {
+export const TRANSLATIONS = {
     LEFT: "Left",
     RIGHT: "Right",
     MALE: "Male",
