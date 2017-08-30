@@ -1,4 +1,4 @@
-import {femaleNames, maleNames, surnames, townFirstNames, townNames, townSecondNames,} from "../constants";
+import {femaleNames, maleNames, surnames, townFirstNames, townNames, townSecondNames,} from "../constants/index";
 
 // PROTOTYPES
 

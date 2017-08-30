@@ -1,4 +1,4 @@
-import {BASICS} from "./constants";
+import {BASICS} from "./constants/index";
 import MainController from './controllers/MainController';
 
 function Engine(world, player) {

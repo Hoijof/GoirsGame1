@@ -1,4 +1,4 @@
-import {EQUIVALENCES} from "../constants";
+import {EQUIVALENCES} from "../constants/index";
 
 function StandardController(jqSel) {
 

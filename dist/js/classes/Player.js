@@ -1,5 +1,5 @@
 import gf from '../Libraries/genericFunctions';
-import {BASICS} from '../constants';
+import {BASICS} from '../constants/index';
 
 function Player(id) {
     //stats

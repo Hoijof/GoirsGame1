@@ -1,7 +1,7 @@
 import gf from '../Libraries/genericFunctions';
 import ef from '../Libraries/extendedFunctions';
 
-import {BASICS} from '../constants';
+import {BASICS} from '../constants/index';
 
 import QuestManager from './QuestManager';
 import Entity from './Entity';
@@ -15,7 +15,7 @@ function World() {
         deaths: 0,
         births: 0,
         population: gf.getRandomInt(BASICS.WORLD_MIN_SIZE, BASICS.WORLD_MAX_SIZE),
-        fightsToday:0,
+        fightsToday: 0,
         deathsToday: 0,
         birthsToday: 0,
         populationChange: 0
@@ -91,6 +91,9 @@ World.prototype.fight = function(fightsToday) {
         let attacked = this.getRandomPerson([attacker]);
         if (attacked === false) continue;
 
+        attacker.elegibleForQuest = false;
+        attacked.elegibleForQuest = false;
+
         let result = attacker.fightAgainstEntity(attacked);
         switch (result) {
             case "victory" :
@@ -127,9 +130,11 @@ World.prototype.fight = function(fightsToday) {
 
 World.prototype.givePassives = function() {
     this.people.forEach((person) => {
-        person.earnPassiveExp();
-        this.giveQuestToEntity(person);
-        // person.earnPassiveCoins();
+        if (person.elegibleForQuest === true) {
+            this.giveQuestToEntity(person);
+        } else {
+            person.elegibleForQuest = true;
+        }
     })
 };
 
@@ -212,7 +217,13 @@ World.prototype.reportPeople = function() {
 };
 
 World.prototype.giveQuestToEntity = function(entity) {
-    let quest = this.questManager.createQuest();
+    let quest = this.questManager.createQuest(entity);
+    let result = this.questManager.executeQuest(quest);
+
+
+    entity.basics.coins += result.coins;
+    entity.basics.experience += result.experience;
+    ef.checkLevelUp(entity);
 };
 
 export default World;

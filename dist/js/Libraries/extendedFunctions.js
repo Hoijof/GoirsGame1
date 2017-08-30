@@ -1,5 +1,5 @@
 import gf from './genericFunctions';
-import {BASICS, WARRIOR_TYPES} from "../constants";
+import {BASICS, WARRIOR_TYPES} from "../constants/index";
 
 function attack(attacker, attacked) {
 

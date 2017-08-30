@@ -1,4 +1,4 @@
-import {MAIN_VIEW, TRANSLATIONS, WARRIOR_TYPES} from '../constants';
+import {MAIN_VIEW, TRANSLATIONS, WARRIOR_TYPES} from '../constants/index';
 
 import StandardController from './StandardController';
 import HtmlCreation from '../Libraries/HtmlCreation';

@@ -112,9 +112,19 @@ EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.rogue] = "rogue";
 EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.warrior] = "warrior";
 EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.monk] = "monk";
 
+export const TYPES = {
+    WEAPON: 0
+};
+
 export const TRANSLATIONS = {
     LEFT: "Left",
     RIGHT: "Right",
     MALE: "Male",
-    FEMALE: "Female"
+    FEMALE: "Female",
+    EASY: 'Easy',
+    MEDIUM: 'Medium',
+    HARD: 'Hard',
+    TIERS: [
+        'Useless'
+    ]
 };

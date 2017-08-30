@@ -1,4 +1,4 @@
-import {WARRIOR_TYPES, BASICS} from '../constants';
+import {WARRIOR_TYPES, BASICS} from '../constants/index';
 import gf from '../Libraries/genericFunctions';
 import ef from '../Libraries/extendedFunctions';
 
@@ -8,6 +8,7 @@ function Entity(id, playerClass) {
 
     this.id = id;
     this.type = WARRIOR_TYPES[gf.getRandomInt(0, WARRIOR_TYPES.length)];
+    this.elegibleForQuest = true;
 
     this.basics = {
         name: 0,
@@ -273,6 +274,7 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
 
 Entity.prototype.earnPassiveExp = function() {
     this.basics.experience += this.basics.experience * 0.01;
+    ef.checkLevelUp(this);
 };
 
 Entity.prototype.levelUpAsType = function(type) {

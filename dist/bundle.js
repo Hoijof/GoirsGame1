@@ -41,7 +41,7 @@ var _genericFunctions = require("./genericFunctions");
 
 var _genericFunctions2 = _interopRequireDefault(_genericFunctions);
 
-var _constants = require("../constants");
+var _index = require("../constants/index");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -147,7 +147,7 @@ function dailyHealingEntity(entity) {
     var toHeal = (entity.attributes.endurance * 0.2 + entity.attributes.stamina * 0.2 + entity.attributes.willpower * 0.5 + entity.attributes.faith * 0.5) / 2;
     for (var part in entity.vitalPoints) {
         entity.vitalPoints[part] += toHeal;
-        if (entity.vitalPoints[part] > _constants.BASICS.MAX_ENTITY_HEALTH) entity.vitalPoints[part] = _constants.BASICS.MAX_ENTITY_HEALTH;
+        if (entity.vitalPoints[part] > _index.BASICS.MAX_ENTITY_HEALTH) entity.vitalPoints[part] = _index.BASICS.MAX_ENTITY_HEALTH;
     }
 }
 
@@ -172,7 +172,7 @@ function calculatePercentages(entity) {
     var i = void 0,
         tmpPercentages = [];
 
-    for (i = 0; i < _constants.WARRIOR_TYPES[entity.basics.class].length; ++i) {
+    for (i = 0; i < _index.WARRIOR_TYPES[entity.basics.class].length; ++i) {
         tmpPercentages[i] = entity.attributes[_genericFunctions2.default.getKeyFromNumber(entity.attributes, i)] / entity.basics.level;
     }
 
@@ -180,7 +180,7 @@ function calculatePercentages(entity) {
 }
 
 function incrementLowestPercentage(entity) {
-    var basePercentages = _constants.WARRIOR_TYPES[entity.basics.class],
+    var basePercentages = _index.WARRIOR_TYPES[entity.basics.class],
         i = void 0,
         updated = false,
         tmpPercentages = calculatePercentages(entity);
@@ -262,14 +262,14 @@ exports.default = {
     survivalCheck: survivalCheck
 };
 
-},{"../constants":9,"./genericFunctions":3}],3:[function(require,module,exports){
+},{"../constants/index":9,"./genericFunctions":3}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = require("../constants");
+var _index = require("../constants/index");
 
 // PROTOTYPES
 
@@ -350,20 +350,20 @@ function getRandom(min, max) {
 
 function getRandomCitizenName(sex) {
     if (sex === 'male') {
-        return _constants.maleNames[getRandomInt(0, _constants.maleNames.length - 1)];
+        return _index.maleNames[getRandomInt(0, _index.maleNames.length - 1)];
     } else if (sex === 'female') {
-        return _constants.femaleNames[getRandomInt(0, _constants.femaleNames.length - 1)];
+        return _index.femaleNames[getRandomInt(0, _index.femaleNames.length - 1)];
     }
     return 'Bernt';
 }
 
 function getRandomCitizenSurname() {
-    return _constants.surnames[getRandomInt(0, _constants.surnames.length - 1)];
+    return _index.surnames[getRandomInt(0, _index.surnames.length - 1)];
 }
 
 function getRandomTownName() {
-    if (isAppening(33)) return _constants.townNames[getRandomInt(0, _constants.townNames.length - 1)];
-    return _constants.townFirstNames[getRandomInt(0, _constants.townFirstNames.length - 1)] + _constants.townSecondNames[getRandomInt(0, _constants.townSecondNames.length - 1)];
+    if (isAppening(33)) return _index.townNames[getRandomInt(0, _index.townNames.length - 1)];
+    return _index.townFirstNames[getRandomInt(0, _index.townFirstNames.length - 1)] + _index.townSecondNames[getRandomInt(0, _index.townSecondNames.length - 1)];
 }
 
 exports.default = {
@@ -377,7 +377,7 @@ exports.default = {
     getKeyFromNumber: getKeyFromNumber
 };
 
-},{"../constants":9}],4:[function(require,module,exports){
+},{"../constants/index":9}],4:[function(require,module,exports){
 "use strict";
 
 var _Entity = require("./classes/Entity");
@@ -452,7 +452,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = require('../constants');
+var _index = require('../constants/index');
 
 var _genericFunctions = require('../Libraries/genericFunctions');
 
@@ -469,7 +469,8 @@ function Entity(id, playerClass) {
     // Stats
 
     this.id = id;
-    this.type = _constants.WARRIOR_TYPES[_genericFunctions2.default.getRandomInt(0, _constants.WARRIOR_TYPES.length)];
+    this.type = _index.WARRIOR_TYPES[_genericFunctions2.default.getRandomInt(0, _index.WARRIOR_TYPES.length)];
+    this.elegibleForQuest = true;
 
     this.basics = {
         name: 0,
@@ -500,12 +501,12 @@ function Entity(id, playerClass) {
     };
 
     this.vitalPoints = {
-        head: _constants.BASICS.MAX_ENTITY_HEALTH,
-        body: _constants.BASICS.MAX_ENTITY_HEALTH,
-        leftArm: _constants.BASICS.MAX_ENTITY_HEALTH,
-        rightArm: _constants.BASICS.MAX_ENTITY_HEALTH,
-        leftLeg: _constants.BASICS.MAX_ENTITY_HEALTH,
-        rightLeg: _constants.BASICS.MAX_ENTITY_HEALTH
+        head: _index.BASICS.MAX_ENTITY_HEALTH,
+        body: _index.BASICS.MAX_ENTITY_HEALTH,
+        leftArm: _index.BASICS.MAX_ENTITY_HEALTH,
+        rightArm: _index.BASICS.MAX_ENTITY_HEALTH,
+        leftLeg: _index.BASICS.MAX_ENTITY_HEALTH,
+        rightLeg: _index.BASICS.MAX_ENTITY_HEALTH
     };
 
     this.init();
@@ -542,7 +543,7 @@ Entity.prototype.levelUp = function () {
 Entity.prototype.init = function () {
     this.basics.isDead = false;
     this.basics.sex = _genericFunctions2.default.isAppening(50) ? "male" : "female";
-    this.basics.class = this.basics.class === null ? _genericFunctions2.default.getRandomKey(_constants.WARRIOR_TYPES) : this.basics.class;
+    this.basics.class = this.basics.class === null ? _genericFunctions2.default.getRandomKey(_index.WARRIOR_TYPES) : this.basics.class;
     this.basics.name = _genericFunctions2.default.getRandomCitizenName(this.basics.sex);
     this.basics.surname = _genericFunctions2.default.getRandomCitizenSurname();
     this.basics.level = 8;
@@ -646,7 +647,7 @@ Entity.prototype.generateStat = function (stat) {
 };
 
 Entity.prototype.addPointsToAttribute = function (points, attribute) {
-    if (this.attributes[attribute] + points <= _constants.BASICS.MAX_ATTRIBUTE_LEVEL && this.attributes[attribute] + points >= 0) {
+    if (this.attributes[attribute] + points <= _index.BASICS.MAX_ATTRIBUTE_LEVEL && this.attributes[attribute] + points >= 0) {
         this.attributes[attribute] += points;
         for (var i = 0; i < points; ++i) {
             this.levelUp();
@@ -665,7 +666,7 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
         enemy.report();
     }
 
-    while (!_extendedFunctions2.default.isDying(this) && !_extendedFunctions2.default.isDying(enemy) && turns < _constants.BASICS.MAX_BATTLE_TURNS) {
+    while (!_extendedFunctions2.default.isDying(this) && !_extendedFunctions2.default.isDying(enemy) && turns < _index.BASICS.MAX_BATTLE_TURNS) {
         var attacker = void 0,
             attacked = void 0;
         if (_extendedFunctions2.default.attackingFirstCheck(this, enemy)) {
@@ -702,8 +703,8 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
             gg.outputHTML += "<br>" + enemy.basics.name + " Wins.";
         }
 
-        _extendedFunctions2.default.giveExperience(enemy, this, _constants.BASICS.EXPERIENCE_WIN_FACTOR);
-        _extendedFunctions2.default.giveExperience(this, enemy, _constants.BASICS.EXPERIENCE_LOSS_FACTOR);
+        _extendedFunctions2.default.giveExperience(enemy, this, _index.BASICS.EXPERIENCE_WIN_FACTOR);
+        _extendedFunctions2.default.giveExperience(this, enemy, _index.BASICS.EXPERIENCE_LOSS_FACTOR);
 
         enemy.stealCoins(this);
 
@@ -716,8 +717,8 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
                 gg.outputHTML += "<br>" + this.basics.name + " Wins.";
             }
 
-            _extendedFunctions2.default.giveExperience(this, enemy, _constants.BASICS.EXPERIENCE_WIN_FACTOR);
-            _extendedFunctions2.default.giveExperience(enemy, this, _constants.BASICS.EXPERIENCE_LOSS_FACTOR);
+            _extendedFunctions2.default.giveExperience(this, enemy, _index.BASICS.EXPERIENCE_WIN_FACTOR);
+            _extendedFunctions2.default.giveExperience(enemy, this, _index.BASICS.EXPERIENCE_LOSS_FACTOR);
 
             this.stealCoins(enemy);
 
@@ -727,8 +728,8 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
                 gg.outputHTML += "<br>" + "Nobody wins";
             }
 
-            _extendedFunctions2.default.giveExperience(enemy, this, _constants.BASICS.EXPERIENCE_LOSS_FACTOR);
-            _extendedFunctions2.default.giveExperience(this, enemy, _constants.BASICS.EXPERIENCE_LOSS_FACTOR);
+            _extendedFunctions2.default.giveExperience(enemy, this, _index.BASICS.EXPERIENCE_LOSS_FACTOR);
+            _extendedFunctions2.default.giveExperience(this, enemy, _index.BASICS.EXPERIENCE_LOSS_FACTOR);
             return "draw";
         }
     }
@@ -736,16 +737,17 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
 
 Entity.prototype.earnPassiveExp = function () {
     this.basics.experience += this.basics.experience * 0.01;
+    _extendedFunctions2.default.checkLevelUp(this);
 };
 
 Entity.prototype.levelUpAsType = function (type) {
-    for (var i = 0; i < _constants.BASICS.FIGHTER_TYPES[type].length; i++) {
-        gg.outputHTML += "<br>" + _constants.BASICS.FIGHTER_TYPES[i];
+    for (var i = 0; i < _index.BASICS.FIGHTER_TYPES[type].length; i++) {
+        gg.outputHTML += "<br>" + _index.BASICS.FIGHTER_TYPES[i];
     }
 };
 
 Entity.prototype.report = function () {
-    var basePercentages = _constants.WARRIOR_TYPES[this.basics.class],
+    var basePercentages = _index.WARRIOR_TYPES[this.basics.class],
         percentages = _extendedFunctions2.default.calculatePercentages(this, basePercentages),
         i = void 0;
 
@@ -785,17 +787,135 @@ Entity.prototype.earnPassiveCoins = function () {
 
 exports.default = Entity;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants":9}],6:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":9}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
-var Quest = {};
+
+var _quest = require("../constants/quest");
+
+var _genericFunctions = require("../Libraries/genericFunctions");
+
+var _genericFunctions2 = _interopRequireDefault(_genericFunctions);
+
+var _items = require("../constants/items");
+
+var _extendedFunctions = require("../Libraries/extendedFunctions");
+
+var _extendedFunctions2 = _interopRequireDefault(_extendedFunctions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Quest = {
+    init: function init(id) {
+        this.id = id;
+        this.owner = null;
+        this.result = null;
+        this.blueprint = null;
+        this.eventChance = null;
+        this.modifiers = [];
+    },
+    assignOwner: function assignOwner(entity) {
+        this.owner = entity;
+    },
+    requestHelp: function requestHelp() {
+        return [];
+    },
+    execute: function execute() {
+        this.blueprint = this.getBlueprintByOwner();
+        this.tryQuest();
+
+        return this.result.outcome;
+    },
+    getBlueprintByOwner: function getBlueprintByOwner() {
+        var level = this.owner.basics.level;
+
+        switch (level) {
+            case level < 25:
+                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[0]);
+                break;
+            case level < 50:
+                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[1]);
+                break;
+            case level < 75:
+                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[2]);
+                break;
+            case level < 100:
+                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[3]);
+                break;
+
+            default:
+                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[4]);
+        }
+    },
+    getRandomQuestFromQuestsBP: function getRandomQuestFromQuestsBP(quests) {
+        return _quest.QUESTS[_genericFunctions2.default.getRandomInt(0, _quest.QUESTS.length - 1)];
+    },
+    tryQuest: function tryQuest() {
+        this.eventChance = this.blueprint.eventChance;
+
+        if (_genericFunctions2.default.isAppening(this.eventChance)) {
+            this.applyRandomEvent();
+        }
+
+        // TODO: Add stages to complex quests
+        var questLevel = this.blueprint.level;
+        // TODO: Tweak chance of success when we add more levels of quests
+        var chanceOfSuccess = this.owner.basics.level * 1.2 - questLevel * 10;
+
+        this.result = {
+            outcome: null,
+            coins: 0,
+            experience: 0,
+            prices: [],
+            events: []
+        };
+        // console.log("chance of succes: " + chanceOfSuccess, "level: " + this.owner.basics.level);
+
+        if (_genericFunctions2.default.isAppening(chanceOfSuccess)) {
+            this.result.outcome = _quest.QUESTS_CODES.SUCCESS;
+            this.result.coins = this.getCoinsFromOutcome();
+            this.result.prices = this.getPricesFromOutcome();
+            this.result.experience = this.getExperienceFromOutcome();
+        } else {
+            this.result.outcome = _quest.QUESTS_CODES.FAIL;
+            this.result.experience = this.getExperienceFromOutcome() / 2;
+        }
+    },
+    applyRandomEvent: function applyRandomEvent() {
+        // TODO: Implement events in quests
+        var event = _quest.QUESTS_EVENTS[_genericFunctions2.default.getRandomInt(0, _quest.QUESTS_EVENTS.length - 1)];
+    },
+    getCoinsFromOutcome: function getCoinsFromOutcome() {
+        if (this.result.outcome === _quest.QUESTS_CODES.SUCCESS) {
+            return _quest.PAYOUT_TIERS[this.blueprint.payoutTier] + _genericFunctions2.default.getRandomInt(-(_quest.PAYOUT_TIERS[this.blueprint.payoutTier] * 0.05), _quest.PAYOUT_TIERS[this.blueprint.payoutTier] * 0.05);
+        } else {
+            return 0;
+        }
+    },
+    getPricesFromOutcome: function getPricesFromOutcome() {
+        if (this.result.outcome === _quest.QUESTS_CODES.SUCCESS) {
+            var priceId = _quest.QUESTS_PRICES[_genericFunctions2.default.getRandomInt(0, _quest.QUESTS_PRICES.length - 1)];
+            var price = _items.ITEMS[priceId];
+
+            return [price];
+        } else {
+            return [];
+        }
+    },
+    getExperienceFromOutcome: function getExperienceFromOutcome() {
+        return this.result.coins === 0 ? 15 : this.result.coins * 2;
+    },
+    getResult: function getResult() {
+        return this.result;
+    }
+};
 
 exports.default = Quest;
 
-},{}],7:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/items":10,"../constants/quest":11}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -814,10 +934,12 @@ var QuestManager = {
 
         return this;
     },
-    createQuest: function createQuest() {
+    createQuest: function createQuest(entity) {
         var quest = Object.create(_Quest2.default);
+        var questId = this.addQuest(quest);
 
-        quest.id = this.addQuest(quest);
+        quest.init(questId);
+        quest.assignOwner(entity);
 
         return quest;
     },
@@ -825,6 +947,28 @@ var QuestManager = {
         this.quests.push(quest);
 
         return this.quests.length - 1;
+    },
+    executeQuest: function executeQuest(quest) {
+        quest.requestHelp();
+        quest.execute();
+        return quest.getResult();
+    },
+    removeQuest: function removeQuest(questId) {
+        this.quests[questId] = undefined;
+    },
+    purgeQuests: function purgeQuests() {
+        var questAux = [];
+        var iAux = 0;
+        for (var i = 0; i < this.quests.length; i++) {
+            if (this.quests[i] !== undefined) {
+                questAux[iAux] = this.quests[i];
+                questAux[iAux].id = iAux++;
+            }
+        }
+        this.quests = questAux;
+    },
+    update: function update() {
+        this.purgeQuests();
     }
 };
 
@@ -845,7 +989,7 @@ var _extendedFunctions = require('../Libraries/extendedFunctions');
 
 var _extendedFunctions2 = _interopRequireDefault(_extendedFunctions);
 
-var _constants = require('../constants');
+var _index = require('../constants/index');
 
 var _QuestManager = require('./QuestManager');
 
@@ -865,7 +1009,7 @@ function World() {
         fights: 0,
         deaths: 0,
         births: 0,
-        population: _genericFunctions2.default.getRandomInt(_constants.BASICS.WORLD_MIN_SIZE, _constants.BASICS.WORLD_MAX_SIZE),
+        population: _genericFunctions2.default.getRandomInt(_index.BASICS.WORLD_MIN_SIZE, _index.BASICS.WORLD_MAX_SIZE),
         fightsToday: 0,
         deathsToday: 0,
         birthsToday: 0,
@@ -888,7 +1032,7 @@ World.prototype.callADay = function () {
 
     this.standard.day++;
 
-    var fightsToday = _genericFunctions2.default.getRandomInt(this.standard.population / 2 * 0.05, this.standard.population / 2 * _constants.BASICS.WORLD_FIGHT_FACTOR);
+    var fightsToday = _genericFunctions2.default.getRandomInt(this.standard.population / 2 * 0.05, this.standard.population / 2 * _index.BASICS.WORLD_FIGHT_FACTOR);
 
     gg.outputHTML += fightsToday + " fights to be done";
 
@@ -936,6 +1080,9 @@ World.prototype.fight = function (fightsToday) {
         var attacked = this.getRandomPerson([attacker]);
         if (attacked === false) continue;
 
+        attacker.elegibleForQuest = false;
+        attacked.elegibleForQuest = false;
+
         var result = attacker.fightAgainstEntity(attacked);
         switch (result) {
             case "victory":
@@ -974,16 +1121,18 @@ World.prototype.givePassives = function () {
     var _this = this;
 
     this.people.forEach(function (person) {
-        person.earnPassiveExp();
-        _this.giveQuestToEntity(person);
-        // person.earnPassiveCoins();
+        if (person.elegibleForQuest === true) {
+            _this.giveQuestToEntity(person);
+        } else {
+            person.elegibleForQuest = true;
+        }
     });
 };
 
 World.prototype.birthPeople = function () {
-    var birthsToday = _genericFunctions2.default.getRandomInt(0, Math.floor(this.standard.population / 2) * _constants.BASICS.WORLD_BIRTH_FACTOR);
+    var birthsToday = _genericFunctions2.default.getRandomInt(0, Math.floor(this.standard.population / 2) * _index.BASICS.WORLD_BIRTH_FACTOR);
 
-    if (this.standard.population > _constants.BASICS.WORLD_MAX_POPULATION) {
+    if (this.standard.population > _index.BASICS.WORLD_MAX_POPULATION) {
         birthsToday = 0;
     }
 
@@ -1020,7 +1169,7 @@ World.prototype.getPersonById = function (id) {
 
 World.prototype.getRandomPerson = function (reference) {
     if (this.people.length < 2) return false;
-    var maxIterations = _constants.BASICS.MAX_ITERATIONS;
+    var maxIterations = _index.BASICS.MAX_ITERATIONS;
     while (maxIterations > 0) {
         maxIterations--;
         var person = this.people[_genericFunctions2.default.getRandomInt(0, this.people.size())];
@@ -1059,12 +1208,17 @@ World.prototype.reportPeople = function () {
 };
 
 World.prototype.giveQuestToEntity = function (entity) {
-    var quest = this.questManager.createQuest();
+    var quest = this.questManager.createQuest(entity);
+    var result = this.questManager.executeQuest(quest);
+
+    entity.basics.coins += result.coins;
+    entity.basics.experience += result.experience;
+    _extendedFunctions2.default.checkLevelUp(entity);
 };
 
 exports.default = World;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants":9,"./Entity":5,"./QuestManager":7}],9:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":9,"./Entity":5,"./QuestManager":7}],9:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1159,11 +1313,19 @@ EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.rogue] = "rogue";
 EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.warrior] = "warrior";
 EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.monk] = "monk";
 
+var TYPES = exports.TYPES = {
+    WEAPON: 0
+};
+
 var TRANSLATIONS = exports.TRANSLATIONS = {
     LEFT: "Left",
     RIGHT: "Right",
     MALE: "Male",
-    FEMALE: "Female"
+    FEMALE: "Female",
+    EASY: 'Easy',
+    MEDIUM: 'Medium',
+    HARD: 'Hard',
+    TIERS: ['Useless']
 };
 
 },{}],10:[function(require,module,exports){
@@ -1172,8 +1334,72 @@ var TRANSLATIONS = exports.TRANSLATIONS = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.ITEMS = undefined;
 
-var _constants = require('../constants');
+var _index = require('./index');
+
+var ITEMS = exports.ITEMS = [{
+    id: 0,
+    name: 'Stick',
+    rarityTiers: 0,
+    alias: null,
+    type: _index.TYPES.WEAPON,
+    damageTier: 0,
+    weight: 1
+}, {
+    id: 1,
+    name: 'Rock',
+    rarityTiers: 0,
+    alias: null,
+    type: _index.TYPES.WEAPON,
+    damageTier: 0,
+    weight: 1
+}, {
+    id: 2,
+    name: 'Plank',
+    rarityTiers: 0,
+    alias: null,
+    type: _index.TYPES.WEAPON,
+    damageTier: 0,
+    weight: 1
+}];
+
+},{"./index":9}],11:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var QUESTS = exports.QUESTS = [{
+    name: 'Farm',
+    level: 0,
+    payoutTier: 0,
+    pricesChance: 65,
+    pricesPool: 0,
+    eventChance: []
+}];
+
+var QUESTS_PRICES = exports.QUESTS_PRICES = [[0, 1, 2], [3, 4, 5]];
+
+var QUESTS_EVENTS = exports.QUESTS_EVENTS = [];
+
+var QUESTS_CODES = exports.QUESTS_CODES = {
+    FAIL: 0,
+    ESCAPED: 1,
+    SUCCESS: 2,
+    GREAT_SUCCESS: 3
+};
+
+var PAYOUT_TIERS = exports.PAYOUT_TIERS = [10, 25, 50, 100];
+
+},{}],12:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _index = require('../constants/index');
 
 var _StandardController = require('./StandardController');
 
@@ -1205,7 +1431,7 @@ MainController.prototype.generateViewsContent = function () {
     this.views = {
         header: function header() {
             var html = "";
-            html += _HtmlCreation2.default.createElem("div", "mainDivTitle", "title", _constants.MAIN_VIEW.TITLE);
+            html += _HtmlCreation2.default.createElem("div", "mainDivTitle", "title", _index.MAIN_VIEW.TITLE);
             html += _HtmlCreation2.default.createHorizontalLine("hr20px");
 
             return html;
@@ -1222,13 +1448,13 @@ MainController.prototype.generateViewsContent = function () {
                     //content += HtmlCreation.createElem("div", "playerFormDescription", "playerFormDescription", MAIN_VIEW.PLAYER_FORM.DESCRIPTION);
 
 
-                    formBlocks += _HtmlCreation2.default.createElem("legend", "", "", _constants.MAIN_VIEW.PLAYER_FORM.LEGEND); //fieldset legend
+                    formBlocks += _HtmlCreation2.default.createElem("legend", "", "", _index.MAIN_VIEW.PLAYER_FORM.LEGEND); //fieldset legend
 
-                    formData += _HtmlCreation2.default.createElem("label", "", "", _constants.MAIN_VIEW.PLAYER_FORM.NAME + ": ", "for='IPlayerFormPlayerName'");
+                    formData += _HtmlCreation2.default.createElem("label", "", "", _index.MAIN_VIEW.PLAYER_FORM.NAME + ": ", "for='IPlayerFormPlayerName'");
                     formData += _HtmlCreation2.default.createMonoElem("input", "IPlayerFormPlayerName", "", "type='text' value='The'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerName", "playerFormElement", formData);
 
-                    formData = _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.SURNAME + ": ", "for='IPlayerFormPlayerSurname'");
+                    formData = _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _index.MAIN_VIEW.PLAYER_FORM.SURNAME + ": ", "for='IPlayerFormPlayerSurname'");
                     formData += _HtmlCreation2.default.createMonoElem("input", "IPlayerFormPlayerSurname", "", "type='text' value='Player'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerSurname", "playerFormElement", formData);
                     formData = "";
@@ -1237,30 +1463,30 @@ MainController.prototype.generateViewsContent = function () {
                     formBlocks += _HtmlCreation2.default.createHorizontalLine("hr20px");
                     formElements = "";
 
-                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.HAND + ": ", "for='IPlayerFormPlayerHand'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.TRANSLATIONS.LEFT, "type='radio' value='left' name ='hand' checked='checked'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.TRANSLATIONS.RIGHT, "type='radio' value='right' name ='hand'");
+                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _index.MAIN_VIEW.PLAYER_FORM.HAND + ": ", "for='IPlayerFormPlayerHand'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _index.TRANSLATIONS.LEFT, "type='radio' value='left' name ='hand' checked='checked'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _index.TRANSLATIONS.RIGHT, "type='radio' value='right' name ='hand'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerHand", "playerFormElement", formData);
                     formData = "";
                     formBlocks += _HtmlCreation2.default.createElem("div", "playerFormHandBlock", "playerFormBlock", formElements); //   hand
                     formElements = "";
 
-                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.SEX + ": ", "for='IPlayerFormPlayerSex'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.TRANSLATIONS.MALE, "type='radio' value='male' name ='sex' checked='checked'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.TRANSLATIONS.FEMALE, "type='radio' value='female' name ='sex'");
+                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _index.MAIN_VIEW.PLAYER_FORM.SEX + ": ", "for='IPlayerFormPlayerSex'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _index.TRANSLATIONS.MALE, "type='radio' value='male' name ='sex' checked='checked'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _index.TRANSLATIONS.FEMALE, "type='radio' value='female' name ='sex'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerSex", "playerFormElement", formData);
                     formData = "";
                     formBlocks += _HtmlCreation2.default.createElem("div", "playerFormSexBlock", "playerFormBlock", formElements); //   hand
                     formElements = "";
 
-                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.CLASS + ": ", "for='warriorTypes'");
-                    formData += _HtmlCreation2.default.createListFromObject(_constants.WARRIOR_TYPES, "warriorTypes", "warriorTypes", _constants.MAIN_VIEW.PLAYER_FORM);
+                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _index.MAIN_VIEW.PLAYER_FORM.CLASS + ": ", "for='warriorTypes'");
+                    formData += _HtmlCreation2.default.createListFromObject(_index.WARRIOR_TYPES, "warriorTypes", "warriorTypes", _index.MAIN_VIEW.PLAYER_FORM);
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormClassElement", "playerFormElement", formData);
                     formBlocks += _HtmlCreation2.default.createElem("div", "playerFormClassBlock", "playerFormBlock", formElements);
 
                     formBlocks += _HtmlCreation2.default.createMonoElem("input", "playerFormSubmit", "playerFormSubmit", "type='button' value='Define Yourself'");
 
-                    content += _HtmlCreation2.default.createElem("div", "mainDivTitle", "title", _constants.MAIN_VIEW.PLAYER_FORM.DESCRIPTION);
+                    content += _HtmlCreation2.default.createElem("div", "mainDivTitle", "title", _index.MAIN_VIEW.PLAYER_FORM.DESCRIPTION);
                     content += _HtmlCreation2.default.createElem("fieldset", "playerFormFields", "playerFormFields", formBlocks);
 
                     return content;
@@ -1305,7 +1531,7 @@ MainController.prototype.generateViewsContent = function () {
                         block = "",
                         elem = "";
 
-                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _constants.MAIN_VIEW.HISTORY.MAIN);
+                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _index.MAIN_VIEW.HISTORY.MAIN);
 
                     elem += _HtmlCreation2.default.createMonoElem("input", "historyButtonNext", "historyButtonNext", "type='button' value='Next'");
                     block += _HtmlCreation2.default.createElem("div", "", "", elem);
@@ -1335,7 +1561,7 @@ MainController.prototype.generateViewsContent = function () {
                         block = "",
                         elem = "";
 
-                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _constants.MAIN_VIEW.HISTORY.WAKE_UP);
+                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _index.MAIN_VIEW.HISTORY.WAKE_UP);
 
                     elem += _HtmlCreation2.default.createMonoElem("input", "historyButtonEnter", "historyButtonEnter", "type='button' value='Enter'");
                     elem += _HtmlCreation2.default.createMonoElem("input", "historyButtonKeepGoing", "historyButtonKeepGoing", "type='button' value='Keep Going'");
@@ -1370,7 +1596,7 @@ MainController.prototype.generateViewsContent = function () {
                         block = "",
                         elem = "";
 
-                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _constants.MAIN_VIEW.HISTORY.ENTER_TOWN_01);
+                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _index.MAIN_VIEW.HISTORY.ENTER_TOWN_01);
 
                     elem += _HtmlCreation2.default.createMonoElem("input", "fight", "fight", "type='button' value='Fight!'");
                     block += _HtmlCreation2.default.createElem("div", "", "", elem);
@@ -1400,7 +1626,7 @@ MainController.prototype.generateViewsContent = function () {
                         block = "",
                         elem = "";
 
-                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _constants.MAIN_VIEW.HISTORY.KEEP_GOING);
+                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _index.MAIN_VIEW.HISTORY.KEEP_GOING);
 
                     content += _HtmlCreation2.default.createElem("div", "historyMainContainer", "historyMainContainer", block);
 
@@ -1438,14 +1664,14 @@ MainController.prototype.generateTopBar = function () {};
 
 exports.default = MainController;
 
-},{"../Libraries/HtmlCreation":1,"../classes/Entity":5,"../constants":9,"./StandardController":11}],11:[function(require,module,exports){
+},{"../Libraries/HtmlCreation":1,"../classes/Entity":5,"../constants/index":9,"./StandardController":13}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = require("../constants");
+var _index = require("../constants/index");
 
 function StandardController(jqSel) {
 
@@ -1513,18 +1739,18 @@ StandardController.prototype.getElementsFromForm = function (selector) {
             if ($(this).attr("type") === 'radio') {
                 if (this.checked === true) {
                     text = $(this).parent().find('label').html();
-                    if (text !== "") elems[_constants.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
+                    if (text !== "") elems[_index.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
                 } else {}
             } else {
                 text = $(this).parent().find('label').html();
-                if (text !== "") elems[_constants.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
+                if (text !== "") elems[_index.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
             }
         });
     });
 
     selector.find(':selected').each(function () {
         text = $(this).parent().parent().find('label').html();
-        if (text !== "") elems[_constants.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = _constants.EQUIVALENCES.PLAYER_FORM[$(this).text()];
+        if (text !== "") elems[_index.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = _index.EQUIVALENCES.PLAYER_FORM[$(this).text()];
     });
 
     return elems;
@@ -1534,14 +1760,14 @@ StandardController.version = "0.0.1";
 
 exports.default = StandardController;
 
-},{"../constants":9}],12:[function(require,module,exports){
+},{"../constants/index":9}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _constants = require("./constants");
+var _index = require("./constants/index");
 
 var _MainController = require("./controllers/MainController");
 
@@ -1601,7 +1827,7 @@ Engine.prototype.updatePlayerInfo = function () {
     selector = $("#playerStats");
     var pointsFree = gg.player.getPointsFree();
 
-    if (pointsFree > 0) $("#headerStats").html(_constants.BASICS.PLAYER_BASICS + " <span style='color:green;'>+" + pointsFree + "</span>");else $("#headerStats").html(_constants.BASICS.PLAYER_BASICS);
+    if (pointsFree > 0) $("#headerStats").html(_index.BASICS.PLAYER_BASICS + " <span style='color:green;'>+" + pointsFree + "</span>");else $("#headerStats").html(_index.BASICS.PLAYER_BASICS);
 
     selector.find("tbody tr").each(function () {
         var elem = $(this).find("td");
@@ -1720,7 +1946,7 @@ Engine.prototype.showToast = function (message) {
 
 exports.default = Engine;
 
-},{"./constants":9,"./controllers/MainController":10}],13:[function(require,module,exports){
+},{"./constants/index":9,"./controllers/MainController":12}],15:[function(require,module,exports){
 'use strict';
 
 var _World = require('./classes/World');
@@ -1842,4 +2068,4 @@ window.downloadCSV = function downloadCSV(stats) {
     return encodedUri;
 };
 
-},{"./bindings":4,"./classes/Entity":5,"./classes/World":8,"./controllers/MainController":10,"./engine":12}]},{},[13]);
+},{"./bindings":4,"./classes/Entity":5,"./classes/World":8,"./controllers/MainController":12,"./engine":14}]},{},[15]);
