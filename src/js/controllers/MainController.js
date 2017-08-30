@@ -1,3 +1,5 @@
+import {MAIN_VIEW} from '../constants';
+
 import StandardController from './StandardController';
 import HtmlCreation from '../Libraries/HtmlCreation';
 import Entity from '../classes/Entity';

@@ -1,3 +1,5 @@
+import {EQUIVALENCES} from "../constants";
+
 function StandardController(jqSel) {
 
     this.html = "";
