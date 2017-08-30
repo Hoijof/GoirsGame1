@@ -911,7 +911,7 @@ World.prototype.callADay = function () {
     this.standard.populationChange = this.people.size() - this.standard.population;
 
     // REPORTING
-    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    // window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
 
     this.standard.population = this.people.length = this.people.size();
 
@@ -1757,7 +1757,6 @@ gg.settings = {
 };
 
 window.stats = [];
-
 // Libraries
 // CLASSES
 
@@ -1796,7 +1795,7 @@ gg.initGameUI = function init() {
 gg.tick = function tick() {
     if (gg.ticking.active === true) {
         if (gg.ticking.interval === null) {
-            gg.ticking.interval = setInterval(tick, 1);
+            gg.ticking.interval = setInterval(tick, 30);
         }
         if (gg.ticking.percentage >= 100) {
             gg.ticking.percentage = 0;
@@ -1804,8 +1803,7 @@ gg.tick = function tick() {
             gg.world.callADay();
             gg.engine.update();
         } else {
-            // gg.ticking.percentage += 2;
-            gg.ticking.percentage += 50;
+            gg.ticking.percentage += 3;
         }
         $("#dayBar").css("width", gg.ticking.percentage + "%");
 

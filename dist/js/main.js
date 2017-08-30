@@ -12,7 +12,6 @@ gg.settings = {
 };
 
 window.stats = [];
-
 // Libraries
 // CLASSES
 import World from './classes/World';
@@ -54,7 +53,7 @@ gg.initGameUI = function init() {
 gg.tick = function tick() {
     if (gg.ticking.active === true) {
         if (gg.ticking.interval === null) {
-            gg.ticking.interval = setInterval(tick, 1);
+            gg.ticking.interval = setInterval(tick, 30);
         }
         if (gg.ticking.percentage >= 100) {
             gg.ticking.percentage = 0;
@@ -62,8 +61,7 @@ gg.tick = function tick() {
             gg.world.callADay();
             gg.engine.update();
         } else {
-            // gg.ticking.percentage += 2;
-            gg.ticking.percentage += 50;
+            gg.ticking.percentage += 3;
         }
         $("#dayBar").css("width", gg.ticking.percentage + "%");
 
