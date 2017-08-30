@@ -1,3 +1,8 @@
+import gf from '../Libraries/genericFunctions';
+import ef from '../Libraries/extendedFunctions';
+
+import {BASICS} from '../constants';
+
 import QuestManager from './QuestManager';
 import Entity from './Entity';
 
@@ -9,7 +14,7 @@ function World() {
         fights: 0,
         deaths: 0,
         births: 0,
-        population: getRandomInt(WORLD_MIN_SIZE, WORLD_MAX_SIZE),
+        population: gf.getRandomInt(BASICS.WORLD_MIN_SIZE, BASICS.WORLD_MAX_SIZE),
         fightsToday:0,
         deathsToday: 0,
         birthsToday: 0,
@@ -32,7 +37,7 @@ World.prototype.callADay = function() {
 
     this.standard.day++;
 
-    const fightsToday = getRandomInt(this.standard.population * 0.1, (this.standard.population / 2) * WORLD_FIGHT_FACTOR);
+    const fightsToday = gf.getRandomInt(this.standard.population * 0.1, (this.standard.population / 2) * BASICS.WORLD_FIGHT_FACTOR);
 
     gg.outputHTML += fightsToday + " fights to be done";
 
@@ -86,7 +91,7 @@ World.prototype.fight = function(fightsToday) {
         switch (result) {
             case "victory" :
                 res.todayVictories++;
-                if (!survivalCheck(attacked)) {
+                if (!ef.survivalCheck(attacked)) {
                     ++res.deathsToday;
                     attacked.basics.isDead = true;
                     this.removePerson(attacked);
@@ -97,7 +102,7 @@ World.prototype.fight = function(fightsToday) {
                 break;
             case "defeat" :
                 res.todayDefeats++;
-                if (!survivalCheck(attacker)) {
+                if (!ef.survivalCheck(attacker)) {
                     ++res.deathsToday;
                     attacker.basics.isDead = true;
                     this.removePerson(attacker);
@@ -117,15 +122,15 @@ World.prototype.fight = function(fightsToday) {
 };
 
 World.prototype.givePassives = function() {
-  this.people.forEach((person) => {
-      person.earnPassiveExp();
-      this.giveQuestToEntity(person);
-      // person.earnPassiveCoins();
-  })
+    this.people.forEach((person) => {
+        person.earnPassiveExp();
+        this.giveQuestToEntity(person);
+        // person.earnPassiveCoins();
+    })
 };
 
 World.prototype.birthPeople = function() {
-    let birthsToday = getRandomInt(0, Math.floor(this.standard.population / 2) * WORLD_BIRTH_FACTOR);
+    let birthsToday = gf.getRandomInt(0, Math.floor(this.standard.population / 2) * BASICS.WORLD_BIRTH_FACTOR);
 
     this.standard.birthsToday = birthsToday;
     this.standard.births += birthsToday;
@@ -137,7 +142,7 @@ World.prototype.birthPeople = function() {
 
 World.prototype.updatePeopleHealth = function() {
     for (let i = 0; i < this.people.length; i++) {
-        dailyHealingEntity(this.people[i]);
+        ef.dailyHealingEntity(this.people[i]);
     }
 };
 
@@ -160,10 +165,10 @@ World.prototype.getPersonById = function(id) {
 
 World.prototype.getRandomPerson = function(reference) {
     if (this.people.length < 2) return false;
-    let maxIterations = MAX_ITERATIONS;
+    let maxIterations = BASICS.MAX_ITERATIONS;
     while (maxIterations > 0) {
         maxIterations--;
-        let person = this.people[getRandomInt(0, this.people.size())];
+        let person = this.people[gf.getRandomInt(0, this.people.size())];
         if (person === undefined) continue;
 
         let repeated = false;

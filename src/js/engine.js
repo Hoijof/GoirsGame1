@@ -1,3 +1,4 @@
+import {BASICS} from "./constants";
 import MainController from './controllers/MainController';
 
 function Engine(world, player) {
@@ -52,8 +53,8 @@ Engine.prototype.updatePlayerInfo = function() {
     selector = $("#playerStats");
     let pointsFree = gg.player.getPointsFree();
 
-    if (pointsFree > 0) $("#headerStats").html(PLAYER_BASICS + " <span style='color:green;'>+" + pointsFree + "</span>");
-    else $("#headerStats").html(PLAYER_BASICS);
+    if (pointsFree > 0) $("#headerStats").html(BASICS.PLAYER_BASICS + " <span style='color:green;'>+" + pointsFree + "</span>");
+    else $("#headerStats").html(BASICS.PLAYER_BASICS);
 
     selector.find("tbody tr").each(function() {
         let elem = $(this).find("td");

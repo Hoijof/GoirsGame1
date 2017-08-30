@@ -1,4 +1,4 @@
-import gf from 'genericFunctions';
+import gf from './genericFunctions';
 import {BASICS, WARRIOR_TYPES} from "../constants";
 
 function attack(attacker, attacked) {
@@ -55,7 +55,7 @@ function attack(attacker, attacked) {
             gg.totals.dodges++;
         }
     } else {
-        damage = ((((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10))) * getRandom(0.8, 1.1)).toFixed(3);
+        damage = ((((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10))) * gf.getRandom(0.8, 1.1)).toFixed(3);
         if (damage < 0) damage = 0;
         if (badHand) damage *= 0.6;
         attacked.vitalPoints[zoneToAttack[0]] -= damage;

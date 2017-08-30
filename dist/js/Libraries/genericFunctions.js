@@ -1,3 +1,5 @@
+import {femaleNames, maleNames, surnames, townFirstNames, townNames, townSecondNames,} from "../constants";
+
 // PROTOTYPES
 
 Array.prototype.size = function() {
@@ -18,12 +20,12 @@ $.fn.refresh = function() {
     return $(this.selector);
 };
 
-var getRandomProperty = function(obj) {
-    let keys = Object.keys(obj)
+let getRandomProperty = function(obj) {
+    let keys = Object.keys(obj);
     return obj[keys[keys.length * Math.random() << 0]];
 };
 
-var getRandomKey = function(obj) {
+let getRandomKey = function(obj) {
     let keys = Object.keys(obj);
     return keys[keys.length * Math.random() << 0];
 };
@@ -57,7 +59,7 @@ function getDocumentRot(keyWord) {
     let baseUrl = document.location.href.split("/");
     do {
         baseUrl.splice(-1, 1);
-    } while (baseUrl[baseUrl.length - 1] != keyWord);
+    } while (baseUrl[baseUrl.length - 1] !== keyWord);
     return baseUrl.join('/');
 }
 
@@ -94,63 +96,6 @@ function getRandomTownName() {
     return townFirstNames[getRandomInt(0, townFirstNames.length - 1)] + townSecondNames[getRandomInt(0, townSecondNames.length - 1)];
 }
 
-function getDateFromTime(time) {
-    let year, month, day;
-
-    year = time / (daysInAMonth * monthsInAYear);
-    month = time % (daysInAMonth * monthsInAYear);
-    day = month % daysInAMonth;
-    month /= daysInAMonth;
-
-    return formatNumberLength(Math.floor(day + 1), 2) + "-" + formatNumberLength(Math.floor(month + 1), 2) + "-"
-        + formatNumberLength(Math.floor(year), 4);
-}
-
-function getAgeFromTime(time) {
-    let age = gg.world.getActualTime() - time;
-    age = age / (daysInAMonth * monthsInAYear);
-
-    return Math.floor(age);
-}
-
-
-// meh
-function createCORSRequest(method, url) {
-    let xhr = new XMLHttpRequest();
-    if ("withCredentials" in xhr) {
-        xhr.open(method, url, true);
-    } else if (typeof XDomainRequest !== "undefined") {
-        xhr = new XDomainRequest();
-        xhr.open(method, url);
-    } else {
-        xhr = null;
-    }
-    return xhr;
-}
-
-function readFile(fileName) {
-    if (FileReader) {
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            let url = 'http://ivy-corp.com/src/data/' + fileName;
-
-            let request = createCORSRequest('GET', url);
-            if (request) {
-                request.onload = function() {
-                    let surnames = request.response;
-                    //console.log(surnames);
-                    return ('pedrinn');
-                };
-                request.send();
-            }
-
-        } else {
-            alert('The File APIs are not fully supported by your browser.');
-        }
-    } else {
-        console.log('Your browser doesn\'t support the FileReader functionality of HTML5, you\'re not suited to be' +
-            'part of the testing team, sorry');
-    }
-}
 
 export default {
     getRandomInt: getRandomInt,
@@ -160,7 +105,5 @@ export default {
     getRandom: getRandom,
     getRandomCitizenName: getRandomCitizenName,
     getRandomCitizenSurname: getRandomCitizenSurname,
-    getDateFromTime: getDateFromTime,
-    getAgeFromTime: getAgeFromTime,
     getKeyFromNumber: getKeyFromNumber
 }

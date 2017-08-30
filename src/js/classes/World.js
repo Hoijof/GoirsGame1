@@ -165,7 +165,7 @@ World.prototype.getPersonById = function(id) {
 
 World.prototype.getRandomPerson = function(reference) {
     if (this.people.length < 2) return false;
-    let maxIterations = MAX_ITERATIONS;
+    let maxIterations = BASICS.MAX_ITERATIONS;
     while (maxIterations > 0) {
         maxIterations--;
         let person = this.people[gf.getRandomInt(0, this.people.size())];

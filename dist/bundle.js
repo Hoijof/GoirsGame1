@@ -36,6 +36,15 @@ exports.default = HtmlCreation;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _genericFunctions = require("./genericFunctions");
+
+var _genericFunctions2 = _interopRequireDefault(_genericFunctions);
+
+var _constants = require("../constants");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function attack(attacker, attacked) {
 
     var twoLegsDown = attacker.vitalPoints.rightLeg < 0 && attacker.vitalPoints.leftLeg < 0,
@@ -65,7 +74,7 @@ function attack(attacker, attacked) {
     });
     //global check
     number = parseInt(attacker.attributes.intelligence / attacked.attributes.intelligence + ((attacker.basics.victories + attacker.basics.defeats + 1) / (attacked.basics.victories + attacked.basics.defeats + 1)).map(0, 8, 0, 8));
-    number += getRandomInt(-1, 1);
+    number += _genericFunctions2.default.getRandomInt(-1, 1);
     if (number > 5) number = 5;
     if (number < 0) number = 0;
     zoneToAttack = zones[number];
@@ -88,14 +97,14 @@ function attack(attacker, attacked) {
     //chance to dodge
     legsOk = attacked.vitalPoints.leftLeg > 0 && attacker.vitalPoints.rightLeg > 0;
 
-    if (attacked.attributes.agility / attacker.attributes.agility + getRandomInt(-2, 2) > 5 && legsOk) {
+    if (attacked.attributes.agility / attacker.attributes.agility + _genericFunctions2.default.getRandomInt(-2, 2) > 5 && legsOk) {
         // TODO: take a look at it
         if (attacker.id === 0 || attacked.id === 0) {
             // gg.outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.";
             gg.totals.dodges++;
         }
     } else {
-        damage = ((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10 + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10)) * getRandom(0.8, 1.1)).toFixed(3);
+        damage = ((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10 + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10)) * _genericFunctions2.default.getRandom(0.8, 1.1)).toFixed(3);
         if (damage < 0) damage = 0;
         if (badHand) damage *= 0.6;
         attacked.vitalPoints[zoneToAttack[0]] -= damage;
@@ -107,19 +116,19 @@ function attack(attacker, attacked) {
 }
 
 function attackingFirstCheck(attacker, attacked) {
-    var check = attacker.attributes.agility - attacked.attributes.agility + 50 + getRandomInt(-10, 10);
-    return isAppening(check);
+    var check = attacker.attributes.agility - attacked.attributes.agility + 50 + _genericFunctions2.default.getRandomInt(-10, 10);
+    return _genericFunctions2.default.isAppening(check);
 }
 
 function survivalCheck(entity) {
 
-    var check = entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.2 + getRandomInt(-5, 5);
+    var check = entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.2 + _genericFunctions2.default.getRandomInt(-5, 5);
 
     if (entity.id === 0) {
         check += 10;
     }
 
-    var res = isAppening(check);
+    var res = _genericFunctions2.default.isAppening(check);
 
     if (res) {
         gg.totals.survivals++;
@@ -131,14 +140,14 @@ function survivalCheck(entity) {
 }
 
 function isDying(entity) {
-    return (entity.vitalPoints.body <= 0 || entity.vitalPoints.head <= 0) && isAppening(95);
+    return (entity.vitalPoints.body <= 0 || entity.vitalPoints.head <= 0) && _genericFunctions2.default.isAppening(95);
 }
 
 function dailyHealingEntity(entity) {
     var toHeal = (entity.attributes.endurance * 0.15 + entity.attributes.stamina * 0.15 + entity.attributes.willpower * 0.4 + entity.attributes.faith * 0.2) / 2;
     for (var part in entity.vitalPoints) {
         entity.vitalPoints[part] += toHeal;
-        if (entity.vitalPoints[part] > MAX_ENTITY_HEALTH) entity.vitalPoints[part] = MAX_ENTITY_HEALTH;
+        if (entity.vitalPoints[part] > _constants.BASICS.MAX_ENTITY_HEALTH) entity.vitalPoints[part] = _constants.BASICS.MAX_ENTITY_HEALTH;
     }
 }
 
@@ -163,23 +172,23 @@ function calculatePercentages(entity) {
     var i = void 0,
         tmpPercentages = [];
 
-    for (i = 0; i < WARRIOR_TYPES[entity.basics.class].length; ++i) {
-        tmpPercentages[i] = entity.attributes[getKeyFromNumber(entity.attributes, i)] / entity.basics.level;
+    for (i = 0; i < _constants.WARRIOR_TYPES[entity.basics.class].length; ++i) {
+        tmpPercentages[i] = entity.attributes[_genericFunctions2.default.getKeyFromNumber(entity.attributes, i)] / entity.basics.level;
     }
 
     return tmpPercentages;
 }
 
 function incrementLowestPercentage(entity) {
-    var basePercentages = WARRIOR_TYPES[entity.basics.class],
+    var basePercentages = _constants.WARRIOR_TYPES[entity.basics.class],
         i = void 0,
         updated = false,
         tmpPercentages = calculatePercentages(entity);
 
-    if (getRandomInt(0, 1)) {
+    if (_genericFunctions2.default.getRandomInt(0, 1)) {
         for (i = 0; i < basePercentages.length - 1; ++i) {
             if (basePercentages[i] > tmpPercentages[i]) {
-                entity.attributes[getKeyFromNumber(entity.attributes, i)]++;
+                entity.attributes[_genericFunctions2.default.getKeyFromNumber(entity.attributes, i)]++;
                 updated = true;
                 break;
             }
@@ -187,7 +196,7 @@ function incrementLowestPercentage(entity) {
     } else {
         for (i = basePercentages.length - 2; i >= 0; --i) {
             if (basePercentages[i] > tmpPercentages[i]) {
-                entity.attributes[getKeyFromNumber(entity.attributes, i)]++;
+                entity.attributes[_genericFunctions2.default.getKeyFromNumber(entity.attributes, i)]++;
                 updated = true;
                 break;
             }
@@ -211,7 +220,7 @@ function checkLevelUp(entity) {
 }
 
 function getRandomAttributeName() {
-    var rand = getRandomInt(0, 7);
+    var rand = _genericFunctions2.default.getRandomInt(0, 7);
     switch (rand) {
         case 0:
             return "strength";
@@ -253,12 +262,15 @@ exports.default = {
     survivalCheck: survivalCheck
 };
 
-},{}],3:[function(require,module,exports){
+},{"../constants":10,"./genericFunctions":3}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _constants = require("../constants");
+
 // PROTOTYPES
 
 Array.prototype.size = function () {
@@ -317,7 +329,7 @@ function getDocumentRot(keyWord) {
     var baseUrl = document.location.href.split("/");
     do {
         baseUrl.splice(-1, 1);
-    } while (baseUrl[baseUrl.length - 1] != keyWord);
+    } while (baseUrl[baseUrl.length - 1] !== keyWord);
     return baseUrl.join('/');
 }
 
@@ -338,76 +350,20 @@ function getRandom(min, max) {
 
 function getRandomCitizenName(sex) {
     if (sex === 'male') {
-        return maleNames[getRandomInt(0, maleNames.length - 1)];
+        return _constants.maleNames[getRandomInt(0, _constants.maleNames.length - 1)];
     } else if (sex === 'female') {
-        return femaleNames[getRandomInt(0, femaleNames.length - 1)];
+        return _constants.femaleNames[getRandomInt(0, _constants.femaleNames.length - 1)];
     }
     return 'Bernt';
 }
 
 function getRandomCitizenSurname() {
-    return surnames[getRandomInt(0, surnames.length - 1)];
+    return _constants.surnames[getRandomInt(0, _constants.surnames.length - 1)];
 }
 
 function getRandomTownName() {
-    if (isAppening(33)) return townNames[getRandomInt(0, townNames.length - 1)];
-    return townFirstNames[getRandomInt(0, townFirstNames.length - 1)] + townSecondNames[getRandomInt(0, townSecondNames.length - 1)];
-}
-
-function getDateFromTime(time) {
-    var year = void 0,
-        month = void 0,
-        day = void 0;
-
-    year = time / (daysInAMonth * monthsInAYear);
-    month = time % (daysInAMonth * monthsInAYear);
-    day = month % daysInAMonth;
-    month /= daysInAMonth;
-
-    return formatNumberLength(Math.floor(day + 1), 2) + "-" + formatNumberLength(Math.floor(month + 1), 2) + "-" + formatNumberLength(Math.floor(year), 4);
-}
-
-function getAgeFromTime(time) {
-    var age = gg.world.getActualTime() - time;
-    age = age / (daysInAMonth * monthsInAYear);
-
-    return Math.floor(age);
-}
-
-// meh
-function createCORSRequest(method, url) {
-    var xhr = new XMLHttpRequest();
-    if ("withCredentials" in xhr) {
-        xhr.open(method, url, true);
-    } else if (typeof XDomainRequest !== "undefined") {
-        xhr = new XDomainRequest();
-        xhr.open(method, url);
-    } else {
-        xhr = null;
-    }
-    return xhr;
-}
-
-function readFile(fileName) {
-    if (FileReader) {
-        if (window.File && window.FileReader && window.FileList && window.Blob) {
-            var url = 'http://ivy-corp.com/src/data/' + fileName;
-
-            var request = createCORSRequest('GET', url);
-            if (request) {
-                request.onload = function () {
-                    var surnames = request.response;
-                    //console.log(surnames);
-                    return 'pedrinn';
-                };
-                request.send();
-            }
-        } else {
-            alert('The File APIs are not fully supported by your browser.');
-        }
-    } else {
-        console.log('Your browser doesn\'t support the FileReader functionality of HTML5, you\'re not suited to be' + 'part of the testing team, sorry');
-    }
+    if (isAppening(33)) return _constants.townNames[getRandomInt(0, _constants.townNames.length - 1)];
+    return _constants.townFirstNames[getRandomInt(0, _constants.townFirstNames.length - 1)] + _constants.townSecondNames[getRandomInt(0, _constants.townSecondNames.length - 1)];
 }
 
 exports.default = {
@@ -418,12 +374,10 @@ exports.default = {
     getRandom: getRandom,
     getRandomCitizenName: getRandomCitizenName,
     getRandomCitizenSurname: getRandomCitizenSurname,
-    getDateFromTime: getDateFromTime,
-    getAgeFromTime: getAgeFromTime,
     getKeyFromNumber: getKeyFromNumber
 };
 
-},{}],4:[function(require,module,exports){
+},{"../constants":10}],4:[function(require,module,exports){
 "use strict";
 
 jQuery.fn.center = function (parent) {
@@ -442,29 +396,16 @@ jQuery.fn.center = function (parent) {
 };
 
 },{}],5:[function(require,module,exports){
-'use strict';
+"use strict";
 
-var _Terminal = require('./classes/Terminal');
-
-var _Terminal2 = _interopRequireDefault(_Terminal);
-
-var _Entity = require('./classes/Entity');
+var _Entity = require("./classes/Entity");
 
 var _Entity2 = _interopRequireDefault(_Entity);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-/**
- * Created by humberto.gomez on 25/06/2014.
- */
-
 $(document).ready(function () {
-    var jqSelTerminalText = $("#terminalTextInput"),
-        jqSelTerminal = $("#terminal"),
-        jqSelTerminalTextArea = $("#terminalTextAreaInput");
     Math.seedrandom();
-
-    gg.terminal = new _Terminal2.default(jqSelTerminal, jqSelTerminalText, jqSelTerminalTextArea, false);
 
     gg.initGameUI();
 
@@ -480,7 +421,6 @@ $(document).ready(function () {
         if (e.keyCode === ctrlKey) ctrlDown = true;
     }).keyup(function (e) {
         if (e.keyCode === ctrlKey) ctrlDown = false;
-        if (e.ctrlKey && e.keyCode === 77) gg.terminal.toggleVisibility();
         if (e.ctrlKey && e.keyCode === 32) $("#advance").click();
     });
 
@@ -508,63 +448,6 @@ $(document).ready(function () {
         $(this).next().toggle();
     });
 
-    jqSelTerminalText.on("keydown", function (event) {
-        //console.log(event.keyCode);
-        if (event.keyCode === 38) {
-            if (gg.terminal.consoleActualTrace > 0) {
-                gg.terminal.consoleActualTrace--;
-                gg.terminal.showCurrentTrace();
-                return false;
-            }
-        } else if (event.keyCode === 40) {
-            if (gg.terminal.consoleActualTrace < gg.terminal.consoleTrace.length - 1) {
-                gg.terminal.consoleActualTrace++;
-                gg.terminal.showCurrentTrace();
-                return false;
-            } else {
-                $("#terminalTextInput").val("");
-            }
-        }
-    }).keypress(function (e) {
-        if (event.keyCode === 13) {
-            gg.terminal.handleCommand($(this).val());
-            $(this).val("");
-        } else if (e.keyCode === 10) {
-            return false;
-        }
-    });
-
-    jqSelTerminal.on("mouseup", function () {
-        if (window.getSelection().type !== "Range") {
-            gg.terminal.focusInput();
-        }
-        return true;
-    });
-
-    jqSelTerminalTextArea.on("keydown", function (event) {
-        //console.log(event.keyCode);
-        if (event.keyCode === 38) {
-            if (gg.terminal.consoleActualTrace > 0) {
-                gg.terminal.consoleActualTrace--;
-                gg.terminal.showCurrentTrace();
-                return false;
-            }
-        } else if (event.keyCode === 40) {
-            if (gg.terminal.consoleActualTrace < gg.terminal.consoleTrace.length - 1) {
-                gg.terminal.consoleActualTrace++;
-                gg.terminal.showCurrentTrace();
-                return false;
-            } else {
-                $("#terminalTextAreaInput").val("");
-            }
-        }
-    }).keypress(function (e) {
-        if (event.keyCode === 10) {
-            gg.terminal.handleCommand($(this).val());
-            $(this).val("");
-        }
-    });
-
     $(document).on("click", ".addPoint", function () {
         var entity = gg.player,
             pointsFree = entity.getPointsFree();
@@ -576,27 +459,35 @@ $(document).ready(function () {
 
         gg.engine.updatePlayerInfo();
     });
+}); /**
+     * Created by humberto.gomez on 25/06/2014.
+     */
 
-    $("#buttongoirs").on("click", function () {
-        for (var i = 0; i <= 120; i += 1) {
-            var things = Math.round(450 * 10 + Math.pow(i, 2));
-            console.log(things);
-        }
-    });
-});
-
-},{"./classes/Entity":6,"./classes/Terminal":9}],6:[function(require,module,exports){
-"use strict";
+},{"./classes/Entity":6}],6:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _constants = require('../constants');
+
+var _genericFunctions = require('../Libraries/genericFunctions');
+
+var _genericFunctions2 = _interopRequireDefault(_genericFunctions);
+
+var _extendedFunctions = require('../Libraries/extendedFunctions');
+
+var _extendedFunctions2 = _interopRequireDefault(_extendedFunctions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function Entity(id, playerClass) {
 
     // Stats
 
     this.id = id;
-    this.type = WARRIOR_TYPES[getRandomInt(0, WARRIOR_TYPES.length)];
+    this.type = _constants.WARRIOR_TYPES[_genericFunctions2.default.getRandomInt(0, _constants.WARRIOR_TYPES.length)];
 
     this.basics = {
         name: 0,
@@ -627,12 +518,12 @@ function Entity(id, playerClass) {
     };
 
     this.vitalPoints = {
-        head: MAX_ENTITY_HEALTH,
-        body: MAX_ENTITY_HEALTH,
-        leftArm: MAX_ENTITY_HEALTH,
-        rightArm: MAX_ENTITY_HEALTH,
-        leftLeg: MAX_ENTITY_HEALTH,
-        rightLeg: MAX_ENTITY_HEALTH
+        head: _constants.BASICS.MAX_ENTITY_HEALTH,
+        body: _constants.BASICS.MAX_ENTITY_HEALTH,
+        leftArm: _constants.BASICS.MAX_ENTITY_HEALTH,
+        rightArm: _constants.BASICS.MAX_ENTITY_HEALTH,
+        leftLeg: _constants.BASICS.MAX_ENTITY_HEALTH,
+        rightLeg: _constants.BASICS.MAX_ENTITY_HEALTH
     };
 
     this.init();
@@ -668,12 +559,12 @@ Entity.prototype.levelUp = function () {
 
 Entity.prototype.init = function () {
     this.basics.isDead = false;
-    this.basics.sex = isAppening(50) ? "male" : "female";
-    this.basics.class = this.basics.class === null ? getRandomKey(WARRIOR_TYPES) : this.basics.class;
-    this.basics.name = getRandomCitizenName(this.basics.sex);
-    this.basics.surname = getRandomCitizenSurname();
+    this.basics.sex = _genericFunctions2.default.isAppening(50) ? "male" : "female";
+    this.basics.class = this.basics.class === null ? _genericFunctions2.default.getRandomKey(_constants.WARRIOR_TYPES) : this.basics.class;
+    this.basics.name = _genericFunctions2.default.getRandomCitizenName(this.basics.sex);
+    this.basics.surname = _genericFunctions2.default.getRandomCitizenSurname();
     this.basics.level = 8;
-    this.basics.hand = isAppening(60) ? "right" : "left";
+    this.basics.hand = _genericFunctions2.default.isAppening(60) ? "right" : "left";
     this.basics.victories = 0;
     this.basics.defeats = 0;
     this.basics.experience = 100;
@@ -690,26 +581,26 @@ Entity.prototype.init = function () {
 
     // this.getBaseExperience();
     // console.log(this.basics.experience);
-    checkLevelUp(this);
+    _extendedFunctions2.default.checkLevelUp(this);
 };
 
 Entity.prototype.getBaseExperience = function () {
-    var num = getRandomInt(0, 100);
+    var num = _genericFunctions2.default.getRandomInt(0, 100);
 
     if (num > 100 - 3) {
-        this.basics.experience = getRandomInt(2000000, 3199629);
+        this.basics.experience = _genericFunctions2.default.getRandomInt(2000000, 3199629);
     } else if (num > 100 - 15) {
-        this.basics.experience = getRandomInt(1000000, 2000000);
+        this.basics.experience = _genericFunctions2.default.getRandomInt(1000000, 2000000);
     } else if (num > 100 - 25) {
-        this.basics.experience = getRandomInt(500000, 1000000);
+        this.basics.experience = _genericFunctions2.default.getRandomInt(500000, 1000000);
     } else if (num > 100 - 35) {
-        this.basics.experience = getRandomInt(250000, 500000);
+        this.basics.experience = _genericFunctions2.default.getRandomInt(250000, 500000);
     } else if (num > 100 - 45) {
-        this.basics.experience = getRandomInt(100000, 250000);
+        this.basics.experience = _genericFunctions2.default.getRandomInt(100000, 250000);
     } else if (num > 100 - 50) {
-        this.basics.experience = getRandomInt(50000, 100000);
+        this.basics.experience = _genericFunctions2.default.getRandomInt(50000, 100000);
     } else {
-        this.basics.experience = getRandomInt(0, 50000);
+        this.basics.experience = _genericFunctions2.default.getRandomInt(0, 50000);
     }
 
     this.basics.experience /= 1000;
@@ -731,41 +622,41 @@ Entity.prototype.generateStat = function (stat) {
 
     switch (stat) {
         case "strength":
-            result = getRandomInt(3, 100);
+            result = _genericFunctions2.default.getRandomInt(3, 100);
             this.basics.level += result;
             return result;
             break;
         case "endurance":
-            result = getRandomInt(3, 100);
+            result = _genericFunctions2.default.getRandomInt(3, 100);
             this.basics.level += result;
             return result;
             break;
         case "intelligence":
-            result = getRandomInt(3, 100);
+            result = _genericFunctions2.default.getRandomInt(3, 100);
             this.basics.level += result;
             return result;
             break;
         case "willpower":
-            result = getRandomInt(3, 100);
+            result = _genericFunctions2.default.getRandomInt(3, 100);
             this.basics.level += result;
             return result;
             break;
         case "agility":
-            result = getRandomInt(3, 100);
+            result = _genericFunctions2.default.getRandomInt(3, 100);
             return result;
             break;
         case "speed":
-            result = getRandomInt(3, 100);
+            result = _genericFunctions2.default.getRandomInt(3, 100);
             this.basics.level += result;
             return result;
             break;
         case "stamina":
-            result = getRandomInt(3, 100);
+            result = _genericFunctions2.default.getRandomInt(3, 100);
             this.basics.level += result;
             return result;
             break;
         case "faith":
-            result = getRandomInt(3, 100);
+            result = _genericFunctions2.default.getRandomInt(3, 100);
             this.basics.level += result;
             return result;
             break;
@@ -773,7 +664,7 @@ Entity.prototype.generateStat = function (stat) {
 };
 
 Entity.prototype.addPointsToAttribute = function (points, attribute) {
-    if (this.attributes[attribute] + points <= MAX_ATTRIBUTE_LEVEL && this.attributes[attribute] + points >= 0) {
+    if (this.attributes[attribute] + points <= _constants.BASICS.MAX_ATTRIBUTE_LEVEL && this.attributes[attribute] + points >= 0) {
         this.attributes[attribute] += points;
         for (var i = 0; i < points; ++i) {
             this.levelUp();
@@ -792,10 +683,10 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
         enemy.report();
     }
 
-    while (!isDying(this) && !isDying(enemy) && turns < MAX_BATTLE_TURNS) {
+    while (!_extendedFunctions2.default.isDying(this) && !_extendedFunctions2.default.isDying(enemy) && turns < _constants.BASICS.MAX_BATTLE_TURNS) {
         var attacker = void 0,
             attacked = void 0;
-        if (attackingFirstCheck(this, enemy)) {
+        if (_extendedFunctions2.default.attackingFirstCheck(this, enemy)) {
             // Check who attacks first
             attacker = this;
             attacked = enemy;
@@ -806,9 +697,9 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
             timesSecond++;
         }
 
-        attack(attacker, attacked);
-        if (!isDying(this) && !isDying(enemy)) {
-            attack(attacked, attacker);
+        _extendedFunctions2.default.attack(attacker, attacked);
+        if (!_extendedFunctions2.default.isDying(this) && !_extendedFunctions2.default.isDying(enemy)) {
+            _extendedFunctions2.default.attack(attacked, attacker);
         }
 
         turns++;
@@ -821,7 +712,7 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
     this.basics.fights++;
     enemy.basics.fights++;
 
-    if (isDying(this)) {
+    if (_extendedFunctions2.default.isDying(this)) {
         this.basics.defeats++;
         enemy.basics.victories++;
 
@@ -829,22 +720,22 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
             gg.outputHTML += "<br>" + enemy.basics.name + " Wins.";
         }
 
-        giveExperience(enemy, this, EXPERIENCE_WIN_FACTOR);
-        giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR);
+        _extendedFunctions2.default.giveExperience(enemy, this, _constants.BASICS.EXPERIENCE_WIN_FACTOR);
+        _extendedFunctions2.default.giveExperience(this, enemy, _constants.BASICS.EXPERIENCE_LOSS_FACTOR);
 
         enemy.stealCoins(this);
 
         return "defeat";
     } else {
-        if (isDying(enemy)) {
+        if (_extendedFunctions2.default.isDying(enemy)) {
             enemy.basics.defeats++;
             this.basics.victories++;
             if (this.id === 0 || enemy.id === 0) {
                 gg.outputHTML += "<br>" + this.basics.name + " Wins.";
             }
 
-            giveExperience(this, enemy, EXPERIENCE_WIN_FACTOR);
-            giveExperience(enemy, this, EXPERIENCE_LOSS_FACTOR);
+            _extendedFunctions2.default.giveExperience(this, enemy, _constants.BASICS.EXPERIENCE_WIN_FACTOR);
+            _extendedFunctions2.default.giveExperience(enemy, this, _constants.BASICS.EXPERIENCE_LOSS_FACTOR);
 
             this.stealCoins(enemy);
 
@@ -854,8 +745,8 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
                 gg.outputHTML += "<br>" + "Nobody wins";
             }
 
-            giveExperience(enemy, this, EXPERIENCE_LOSS_FACTOR);
-            giveExperience(this, enemy, EXPERIENCE_LOSS_FACTOR);
+            _extendedFunctions2.default.giveExperience(enemy, this, _constants.BASICS.EXPERIENCE_LOSS_FACTOR);
+            _extendedFunctions2.default.giveExperience(this, enemy, _constants.BASICS.EXPERIENCE_LOSS_FACTOR);
             return "draw";
         }
     }
@@ -866,14 +757,14 @@ Entity.prototype.earnPassiveExp = function () {
 };
 
 Entity.prototype.levelUpAsType = function (type) {
-    for (var i = 0; i < FIGHTER_TYPES[type].length; i++) {
-        gg.outputHTML += "<br>" + FIGHTER_TYPES[i];
+    for (var i = 0; i < _constants.BASICS.FIGHTER_TYPES[type].length; i++) {
+        gg.outputHTML += "<br>" + _constants.BASICS.FIGHTER_TYPES[i];
     }
 };
 
 Entity.prototype.report = function () {
-    var basePercentages = WARRIOR_TYPES[this.basics.class],
-        percentages = calculatePercentages(this, basePercentages),
+    var basePercentages = _constants.WARRIOR_TYPES[this.basics.class],
+        percentages = _extendedFunctions2.default.calculatePercentages(this, basePercentages),
         i = void 0;
 
     gg.outputHTML += "<br>" + "---------------------------------------------------------------------------------------";
@@ -912,7 +803,7 @@ Entity.prototype.earnPassiveCoins = function () {
 
 exports.default = Entity;
 
-},{}],7:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants":10}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -963,301 +854,16 @@ exports.default = QuestManager;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-function Terminal(consoleSelector, inputText, inputTextArea, isActive) {
-    this.jqSelTerminal = consoleSelector;
-    this.jqSelTerminalText = inputText;
-    this.jqSelTerminalTextArea = inputTextArea;
 
-    this.consoleActualTrace = 0;
-    this.consoleTrace = [];
+var _genericFunctions = require('../Libraries/genericFunctions');
 
-    this.isActive = isActive;
+var _genericFunctions2 = _interopRequireDefault(_genericFunctions);
 
-    this.LINE_SIZE = 122;
+var _extendedFunctions = require('../Libraries/extendedFunctions');
 
-    this.init();
-}
+var _extendedFunctions2 = _interopRequireDefault(_extendedFunctions);
 
-Terminal.prototype.init = function () {
-    if (this.isActive) {
-        this.jqSelTerminal.show();
-    } else {
-        this.jqSelTerminal.hide();
-    }
-
-    this.consoleTrace.push("Hello .D");
-    this.consoleActualTrace = 1;
-
-    this.jqSelTerminal.css('left', $(window).width() / 2 - 350);
-    $(window).resize(function () {
-        $('#terminal').css('left', $(window).width() / 2 - 350);
-    });
-};
-
-Terminal.prototype.focusInput = function () {
-    if (this.jqSelTerminalText.css("display") !== "none") {
-        this.jqSelTerminalText.focus();
-    } else {
-        this.jqSelTerminalTextArea.focus();
-    }
-};
-
-Terminal.prototype.toggleVisibility = function () {
-    this.jqSelTerminal.toggle();
-    this.focusInput();
-};
-
-Terminal.prototype.handleCommand = function (command, modificator) {
-    if (command === "") return;
-    command = command.toLowerCase();
-
-    this.addContentToTerminal(command);
-
-    var message = "";
-
-    if (this.consoleTrace[this.consoleTrace.length - 1] !== command) {
-        this.consoleTrace.push(command);
-        this.consoleActualTrace = this.consoleTrace.length;
-    }
-
-    command = command.split(" ");
-
-    var that = this;
-
-    var cases = {
-        clear: function clear() {
-            that.jqSelTerminal.find("div").remove();
-        },
-        color: function color() {
-            var usage = "Changes backround color and text color of the terminal.\n Usage: color [options] background-color color";
-            if (typeof command[1] === 'undefined' && typeof command[2] === 'undefined') {
-                message = usage;
-                return;
-            }
-            var bc = command[1].charAt(0).toUpperCase() + command[1].slice(1),
-                c = command[2].charAt(0).toUpperCase() + command[2].slice(1);
-
-            if (CSS_COLOR_NAMES.indexOf(bc) > -1) {
-                that.jqSelTerminal.css("background-color", bc);
-                that.jqSelTerminal.find("input").css("background-color", bc);
-            } else {
-                message = usage + "\n Background color doesn't exists";
-            }
-
-            if (CSS_COLOR_NAMES.indexOf(c) > -1) {
-                that.jqSelTerminal.css("color", c);
-                that.jqSelTerminal.find("input").css("color", c);
-            } else {
-                message = usage + "\n Color doesn't exists";
-            }
-        },
-        list: function list() {
-            var casesSub = {
-                commands: function commands() {
-                    $.each(cases, function (key, value) {
-                        if (key !== "_default") message += key + ", ";
-                    });
-                    message = message.substring(0, message.length - 2);
-                },
-                cssColors: function cssColors() {
-                    for (var _i = 0; _i < CSS_COLOR_NAMES.length; ++_i) {
-                        message += CSS_COLOR_NAMES[_i] + ", ";
-                    }
-                    message = message.substring(0, message.length - 2);
-                },
-                _default: function _default() {
-                    message = "Option " + command[1] + " not recognized \n We recognize the following listable items: ";
-                    $.each(casesSub, function (key, value) {
-                        if (key !== "_default") message += key + ", ";
-                    });
-                }
-            };
-            casesSub[command[1]] ? casesSub[command[1]]() : casesSub._default();
-        },
-        show: function show() {
-            var casesSub = {
-                letiable: function letiable() {
-                    message += window[command[2]];
-                },
-                _default: function _default() {
-                    message = "Option " + command[1] + " not recognized \n We recognize the following showable items: ";
-                    $.each(casesSub, function (key, value) {
-                        if (key !== "_default") message += key + ", ";
-                    });
-                }
-            };
-
-            casesSub.let = casesSub.letiable;
-            casesSub[command[1]] ? casesSub[command[1]]() : casesSub._default();
-        },
-        reload: function reload() {
-            location.reload();
-        },
-        execute: function execute() {
-            var usage = "Execute the code passed as argument \n Usage: execute [options] language code \n You can insert" + " the code with spaces, we handel it ;). \n We can execute the following languages: ";
-
-            var casesSub = {
-                javascript: function javascript() {
-                    var code = "";
-                    for (var _i2 = 2; _i2 < command.length; ++_i2) {
-                        code += " " + command[_i2];
-                    }
-
-                    console.log(code);
-                    code = code.split(1, code.length);
-
-                    console.log(code);
-                    code = "try{" + code + "}catch(e){message = e.message}";
-                    eval(code);
-                },
-                css: function css() {
-                    var code = "",
-                        selectors = void 0;
-
-                    for (var _i3 = 2; _i3 < command.length; ++_i3) {
-                        code += " " + command[_i3];
-                    }
-                    code = code.split(1, code.length);
-                    code = code.replace("&&this&&", that.jqTSelConsole);
-
-                    code = code.replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, "");
-                    selectors = code.split(/{(?:[\s\S]*?)}/);
-                    code = code.split("}");
-
-                    for (i = 0; i < code.length - 1; i++) {
-                        code[i] = code[i].replace(/.*{/, "");
-                        code[i] = code[i].split(";");
-                        for (var _j = 0; _j < code[i].length - 1; _j++) {
-                            code[i][_j] = code[i][_j].split(":");
-                        }
-                    }
-
-                    for (i = 0; i < code.length - 1; i++) {
-                        var object = {};
-                        for (j = 0; j < code.length - 1; j++) {
-                            object[code[i][j][0].replace(/^\s\s*/, '').replace(/\s\s*$/, '')] = code[i][j][1].replace(/^\s\s*/, '').replace(/\s\s*$/, '');
-                        }
-                        $(selectors[i]).css(object);
-                    }
-                },
-                _default: function _default() {
-                    message = usage;
-                }
-            };
-
-            $.each(casesSub, function (key, value) {
-                if (key !== "_default") usage += key + ", ";
-            });
-
-            if (typeof command[1] === 'undefined' && typeof command[2] === 'undefined') {
-                message = usage;
-                return;
-            }
-
-            message = "ok";
-
-            casesSub.js = casesSub.javascript;
-            casesSub[command[1]] ? casesSub[command[1]]() : casesSub._default();
-        },
-        goto: function goto() {
-            var usage = "Goes to the defined url \n Usage: goto [options] url";
-            if (typeof command[1] !== 'undefined') {
-                if (command[1].substring(0, 7) === "http://") {
-                    window.location = command[1];
-                } else {
-                    window.location = "http://" + command[1];
-                }
-            } else message = usage;
-        },
-        special: function special() {
-            var usage = "Does special things ;). \n Usage: special [options] option \n You can activate the following special features: ";
-            var casesSub = {
-                editmode: function editmode() {
-                    if (command[2] === "on") {
-                        document.body.contentEditable = 'true';
-                        document.designMode = 'on';
-                        message = "Now you can edit any content in the page .D";
-                    } else if (command[2] === "off") {
-                        document.body.contentEditable = 'false';
-                        document.designMode = 'off';
-                    } else {
-                        if (document.body.contentEditable === "true") {
-                            document.body.contentEditable = 'false';
-                            document.designMode = 'off';
-                        } else {
-                            document.body.contentEditable = 'true';
-                            document.designMode = 'on';
-                            message = "Now you can edit any content in the page .D";
-                        }
-                    }
-                },
-                _default: function _default() {
-                    message = usage;
-                }
-            };
-
-            $.each(casesSub, function (key, value) {
-                if (key !== "_default") usage += key + ", ";
-            });
-
-            casesSub[command[1]] ? casesSub[command[1]]() : casesSub._default();
-        },
-        input: function input() {
-            that.jqSelTerminalTextArea.toggle();
-            that.jqSelTerminalText.toggle();
-
-            if (that.jqSelTerminalTextArea.css("display") !== "none") {
-                message += "Area Mode, remember to send commands with ctrl + enter";
-            }
-            that.focusInput();
-        },
-        _default: function _default() {
-            message = "Command " + command[0] + " not recognized. Use \"list command\" for a list of all the available commands";
-        }
-    };
-
-    cases.exec = cases.exe = cases.ex = cases.execute;
-    cases.clr = cases.clear;
-
-    cases[command[0]] ? cases[command[0]]() : cases._default();
-
-    message = message.split("\n");
-    for (var _i4 = 0; _i4 < message.length; _i4++) {
-        this.addContentToTerminal(message[_i4]);
-    }
-
-    if (this.jqSelTerminalText.position().top > this.jqSelTerminal.height()) this.jqSelTerminalText.css("top", this.jqSelTerminal.height());
-};
-
-Terminal.prototype.addContentToTerminal = function (text) {
-    if (text === "") return;
-
-    var numberOfMessages = Math.ceil(text.length / this.LINE_SIZE);
-    for (var _i5 = 0; _i5 < numberOfMessages; _i5++) {
-        this.jqSelTerminal.find("input").before("<div>" + text.substring(_i5 * this.LINE_SIZE, _i5 * this.LINE_SIZE + this.LINE_SIZE) + "</div>");
-        if (this.jqSelTerminal.find('div').first().position().top < 10) this.jqSelTerminal.find('div').first().remove();
-    }
-    this.deleteExtraMessages();
-};
-
-Terminal.prototype.deleteExtraMessages = function () {
-    //this.jqSelTerminalTextArea.css("height", ((this.jqSelTerminal.height() - this.jqSelTerminal.children().length * 20) + 40 > 20) ?  (this.jqSelTerminal.height() - this.jqSelTerminal.children().length * 20) + 40:20);
-    this.jqSelTerminalText.focus().val("goirs").val("");
-};
-
-Terminal.prototype.showCurrentTrace = function () {
-    this.jqSelTerminal.find("input").focus().val("").val(this.consoleTrace[this.consoleActualTrace]);
-};
-//adm@ww9
-
-exports.default = Terminal;
-
-},{}],10:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+var _constants = require('../constants');
 
 var _QuestManager = require('./QuestManager');
 
@@ -1277,7 +883,7 @@ function World() {
         fights: 0,
         deaths: 0,
         births: 0,
-        population: getRandomInt(WORLD_MIN_SIZE, WORLD_MAX_SIZE),
+        population: _genericFunctions2.default.getRandomInt(_constants.BASICS.WORLD_MIN_SIZE, _constants.BASICS.WORLD_MAX_SIZE),
         fightsToday: 0,
         deathsToday: 0,
         birthsToday: 0,
@@ -1300,7 +906,7 @@ World.prototype.callADay = function () {
 
     this.standard.day++;
 
-    var fightsToday = getRandomInt(this.standard.population * 0.1, this.standard.population / 2 * WORLD_FIGHT_FACTOR);
+    var fightsToday = _genericFunctions2.default.getRandomInt(this.standard.population * 0.1, this.standard.population / 2 * _constants.BASICS.WORLD_FIGHT_FACTOR);
 
     gg.outputHTML += fightsToday + " fights to be done";
 
@@ -1348,7 +954,7 @@ World.prototype.fight = function (fightsToday) {
         switch (result) {
             case "victory":
                 res.todayVictories++;
-                if (!survivalCheck(attacked)) {
+                if (!_extendedFunctions2.default.survivalCheck(attacked)) {
                     ++res.deathsToday;
                     attacked.basics.isDead = true;
                     this.removePerson(attacked);
@@ -1359,7 +965,7 @@ World.prototype.fight = function (fightsToday) {
                 break;
             case "defeat":
                 res.todayDefeats++;
-                if (!survivalCheck(attacker)) {
+                if (!_extendedFunctions2.default.survivalCheck(attacker)) {
                     ++res.deathsToday;
                     attacker.basics.isDead = true;
                     this.removePerson(attacker);
@@ -1389,7 +995,7 @@ World.prototype.givePassives = function () {
 };
 
 World.prototype.birthPeople = function () {
-    var birthsToday = getRandomInt(0, Math.floor(this.standard.population / 2) * WORLD_BIRTH_FACTOR);
+    var birthsToday = _genericFunctions2.default.getRandomInt(0, Math.floor(this.standard.population / 2) * _constants.BASICS.WORLD_BIRTH_FACTOR);
 
     this.standard.birthsToday = birthsToday;
     this.standard.births += birthsToday;
@@ -1401,7 +1007,7 @@ World.prototype.birthPeople = function () {
 
 World.prototype.updatePeopleHealth = function () {
     for (var i = 0; i < this.people.length; i++) {
-        dailyHealingEntity(this.people[i]);
+        _extendedFunctions2.default.dailyHealingEntity(this.people[i]);
     }
 };
 
@@ -1424,10 +1030,10 @@ World.prototype.getPersonById = function (id) {
 
 World.prototype.getRandomPerson = function (reference) {
     if (this.people.length < 2) return false;
-    var maxIterations = MAX_ITERATIONS;
+    var maxIterations = _constants.BASICS.MAX_ITERATIONS;
     while (maxIterations > 0) {
         maxIterations--;
-        var person = this.people[getRandomInt(0, this.people.size())];
+        var person = this.people[_genericFunctions2.default.getRandomInt(0, this.people.size())];
         if (person === undefined) continue;
 
         var repeated = false;
@@ -1468,12 +1074,115 @@ World.prototype.giveQuestToEntity = function (entity) {
 
 exports.default = World;
 
-},{"./Entity":6,"./QuestManager":8}],11:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants":10,"./Entity":6,"./QuestManager":8}],10:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var BASICS = exports.BASICS = {
+    MAX_ENTITY_HEALTH: 100,
+
+    WORLD_FIGHT_FACTOR: 0.6,
+    WORLD_BIRTH_FACTOR: 0.1,
+    MAX_BATTLE_TURNS: 100,
+    MAX_ITERATIONS: 30,
+    REFRESH_COUNTER: 3,
+
+    WORLD_MIN_SIZE: 50,
+    WORLD_MAX_SIZE: 300,
+
+    EXPERIENCE_LOSS_FACTOR: 0.2,
+    EXPERIENCE_WIN_FACTOR: 1,
+    MAX_ATTRIBUTE_LEVEL: 500,
+
+    PLAYER_BASICS: "PLAYER BASICS",
+    FIGHTER_TYPES: [],
+    UNUSED_VAR: null
+};
+
+/*strength 		: 0,
+ endurance		: 0,
+ intelligence 	: 0,
+ willpower		: 0,
+ agility 		: 0,
+ speed 			: 0,
+ stamina	 	    : 0,
+ faith 			: 0*/
+
+var WARRIOR_TYPES = exports.WARRIOR_TYPES = {
+    warrior: [0.2, 0.2, 0.02, 0.2, 0.2, 0.18, 0, 0],
+    mage: [0.05, 0.15, 0.4, 0.3, 0.02, 0.02, 0.16, 0],
+    rogue: [0.1, 0.05, 0.1, 0.15, 0.25, 0.15, 0.15, 0.05],
+    monk: [0.05, 0.10, 0.2, 0.2, 0.05, 0.05, 0.35]
+};
+
+var femaleNames = exports.femaleNames = ["Aekkein", "Erna", "Gica", "Iris", "Laen", "Oanei", "Urusla", "Unt", "Zy", "Giny", "Teni", "Tania", "Tenisa", "Falish", "Tirs", "Bera", "Boria", "Terkia", "Tronash", "Si", "Gi", "Ti", "Fi", "Di", "Mi", "Peli", "Irnia", "Beth", "Riven", "Vi", "Lio", "Nayeli"];
+
+var maleNames = exports.maleNames = ["Anttirnet", "Carnil", "Estiv", "Halt", "Hoijof", "Laen", "Lisiern", "Berin", "Ton", "Shome", "Regit", "Lurin", "Maers", "Musten", "Oanei", "Raesh", "Terio", "Unt", "Ust", "Redik", "James", "Loki", "Tem", "Regot", "Josh", "Tom", "Jei", "Lioth"];
+
+var surnames = exports.surnames = ["Golpeo", "Anorda", "Severnin", "Part", "Kek-vek-loah", "Vaen", "Nerivin", "Haeshi", "Vin-ti-selh", "Ver-to", "Vintoret", "Da Teri", "Von Bien", "Maer", "Serisn", "Vintaren", "Bertis", "Tetirit", "Tornet", "Bellabi", "Geron", "Tornes", "Gorez", "Lorez", "Gareth"];
+
+var townNames = exports.townNames = ["Laptius", "Birnicie", "Gerina", "Olvinast", "Maktius", "New Berinet", "Berinet", "Old Berinet", "Not So Old Berinet", "Dantias", "Maktius", "Bluelake", "Pryland", "Crystalsage"];
+
+var townFirstNames = exports.townFirstNames = ["Great", "Big", "Blue", "Black", "Greay", "Nordic", "Rapid", "Shadow", "Violet", "White", "Gold", "Silver", "Bronze", "Iron", "Stone", "Water", "Rose", "Cold", "Cor", "Coast", "Bright", "Well", "Butter", "Dork", "Wind", "Orba", "North", "Wolf", "South", "East", "West"];
+
+var townSecondNames = exports.townSecondNames = ["shore", "size", "port", "fox", "ham", "mill", "mere", "gate", "bush", "bank", "way", "dedge", "keep", "cliff", "row", "mount", "river", "sea", "fall", "flea", "wald", "crest", "wick", "well", "mead"];
+
+var CSS_COLOR_NAMES = exports.CSS_COLOR_NAMES = ["AliceBlue", "AntiqueWhite", "Aqua", "Aquamarine", "Azure", "Beige", "Bisque", "Black", "BlanchedAlmond", "Blue", "BlueViolet", "Brown", "BurlyWood", "CadetBlue", "Chartreuse", "Chocolate", "Coral", "CornflowerBlue", "Cornsilk", "Crimson", "Cyan", "DarkBlue", "DarkCyan", "DarkGoldenRod", "DarkGray", "DarkGrey", "DarkGreen", "DarkKhaki", "DarkMagenta", "DarkOliveGreen", "Darkorange", "DarkOrchid", "DarkRed", "DarkSalmon", "DarkSeaGreen", "DarkSlateBlue", "DarkSlateGray", "DarkSlateGrey", "DarkTurquoise", "DarkViolet", "DeepPink", "DeepSkyBlue", "DimGray", "DimGrey", "DodgerBlue", "FireBrick", "FloralWhite", "ForestGreen", "Fuchsia", "Gainsboro", "GhostWhite", "Gold", "GoldenRod", "Gray", "Grey", "Green", "GreenYellow", "HoneyDew", "HotPink", "IndianRed", "Indigo", "Ivory", "Khaki", "Lavender", "LavenderBlush", "LawnGreen", "LemonChiffon", "LightBlue", "LightCoral", "LightCyan", "LightGoldenRodYellow", "LightGray", "LightGrey", "LightGreen", "LightPink", "LightSalmon", "LightSeaGreen", "LightSkyBlue", "LightSlateGray", "LightSlateGrey", "LightSteelBlue", "LightYellow", "Lime", "LimeGreen", "Linen", "Magenta", "Maroon", "MediumAquaMarine", "MediumBlue", "MediumOrchid", "MediumPurple", "MediumSeaGreen", "MediumSlateBlue", "MediumSpringGreen", "MediumTurquoise", "MediumVioletRed", "MidnightBlue", "MintCream", "MistyRose", "Moccasin", "NavajoWhite", "Navy", "OldLace", "Olive", "OliveDrab", "Orange", "OrangeRed", "Orchid", "PaleGoldenRod", "PaleGreen", "PaleTurquoise", "PaleVioletRed", "PapayaWhip", "PeachPuff", "Peru", "Pink", "Plum", "PowderBlue", "Purple", "Red", "RosyBrown", "RoyalBlue", "SaddleBrown", "Salmon", "SandyBrown", "SeaGreen", "SeaShell", "Sienna", "Silver", "SkyBlue", "SlateBlue", "SlateGray", "SlateGrey", "Snow", "SpringGreen", "SteelBlue", "Tan", "Teal", "Thistle", "Tomato", "Turquoise", "Violet", "Wheat", "White", "WhiteSmoke", "Yellow", "YellowGreen"];
+
+var MAIN_VIEW = exports.MAIN_VIEW = {
+    TITLE: "GOIRS'S GAME",
+    PLAYER_FORM: {
+        DESCRIPTION: "You were born in this harass land. War was your teacher since a young age and you know nothing but death and destruction. Welcome to the world.",
+        LEGEND: "This is who you will be, choose wisely",
+        NAME: "Name",
+        SURNAME: "Surname",
+        HAND: "Preferred hand",
+        SEX: "Sex",
+        CLASS: "Chose your class",
+        warrior: "Warrior",
+        mage: "Mage",
+        rogue: "Rogue",
+        monk: "Monk"
+    },
+    HISTORY: {
+        MAIN: "You were raised by some potatoes who were outlawed by the law of Goirs. Your ideals are the same " + "as their, freedom for the potatoes. You, the captain potato go out in this wild world in order to avenge your potatoes.  potatoes.",
+        WAKE_UP: "You wake up and you find yourself surrounded by a forest. It's pretty deep and you can't see anything but shadows and your own feet." + " You walk for hours finding nothing but forest. At the end of the forest you find a village, what will you do?",
+        ENTER_TOWN_01: "You enter the town and you're attacked!",
+        KEEP_GOING: "You keep going"
+    }
+};
+
+var EQUIVALENCES = exports.EQUIVALENCES = {
+    PLAYER_FORM: {}
+};
+
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.NAME] = "name";
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.SURNAME] = "surname";
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.HAND] = "hand";
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.SEX] = "sex";
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.CLASS] = "class";
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.mage] = "mage";
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.rogue] = "rogue";
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.warrior] = "warrior";
+EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.monk] = "monk";
+
+var TRANSLATIONS = exports.TRANSLATIONS = {
+    LEFT: "Left",
+    RIGHT: "Right",
+    MALE: "Male",
+    FEMALE: "Female"
+};
+
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _constants = require('../constants');
 
 var _StandardController = require('./StandardController');
 
@@ -1505,7 +1214,7 @@ MainController.prototype.generateViewsContent = function () {
     this.views = {
         header: function header() {
             var html = "";
-            html += _HtmlCreation2.default.createElem("div", "mainDivTitle", "title", MAIN_VIEW.TITLE);
+            html += _HtmlCreation2.default.createElem("div", "mainDivTitle", "title", _constants.MAIN_VIEW.TITLE);
             html += _HtmlCreation2.default.createHorizontalLine("hr20px");
 
             return html;
@@ -1522,13 +1231,13 @@ MainController.prototype.generateViewsContent = function () {
                     //content += HtmlCreation.createElem("div", "playerFormDescription", "playerFormDescription", MAIN_VIEW.PLAYER_FORM.DESCRIPTION);
 
 
-                    formBlocks += _HtmlCreation2.default.createElem("legend", "", "", MAIN_VIEW.PLAYER_FORM.LEGEND); //fieldset legend
+                    formBlocks += _HtmlCreation2.default.createElem("legend", "", "", _constants.MAIN_VIEW.PLAYER_FORM.LEGEND); //fieldset legend
 
-                    formData += _HtmlCreation2.default.createElem("label", "", "", MAIN_VIEW.PLAYER_FORM.NAME + ": ", "for='IPlayerFormPlayerName'");
+                    formData += _HtmlCreation2.default.createElem("label", "", "", _constants.MAIN_VIEW.PLAYER_FORM.NAME + ": ", "for='IPlayerFormPlayerName'");
                     formData += _HtmlCreation2.default.createMonoElem("input", "IPlayerFormPlayerName", "", "type='text' value='The'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerName", "playerFormElement", formData);
 
-                    formData = _HtmlCreation2.default.createElem("label", "", "playerFormLabel", MAIN_VIEW.PLAYER_FORM.SURNAME + ": ", "for='IPlayerFormPlayerSurname'");
+                    formData = _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.SURNAME + ": ", "for='IPlayerFormPlayerSurname'");
                     formData += _HtmlCreation2.default.createMonoElem("input", "IPlayerFormPlayerSurname", "", "type='text' value='Player'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerSurname", "playerFormElement", formData);
                     formData = "";
@@ -1537,30 +1246,30 @@ MainController.prototype.generateViewsContent = function () {
                     formBlocks += _HtmlCreation2.default.createHorizontalLine("hr20px");
                     formElements = "";
 
-                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", MAIN_VIEW.PLAYER_FORM.HAND + ": ", "for='IPlayerFormPlayerHand'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", BASICS.LEFT, "type='radio' value='left' name ='hand' checked='checked'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", BASICS.RIGHT, "type='radio' value='right' name ='hand'");
+                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.HAND + ": ", "for='IPlayerFormPlayerHand'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.BASICS.LEFT, "type='radio' value='left' name ='hand' checked='checked'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.BASICS.RIGHT, "type='radio' value='right' name ='hand'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerHand", "playerFormElement", formData);
                     formData = "";
                     formBlocks += _HtmlCreation2.default.createElem("div", "playerFormHandBlock", "playerFormBlock", formElements); //   hand
                     formElements = "";
 
-                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", MAIN_VIEW.PLAYER_FORM.SEX + ": ", "for='IPlayerFormPlayerSex'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", BASICS.MALE, "type='radio' value='male' name ='sex' checked='checked'");
-                    formData += _HtmlCreation2.default.createElem("input", "", "", BASICS.FEMALE, "type='radio' value='female' name ='sex'");
+                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.SEX + ": ", "for='IPlayerFormPlayerSex'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.BASICS.MALE, "type='radio' value='male' name ='sex' checked='checked'");
+                    formData += _HtmlCreation2.default.createElem("input", "", "", _constants.BASICS.FEMALE, "type='radio' value='female' name ='sex'");
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormPlayerSex", "playerFormElement", formData);
                     formData = "";
                     formBlocks += _HtmlCreation2.default.createElem("div", "playerFormSexBlock", "playerFormBlock", formElements); //   hand
                     formElements = "";
 
-                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", MAIN_VIEW.PLAYER_FORM.CLASS + ": ", "for='warriorTypes'");
-                    formData += _HtmlCreation2.default.createListFromObject(WARRIOR_TYPES, "warriorTypes", "warriorTypes", MAIN_VIEW.PLAYER_FORM);
+                    formData += _HtmlCreation2.default.createElem("label", "", "playerFormLabel", _constants.MAIN_VIEW.PLAYER_FORM.CLASS + ": ", "for='warriorTypes'");
+                    formData += _HtmlCreation2.default.createListFromObject(_constants.WARRIOR_TYPES, "warriorTypes", "warriorTypes", _constants.MAIN_VIEW.PLAYER_FORM);
                     formElements += _HtmlCreation2.default.createElem("div", "playerFormClassElement", "playerFormElement", formData);
                     formBlocks += _HtmlCreation2.default.createElem("div", "playerFormClassBlock", "playerFormBlock", formElements);
 
                     formBlocks += _HtmlCreation2.default.createMonoElem("input", "playerFormSubmit", "playerFormSubmit", "type='button' value='Define Yourself'");
 
-                    content += _HtmlCreation2.default.createElem("div", "mainDivTitle", "title", MAIN_VIEW.PLAYER_FORM.DESCRIPTION);
+                    content += _HtmlCreation2.default.createElem("div", "mainDivTitle", "title", _constants.MAIN_VIEW.PLAYER_FORM.DESCRIPTION);
                     content += _HtmlCreation2.default.createElem("fieldset", "playerFormFields", "playerFormFields", formBlocks);
 
                     return content;
@@ -1605,7 +1314,7 @@ MainController.prototype.generateViewsContent = function () {
                         block = "",
                         elem = "";
 
-                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", MAIN_VIEW.HISTORY.MAIN);
+                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _constants.MAIN_VIEW.HISTORY.MAIN);
 
                     elem += _HtmlCreation2.default.createMonoElem("input", "historyButtonNext", "historyButtonNext", "type='button' value='Next'");
                     block += _HtmlCreation2.default.createElem("div", "", "", elem);
@@ -1635,7 +1344,7 @@ MainController.prototype.generateViewsContent = function () {
                         block = "",
                         elem = "";
 
-                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", MAIN_VIEW.HISTORY.WAKE_UP);
+                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _constants.MAIN_VIEW.HISTORY.WAKE_UP);
 
                     elem += _HtmlCreation2.default.createMonoElem("input", "historyButtonEnter", "historyButtonEnter", "type='button' value='Enter'");
                     elem += _HtmlCreation2.default.createMonoElem("input", "historyButtonKeepGoing", "historyButtonKeepGoing", "type='button' value='Keep Going'");
@@ -1670,7 +1379,7 @@ MainController.prototype.generateViewsContent = function () {
                         block = "",
                         elem = "";
 
-                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", MAIN_VIEW.HISTORY.ENTER_TOWN_01);
+                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _constants.MAIN_VIEW.HISTORY.ENTER_TOWN_01);
 
                     elem += _HtmlCreation2.default.createMonoElem("input", "fight", "fight", "type='button' value='Fight!'");
                     block += _HtmlCreation2.default.createElem("div", "", "", elem);
@@ -1700,7 +1409,7 @@ MainController.prototype.generateViewsContent = function () {
                         block = "",
                         elem = "";
 
-                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", MAIN_VIEW.HISTORY.KEEP_GOING);
+                    block += _HtmlCreation2.default.createElem("div", "historyDiv", "historyDiv", _constants.MAIN_VIEW.HISTORY.KEEP_GOING);
 
                     content += _HtmlCreation2.default.createElem("div", "historyMainContainer", "historyMainContainer", block);
 
@@ -1738,12 +1447,15 @@ MainController.prototype.generateTopBar = function () {};
 
 exports.default = MainController;
 
-},{"../Libraries/HtmlCreation":1,"../classes/Entity":6,"./StandardController":12}],12:[function(require,module,exports){
-'use strict';
+},{"../Libraries/HtmlCreation":1,"../classes/Entity":6,"../constants":10,"./StandardController":12}],12:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _constants = require("../constants");
+
 function StandardController(jqSel) {
 
     this.html = "";
@@ -1810,18 +1522,18 @@ StandardController.prototype.getElementsFromForm = function (selector) {
             if ($(this).attr("type") === 'radio') {
                 if (this.checked === true) {
                     text = $(this).parent().find('label').html();
-                    if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
+                    if (text !== "") elems[_constants.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
                 } else {}
             } else {
                 text = $(this).parent().find('label').html();
-                if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
+                if (text !== "") elems[_constants.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = $(this).val();
             }
         });
     });
 
     selector.find(':selected').each(function () {
         text = $(this).parent().parent().find('label').html();
-        if (text !== "") elems[EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = EQUIVALENCES.PLAYER_FORM[$(this).text()];
+        if (text !== "") elems[_constants.EQUIVALENCES.PLAYER_FORM[text.slice(0, text.length - 2)]] = _constants.EQUIVALENCES.PLAYER_FORM[$(this).text()];
     });
 
     return elems;
@@ -1831,12 +1543,14 @@ StandardController.version = "0.0.1";
 
 exports.default = StandardController;
 
-},{}],13:[function(require,module,exports){
+},{"../constants":10}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _constants = require("./constants");
 
 var _MainController = require("./controllers/MainController");
 
@@ -1896,7 +1610,7 @@ Engine.prototype.updatePlayerInfo = function () {
     selector = $("#playerStats");
     var pointsFree = gg.player.getPointsFree();
 
-    if (pointsFree > 0) $("#headerStats").html(PLAYER_BASICS + " <span style='color:green;'>+" + pointsFree + "</span>");else $("#headerStats").html(PLAYER_BASICS);
+    if (pointsFree > 0) $("#headerStats").html(_constants.BASICS.PLAYER_BASICS + " <span style='color:green;'>+" + pointsFree + "</span>");else $("#headerStats").html(_constants.BASICS.PLAYER_BASICS);
 
     selector.find("tbody tr").each(function () {
         var elem = $(this).find("td");
@@ -2015,16 +1729,8 @@ Engine.prototype.showToast = function (message) {
 
 exports.default = Engine;
 
-},{"./controllers/MainController":11}],14:[function(require,module,exports){
+},{"./constants":10,"./controllers/MainController":11}],14:[function(require,module,exports){
 'use strict';
-
-var _genericFunctions = require('./Libraries/genericFunctions');
-
-var _genericFunctions2 = _interopRequireDefault(_genericFunctions);
-
-var _extendedFunctions = require('./Libraries/extendedFunctions');
-
-var _extendedFunctions2 = _interopRequireDefault(_extendedFunctions);
 
 require('./Libraries/HtmlCreation');
 
@@ -2066,7 +1772,6 @@ gg.settings = {
 // Libraries
 
 
-Object.assign(window, _extendedFunctions2.default, _genericFunctions2.default);
 // CLASSES
 
 
@@ -2130,4 +1835,4 @@ gg.tick = function tick() {
     }
 };
 
-},{"./Libraries/HtmlCreation":1,"./Libraries/extendedFunctions":2,"./Libraries/genericFunctions":3,"./Libraries/jqueryFunctions":4,"./bindings":5,"./classes/Entity":6,"./classes/World":10,"./controllers/MainController":11,"./engine":13}]},{},[14]);
+},{"./Libraries/HtmlCreation":1,"./Libraries/jqueryFunctions":4,"./bindings":5,"./classes/Entity":6,"./classes/World":9,"./controllers/MainController":11,"./engine":13}]},{},[14]);

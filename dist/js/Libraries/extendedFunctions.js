@@ -1,3 +1,6 @@
+import gf from './genericFunctions';
+import {BASICS, WARRIOR_TYPES} from "../constants";
+
 function attack(attacker, attacked) {
 
     let twoLegsDown = attacker.vitalPoints.rightLeg < 0 && attacker.vitalPoints.leftLeg < 0,
@@ -22,7 +25,7 @@ function attack(attacker, attacked) {
     number = parseInt(((attacker.attributes.intelligence / attacked.attributes.intelligence) +
         ((attacker.basics.victories + attacker.basics.defeats + 1) / (attacked.basics.victories +
             attacked.basics.defeats + 1)).map(0, 8, 0, 8)));
-    number += getRandomInt(-1, 1);
+    number += gf.getRandomInt(-1, 1);
     if (number > 5) number = 5;
     if (number < 0) number = 0;
     zoneToAttack = zones[number];
@@ -46,13 +49,13 @@ function attack(attacker, attacked) {
     //chance to dodge
     legsOk = (attacked.vitalPoints.leftLeg > 0 && attacker.vitalPoints.rightLeg > 0);
 
-    if (attacked.attributes.agility / attacker.attributes.agility + getRandomInt(-2, 2) > 5 && legsOk) { // TODO: take a look at it
+    if (attacked.attributes.agility / attacker.attributes.agility + gf.getRandomInt(-2, 2) > 5 && legsOk) { // TODO: take a look at it
         if (attacker.id === 0 || attacked.id === 0) {
             // gg.outputHTML += "<br>" + attacker.basics.name + " attacks in the " + zoneToAttack[0] + " of " + attacked.basics.name + " but misses.";
             gg.totals.dodges++;
         }
     } else {
-        damage = ((((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10))) * getRandom(0.8, 1.1)).toFixed(3);
+        damage = ((((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10))) * gf.getRandom(0.8, 1.1)).toFixed(3);
         if (damage < 0) damage = 0;
         if (badHand) damage *= 0.6;
         attacked.vitalPoints[zoneToAttack[0]] -= damage;
@@ -64,19 +67,19 @@ function attack(attacker, attacked) {
 }
 
 function attackingFirstCheck(attacker, attacked) {
-    let check = ((attacker.attributes.agility - attacked.attributes.agility) + 50) + getRandomInt(-10, 10);
-    return isAppening(check);
+    let check = ((attacker.attributes.agility - attacked.attributes.agility) + 50) + gf.getRandomInt(-10, 10);
+    return gf.isAppening(check);
 }
 
 function survivalCheck(entity) {
 
-    let check = entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.2 + getRandomInt(-5, 5);
+    let check = entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.2 + gf.getRandomInt(-5, 5);
 
     if (entity.id === 0) {
         check += 10;
     }
 
-    let res = isAppening(check);
+    let res = gf.isAppening(check);
 
     if (res) {
         gg.totals.survivals++;
@@ -88,14 +91,14 @@ function survivalCheck(entity) {
 }
 
 function isDying(entity) {
-    return (entity.vitalPoints.body <= 0 || entity.vitalPoints.head <= 0) && isAppening(95);
+    return (entity.vitalPoints.body <= 0 || entity.vitalPoints.head <= 0) && gf.isAppening(95);
 }
 
 function dailyHealingEntity(entity) {
     let toHeal = (entity.attributes.endurance * 0.15 + entity.attributes.stamina * 0.15 + entity.attributes.willpower * 0.4 + entity.attributes.faith * 0.2) / 2;
     for (let part in entity.vitalPoints) {
         entity.vitalPoints[part] += toHeal;
-        if (entity.vitalPoints[part] > MAX_ENTITY_HEALTH) entity.vitalPoints[part] = MAX_ENTITY_HEALTH;
+        if (entity.vitalPoints[part] > BASICS.MAX_ENTITY_HEALTH) entity.vitalPoints[part] = BASICS.MAX_ENTITY_HEALTH;
     }
 }
 
@@ -121,7 +124,7 @@ function calculatePercentages(entity) {
         tmpPercentages = [];
 
     for (i = 0; i < WARRIOR_TYPES[entity.basics.class].length; ++i) {
-        tmpPercentages[i] = entity.attributes[getKeyFromNumber(entity.attributes, i)] / entity.basics.level;
+        tmpPercentages[i] = entity.attributes[gf.getKeyFromNumber(entity.attributes, i)] / entity.basics.level;
     }
 
     return tmpPercentages;
@@ -133,10 +136,10 @@ function incrementLowestPercentage(entity) {
         updated = false,
         tmpPercentages = calculatePercentages(entity);
 
-    if (getRandomInt(0, 1)) {
+    if (gf.getRandomInt(0, 1)) {
         for (i = 0; i < basePercentages.length - 1; ++i) {
             if (basePercentages[i] > tmpPercentages[i]) {
-                entity.attributes[getKeyFromNumber(entity.attributes, i)]++;
+                entity.attributes[gf.getKeyFromNumber(entity.attributes, i)]++;
                 updated = true;
                 break;
             }
@@ -144,7 +147,7 @@ function incrementLowestPercentage(entity) {
     } else {
         for (i = basePercentages.length - 2; i >= 0; --i) {
             if (basePercentages[i] > tmpPercentages[i]) {
-                entity.attributes[getKeyFromNumber(entity.attributes, i)]++;
+                entity.attributes[gf.getKeyFromNumber(entity.attributes, i)]++;
                 updated = true;
                 break;
             }
@@ -168,7 +171,7 @@ function checkLevelUp(entity) {
 }
 
 function getRandomAttributeName() {
-    let rand = getRandomInt(0, 7);
+    let rand = gf.getRandomInt(0, 7);
     switch (rand) {
         case 0:
             return "strength";
