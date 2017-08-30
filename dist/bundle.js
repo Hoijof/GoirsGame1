@@ -888,7 +888,7 @@ World.prototype.callADay = function () {
 
     this.standard.day++;
 
-    var fightsToday = _genericFunctions2.default.getRandomInt(this.standard.population * 0.1, this.standard.population / 2 * _constants.BASICS.WORLD_FIGHT_FACTOR);
+    var fightsToday = _genericFunctions2.default.getRandomInt(this.standard.population / 2 * 0.05, this.standard.population / 2 * _constants.BASICS.WORLD_FIGHT_FACTOR);
 
     gg.outputHTML += fightsToday + " fights to be done";
 
@@ -909,6 +909,10 @@ World.prototype.callADay = function () {
     this.refreshPeople();
 
     this.standard.populationChange = this.people.size() - this.standard.population;
+
+    // REPORTING
+    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+
     this.standard.population = this.people.length = this.people.size();
 
     if (report) {
@@ -978,6 +982,10 @@ World.prototype.givePassives = function () {
 
 World.prototype.birthPeople = function () {
     var birthsToday = _genericFunctions2.default.getRandomInt(0, Math.floor(this.standard.population / 2) * _constants.BASICS.WORLD_BIRTH_FACTOR);
+
+    if (this.standard.population > _constants.BASICS.WORLD_MAX_POPULATION) {
+        birthsToday = 0;
+    }
 
     this.standard.birthsToday = birthsToday;
     this.standard.births += birthsToday;
@@ -1065,14 +1073,15 @@ Object.defineProperty(exports, "__esModule", {
 var BASICS = exports.BASICS = {
     MAX_ENTITY_HEALTH: 100,
 
-    WORLD_FIGHT_FACTOR: 0.6,
-    WORLD_BIRTH_FACTOR: 0.1,
+    WORLD_FIGHT_FACTOR: 0.3,
+    WORLD_BIRTH_FACTOR: 0.15,
     MAX_BATTLE_TURNS: 100,
     MAX_ITERATIONS: 30,
     REFRESH_COUNTER: 3,
 
-    WORLD_MIN_SIZE: 50,
-    WORLD_MAX_SIZE: 300,
+    WORLD_MIN_SIZE: 100,
+    WORLD_MAX_SIZE: 500,
+    WORLD_MAX_POPULATION: 5000,
 
     EXPERIENCE_LOSS_FACTOR: 0.2,
     EXPERIENCE_WIN_FACTOR: 1,
@@ -1746,6 +1755,9 @@ gg.totals = {
 gg.settings = {
     autoLevelUp: true
 };
+
+window.stats = [];
+
 // Libraries
 // CLASSES
 
@@ -1784,7 +1796,7 @@ gg.initGameUI = function init() {
 gg.tick = function tick() {
     if (gg.ticking.active === true) {
         if (gg.ticking.interval === null) {
-            gg.ticking.interval = setInterval(tick, 30);
+            gg.ticking.interval = setInterval(tick, 1);
         }
         if (gg.ticking.percentage >= 100) {
             gg.ticking.percentage = 0;
@@ -1793,7 +1805,7 @@ gg.tick = function tick() {
             gg.engine.update();
         } else {
             // gg.ticking.percentage += 2;
-            gg.ticking.percentage += 10;
+            gg.ticking.percentage += 50;
         }
         $("#dayBar").css("width", gg.ticking.percentage + "%");
 
@@ -1806,6 +1818,27 @@ gg.tick = function tick() {
         clearInterval(gg.ticking.interval);
         gg.ticking.interval = null;
     }
+};
+
+window.downloadCSV = function downloadCSV(stats) {
+    var res = 'data:text/csv;charset=utf-8,';
+    res += 'Day,Total population,Deaths,Births\n';
+
+    var current = 0;
+    var max = 4;
+    stats.forEach(function (stat) {
+        res += stat;
+
+        if (++current < max) {
+            res += ',';
+        } else {
+            res += '\n';
+            current = 0;
+        }
+    });
+
+    var encodedUri = encodeURI(res);
+    window.open(encodedUri);
 };
 
 },{"./bindings":4,"./classes/Entity":5,"./classes/World":8,"./controllers/MainController":10,"./engine":12}]},{},[13]);

@@ -10,6 +10,8 @@ gg.totals = {
 gg.settings = {
     autoLevelUp: true
 };
+
+window.stats = [];
 // Libraries
 // CLASSES
 import World from './classes/World';
@@ -51,7 +53,7 @@ gg.initGameUI = function init() {
 gg.tick = function tick() {
     if (gg.ticking.active === true) {
         if (gg.ticking.interval === null) {
-            gg.ticking.interval = setInterval(tick, 30);
+            gg.ticking.interval = setInterval(tick, 1);
         }
         if (gg.ticking.percentage >= 100) {
             gg.ticking.percentage = 0;
@@ -60,7 +62,7 @@ gg.tick = function tick() {
             gg.engine.update();
         } else {
             // gg.ticking.percentage += 2;
-            gg.ticking.percentage += 10;
+            gg.ticking.percentage += 50;
         }
         $("#dayBar").css("width", gg.ticking.percentage + "%");
 
@@ -74,3 +76,24 @@ gg.tick = function tick() {
         gg.ticking.interval = null;
     }
 };
+
+window.downloadCSV = function downloadCSV(stats) {
+    let res = 'data:text/csv;charset=utf-8,';
+    res += 'Day,Total population,Deaths,Births\n';
+
+    let current = 0;
+    const max = 4;
+    stats.forEach((stat) => {
+        res += stat;
+
+        if (++current < max) {
+            res += ',';
+        } else {
+            res += '\n';
+            current = 0;
+        }
+    });
+
+    let encodedUri = encodeURI(res);
+    window.open(encodedUri);
+}
