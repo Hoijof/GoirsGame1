@@ -1,10 +1,13 @@
+import gf from '../Libraries/genericFunctions';
+import {BASICS} from '../constants';
+
 function Player(id) {
     //stats
 
     this.id = id;
     this.name = "Player";
     this.level = 0;
-    this.preferredHand = isAppening(60) ? "right" : "left";
+    this.preferredHand = gf.isAppening(60) ? "right" : "left";
 
     this.strength = this.generateStat("strength");
     this.endurance = this.generateStat("endurance");
@@ -17,15 +20,15 @@ function Player(id) {
 
     this.experience = 0;
 
-    this.health = MAX_ENTITY_HEALTH;
+    this.health = BASICS.MAX_ENTITY_HEALTH;
 
     this.hitpoints = {
-        head: MAX_ENTITY_HEALTH,
-        body: MAX_ENTITY_HEALTH,
-        leftArm: MAX_ENTITY_HEALTH,
-        rightArm: MAX_ENTITY_HEALTH,
-        leftLeg: MAX_ENTITY_HEALTH,
-        rightLeg: MAX_ENTITY_HEALTH,
+        head: BASICS.MAX_ENTITY_HEALTH,
+        body: BASICS.MAX_ENTITY_HEALTH,
+        leftArm: BASICS.MAX_ENTITY_HEALTH,
+        rightArm: BASICS.MAX_ENTITY_HEALTH,
+        leftLeg: BASICS.MAX_ENTITY_HEALTH,
+        rightLeg: BASICS.MAX_ENTITY_HEALTH,
     }
 }
 
