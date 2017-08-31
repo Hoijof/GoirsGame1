@@ -2269,8 +2269,8 @@ gg.totals = {
 
 gg.settings = {
     autoLevelUp: true,
-    tickingInterval: 1,
-    tickingIncrement: 5
+    tickingInterval: 30,
+    tickingIncrement: 3
 };
 
 window.stats = [];
