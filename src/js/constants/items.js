@@ -7,7 +7,7 @@ export const ITEMS = [
         rarityTiers: 0,
         alias: null,
         type: TYPES.WEAPON,
-        damageTier: 0,
+        tier: 0,
         weight: 1
     },
     {
@@ -16,7 +16,7 @@ export const ITEMS = [
         rarityTiers: 0,
         alias: null,
         type: TYPES.WEAPON,
-        damageTier: 0,
+        tier: 0,
         weight: 1
     },
     {
@@ -25,7 +25,34 @@ export const ITEMS = [
         rarityTiers: 0,
         alias: null,
         type: TYPES.WEAPON,
-        damageTier: 0,
+        tier: 0,
         weight: 1
+    },
+    {
+        id: 3,
+        name: 'Sword',
+        rarityTiers: 2,
+        alias: null,
+        type: TYPES.WEAPON,
+        tier: 2,
+        weight: 2
+    },
+    {
+        id: 4,
+        name: 'Shield',
+        rarityTiers: 2,
+        alias: null,
+        type: TYPES.SHIELD,
+        tier: 2,
+        weight: 2
+    },
+    {
+        id: 5,
+        name: 'Robes',
+        rarityTiers: 2,
+        alias: null,
+        type: TYPES.ROBE,
+        tier: 2,
+        weight: 5
     }
 ];

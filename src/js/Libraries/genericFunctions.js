@@ -96,6 +96,9 @@ function getRandomTownName() {
     return townFirstNames[getRandomInt(0, townFirstNames.length - 1)] + townSecondNames[getRandomInt(0, townSecondNames.length - 1)];
 }
 
+function getRandomElementFromArray(array) {
+    return array[getRandomInt(0, array.length - 1)];
+}
 
 export default {
     getRandomInt: getRandomInt,
@@ -105,5 +108,6 @@ export default {
     getRandom: getRandom,
     getRandomCitizenName: getRandomCitizenName,
     getRandomCitizenSurname: getRandomCitizenSurname,
-    getKeyFromNumber: getKeyFromNumber
+    getKeyFromNumber: getKeyFromNumber,
+    getRandomElementFromArray: getRandomElementFromArray
 }

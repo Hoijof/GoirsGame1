@@ -143,10 +143,10 @@ function isDying(entity) {
     return (entity.vitalPoints.body <= 0 || entity.vitalPoints.head <= 0) && _genericFunctions2.default.isAppening(95);
 }
 
-function dailyHealingEntity(entity) {
+function dailyHealingEntity(entity, healingExtraPercent) {
     var toHeal = (entity.attributes.endurance * 0.2 + entity.attributes.stamina * 0.2 + entity.attributes.willpower * 0.5 + entity.attributes.faith * 0.5) / 2;
     for (var part in entity.vitalPoints) {
-        entity.vitalPoints[part] += toHeal;
+        entity.vitalPoints[part] += toHeal + toHeal * healingExtraPercent;
         if (entity.vitalPoints[part] > _index.BASICS.MAX_ENTITY_HEALTH) entity.vitalPoints[part] = _index.BASICS.MAX_ENTITY_HEALTH;
     }
 }
@@ -262,7 +262,7 @@ exports.default = {
     survivalCheck: survivalCheck
 };
 
-},{"../constants/index":9,"./genericFunctions":3}],3:[function(require,module,exports){
+},{"../constants/index":10,"./genericFunctions":3}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -366,6 +366,10 @@ function getRandomTownName() {
     return _index.townFirstNames[getRandomInt(0, _index.townFirstNames.length - 1)] + _index.townSecondNames[getRandomInt(0, _index.townSecondNames.length - 1)];
 }
 
+function getRandomElementFromArray(array) {
+    return array[getRandomInt(0, array.length - 1)];
+}
+
 exports.default = {
     getRandomInt: getRandomInt,
     isAppening: isAppening,
@@ -374,10 +378,11 @@ exports.default = {
     getRandom: getRandom,
     getRandomCitizenName: getRandomCitizenName,
     getRandomCitizenSurname: getRandomCitizenSurname,
-    getKeyFromNumber: getKeyFromNumber
+    getKeyFromNumber: getKeyFromNumber,
+    getRandomElementFromArray: getRandomElementFromArray
 };
 
-},{"../constants/index":9}],4:[function(require,module,exports){
+},{"../constants/index":10}],4:[function(require,module,exports){
 "use strict";
 
 var _Entity = require("./classes/Entity");
@@ -762,7 +767,7 @@ Entity.prototype.report = function () {
         gg.outputHTML += "<br>" + key + " = " + val;
     });
     gg.outputHTML += "<br>" + "End of Attributes Report";
-      gg.outputHTML += "<br>" + "PERCENTAGES";
+     gg.outputHTML += "<br>" + "PERCENTAGES";
     for (i = 0; i < basePercentages.length; ++i) {
         gg.outputHTML += "<br>" + String(basePercentages[i] - percentages[i]);
     }*/
@@ -787,7 +792,39 @@ Entity.prototype.earnPassiveCoins = function () {
 
 exports.default = Entity;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":9}],6:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":10}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = Event = {
+    init: function init(bp) {
+        this.id = bp.id;
+        this.name = bp.name;
+        this.effects = bp.effects;
+        this.duration = bp.duration;
+        this.addedChanceToOccur = bp.addedChanceToOccur;
+
+        this.num = null;
+        this.active = false;
+        this.startDate = 0;
+        this.endDate = 0;
+
+        return this;
+    },
+    checkIfAlreadyExists: function checkIfAlreadyExists(activeEvents) {
+        var _this = this;
+
+        var res = activeEvents.find(function (event) {
+            return event.id === _this.id;
+        });
+
+        return typeof res !== 'undefined';
+    }
+};
+
+},{}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -816,6 +853,7 @@ var Quest = {
         this.blueprint = null;
         this.eventChance = null;
         this.modifiers = [];
+        this.chanceOfSuccess = 0;
     },
     assignOwner: function assignOwner(entity) {
         this.owner = entity;
@@ -832,26 +870,20 @@ var Quest = {
     getBlueprintByOwner: function getBlueprintByOwner() {
         var level = this.owner.basics.level;
 
-        switch (level) {
-            case level < 25:
-                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[0]);
-                break;
-            case level < 50:
-                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[1]);
-                break;
-            case level < 75:
-                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[2]);
-                break;
-            case level < 100:
-                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[3]);
-                break;
-
-            default:
-                return this.getRandomQuestFromQuestsBP(_quest.QUESTS[4]);
+        if (level < 25) {
+            return this.getRandomQuestFromQuestsBP(_quest.QUESTS[0]);
+        } else if (level < 50) {
+            return this.getRandomQuestFromQuestsBP(_quest.QUESTS[1]);
+        } else if (level < 75) {
+            return this.getRandomQuestFromQuestsBP(_quest.QUESTS[2]);
+        } else if (level < 100) {
+            return this.getRandomQuestFromQuestsBP(_quest.QUESTS[3]);
+        } else {
+            return this.getRandomQuestFromQuestsBP(_quest.QUESTS[4]);
         }
     },
     getRandomQuestFromQuestsBP: function getRandomQuestFromQuestsBP(quests) {
-        return _quest.QUESTS[_genericFunctions2.default.getRandomInt(0, _quest.QUESTS.length - 1)];
+        return quests[_genericFunctions2.default.getRandomInt(0, quests.length - 1)];
     },
     tryQuest: function tryQuest() {
         this.eventChance = this.blueprint.eventChance;
@@ -863,7 +895,7 @@ var Quest = {
         // TODO: Add stages to complex quests
         var questLevel = this.blueprint.level;
         // TODO: Tweak chance of success when we add more levels of quests
-        var chanceOfSuccess = this.owner.basics.level * 1.2 - questLevel * 10;
+        this.chanceOfSuccess = this.owner.basics.level * 1.2 - (questLevel * 10 + questLevel * 3);
 
         this.result = {
             outcome: null,
@@ -874,7 +906,7 @@ var Quest = {
         };
         // console.log("chance of succes: " + chanceOfSuccess, "level: " + this.owner.basics.level);
 
-        if (_genericFunctions2.default.isAppening(chanceOfSuccess)) {
+        if (_genericFunctions2.default.isAppening(this.chanceOfSuccess)) {
             this.result.outcome = _quest.QUESTS_CODES.SUCCESS;
             this.result.coins = this.getCoinsFromOutcome();
             this.result.prices = this.getPricesFromOutcome();
@@ -915,7 +947,7 @@ var Quest = {
 
 exports.default = Quest;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/items":10,"../constants/quest":11}],7:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/items":11,"../constants/quest":12}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -974,7 +1006,7 @@ var QuestManager = {
 
 exports.default = QuestManager;
 
-},{"./Quest":6}],8:[function(require,module,exports){
+},{"./Quest":7}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -999,6 +1031,12 @@ var _Entity = require('./Entity');
 
 var _Entity2 = _interopRequireDefault(_Entity);
 
+var _Event = require('./Event');
+
+var _Event2 = _interopRequireDefault(_Event);
+
+var _worldEvents = require('../constants/worldEvents');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function World() {
@@ -1020,6 +1058,14 @@ function World() {
 
     this.lastId = 0;
 
+    this.activeEvents = [];
+    this.pastEvents = [];
+    this.eventHistogram = [];
+
+    this.fightsExtraPercent = 0;
+    this.healingExtraPercent = 0;
+    this.birthsExtraPercent = 0;
+
     this.questManager = Object.create(_QuestManager2.default).init();
 
     for (var i = 1; i < this.standard.population; i++) {
@@ -1032,7 +1078,12 @@ World.prototype.callADay = function () {
 
     this.standard.day++;
 
+    // EVENT STUFF
+    this.checkIfNewEvent();
+    this.checkEvents();
+
     var fightsToday = _genericFunctions2.default.getRandomInt(this.standard.population / 2 * 0.05, this.standard.population / 2 * _index.BASICS.WORLD_FIGHT_FACTOR);
+    fightsToday += Math.floor(fightsToday * this.fightsExtraPercent);
 
     gg.outputHTML += fightsToday + " fights to be done";
 
@@ -1055,12 +1106,71 @@ World.prototype.callADay = function () {
     this.standard.populationChange = this.people.size() - this.standard.population;
 
     // REPORTING
-    // window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
 
     this.standard.population = this.people.length = this.people.size();
 
     if (report) {
         gg.outputHTML += "<br> Deaths : " + fightResult.deathsToday + " " + "Victories : " + fightResult.todayVictories + " " + "Defeats : " + fightResult.todayDefeats + " " + "Draws : " + fightResult.todayDraws + " " + "Survivals : " + fightResult.survivalsToday;
+    }
+};
+
+// EVENTS
+World.prototype.checkIfNewEvent = function () {
+    if (_genericFunctions2.default.isAppening(_index.BASICS.WORLD_EVENT_CHANCE)) {
+        var event = Object.create(_Event2.default).init(this.getRandomEvent());
+
+        if (!event.checkIfAlreadyExists(this.activeEvents)) {
+            if (_genericFunctions2.default.isAppening(event.addedChanceToOccur * 100)) {
+                this.activateEvent(event);
+            }
+        }
+    }
+};
+
+World.prototype.getRandomEvent = function () {
+    return _genericFunctions2.default.getRandomElementFromArray(_worldEvents.WORLD_EVENTS);
+};
+
+World.prototype.checkEvents = function () {
+    var _this = this;
+
+    this.activeEvents = this.activeEvents.filter(function (event) {
+        if (--event.duration === 0) {
+            _this.deactivateEvent(event);
+
+            return false;
+        }
+        return true;
+    });
+};
+
+World.prototype.activateEvent = function (event) {
+    this.activeEvents.push(event);
+
+    if (this.eventHistogram[event.id] === undefined) {
+        this.eventHistogram[event.id] = 0;
+    } else {
+        this.eventHistogram[event.id]++;
+    }
+
+    event.active = true;
+    event.num = this.activeEvents.length - 1;
+    event.startDate = this.standard.day;
+
+    for (var key in event.effects) {
+        this[key] += event.effects[key];
+    }
+};
+
+World.prototype.deactivateEvent = function (event) {
+    this.pastEvents.push(event);
+    event.active = false;
+    event.num = this.pastEvents.length - 1;
+    event.endDate = this.standard.day;
+
+    for (var key in event.effects) {
+        this[key] -= event.effects[key];
     }
 };
 
@@ -1118,11 +1228,11 @@ World.prototype.fight = function (fightsToday) {
 };
 
 World.prototype.givePassives = function () {
-    var _this = this;
+    var _this2 = this;
 
     this.people.forEach(function (person) {
         if (person.elegibleForQuest === true) {
-            _this.giveQuestToEntity(person);
+            _this2.giveQuestToEntity(person);
         } else {
             person.elegibleForQuest = true;
         }
@@ -1131,6 +1241,7 @@ World.prototype.givePassives = function () {
 
 World.prototype.birthPeople = function () {
     var birthsToday = _genericFunctions2.default.getRandomInt(0, Math.floor(this.standard.population / 2) * _index.BASICS.WORLD_BIRTH_FACTOR);
+    birthsToday += Math.floor(birthsToday * this.birthsExtraPercent);
 
     if (this.standard.population > _index.BASICS.WORLD_MAX_POPULATION) {
         birthsToday = 0;
@@ -1146,7 +1257,7 @@ World.prototype.birthPeople = function () {
 
 World.prototype.updatePeopleHealth = function () {
     for (var i = 0; i < this.people.length; i++) {
-        _extendedFunctions2.default.dailyHealingEntity(this.people[i]);
+        _extendedFunctions2.default.dailyHealingEntity(this.people[i], this.healingExtraPercent);
     }
 };
 
@@ -1218,7 +1329,7 @@ World.prototype.giveQuestToEntity = function (entity) {
 
 exports.default = World;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":9,"./Entity":5,"./QuestManager":7}],9:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":10,"../constants/worldEvents":13,"./Entity":5,"./Event":6,"./QuestManager":8}],10:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1240,6 +1351,8 @@ var BASICS = exports.BASICS = {
     EXPERIENCE_LOSS_FACTOR: 0.2,
     EXPERIENCE_WIN_FACTOR: 1,
     MAX_ATTRIBUTE_LEVEL: 500,
+
+    WORLD_EVENT_CHANCE: 5,
 
     PLAYER_BASICS: "PLAYER BASICS",
     FIGHTER_TYPES: [],
@@ -1314,7 +1427,9 @@ EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.warrior] = "warrior";
 EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.monk] = "monk";
 
 var TYPES = exports.TYPES = {
-    WEAPON: 0
+    WEAPON: 0,
+    SHIELD: 1,
+    ROBE: 2
 };
 
 var TRANSLATIONS = exports.TRANSLATIONS = {
@@ -1325,10 +1440,10 @@ var TRANSLATIONS = exports.TRANSLATIONS = {
     EASY: 'Easy',
     MEDIUM: 'Medium',
     HARD: 'Hard',
-    TIERS: ['Useless']
+    TIERS: ['Useless', 'Old', 'Normal', 'Good', 'Great', 'Legendary', 'Masterpiece']
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1344,7 +1459,7 @@ var ITEMS = exports.ITEMS = [{
     rarityTiers: 0,
     alias: null,
     type: _index.TYPES.WEAPON,
-    damageTier: 0,
+    tier: 0,
     weight: 1
 }, {
     id: 1,
@@ -1352,7 +1467,7 @@ var ITEMS = exports.ITEMS = [{
     rarityTiers: 0,
     alias: null,
     type: _index.TYPES.WEAPON,
-    damageTier: 0,
+    tier: 0,
     weight: 1
 }, {
     id: 2,
@@ -1360,24 +1475,89 @@ var ITEMS = exports.ITEMS = [{
     rarityTiers: 0,
     alias: null,
     type: _index.TYPES.WEAPON,
-    damageTier: 0,
+    tier: 0,
     weight: 1
+}, {
+    id: 3,
+    name: 'Sword',
+    rarityTiers: 2,
+    alias: null,
+    type: _index.TYPES.WEAPON,
+    tier: 2,
+    weight: 2
+}, {
+    id: 4,
+    name: 'Shield',
+    rarityTiers: 2,
+    alias: null,
+    type: _index.TYPES.SHIELD,
+    tier: 2,
+    weight: 2
+}, {
+    id: 5,
+    name: 'Robes',
+    rarityTiers: 2,
+    alias: null,
+    type: _index.TYPES.ROBE,
+    tier: 2,
+    weight: 5
 }];
 
-},{"./index":9}],11:[function(require,module,exports){
+},{"./index":10}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var QUESTS = exports.QUESTS = [{
+var QUESTS = exports.QUESTS = [[{
     name: 'Farm',
     level: 0,
     payoutTier: 0,
     pricesChance: 65,
+    experienceRatio: 1.2,
     pricesPool: 0,
-    eventChance: []
-}];
+    eventChance: 0
+}],
+// 1
+[{
+    name: 'Kill a rat',
+    level: 1,
+    payoutTier: 1,
+    pricesChance: 25,
+    experienceRatio: 1.5,
+    pricesPool: 1,
+    eventChance: 0
+}],
+// 2
+[{
+    name: 'Fight a thief',
+    level: 2,
+    payoutTier: 2,
+    pricesChance: 50,
+    experienceRatio: 1.3,
+    pricesPool: 1,
+    eventChance: 0
+}],
+// 3
+[{
+    name: 'Capture a caravan',
+    level: 3,
+    payoutTier: 3,
+    pricesChance: 100,
+    experienceRatio: 1.2,
+    pricesPool: 1,
+    eventChance: 0
+}],
+// 3
+[{
+    name: 'Save the Kingdom',
+    level: 4,
+    payoutTier: 4,
+    pricesChance: 100,
+    experienceRatio: 1.6,
+    pricesPool: 1,
+    eventChance: 100
+}]];
 
 var QUESTS_PRICES = exports.QUESTS_PRICES = [[0, 1, 2], [3, 4, 5]];
 
@@ -1390,9 +1570,74 @@ var QUESTS_CODES = exports.QUESTS_CODES = {
     GREAT_SUCCESS: 3
 };
 
-var PAYOUT_TIERS = exports.PAYOUT_TIERS = [10, 25, 50, 100];
+var PAYOUT_TIERS = exports.PAYOUT_TIERS = [10, 25, 50, 100, 200];
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var WORLD_EVENTS = exports.WORLD_EVENTS = [{
+    id: 0,
+    name: 'God touch',
+    effects: {
+        healingExtraPercent: 0.25
+    },
+    addedChanceToOccur: 1,
+    duration: 10
+}, {
+    id: 1,
+    name: 'War!',
+    effects: {
+        fightsExtraPercent: 0.5
+    },
+    addedChanceToOccur: 0.7,
+    duration: 30
+}, {
+    id: 2,
+    name: 'Fertility!',
+    effects: {
+        birthsExtraPercent: 0.5
+    },
+    addedChanceToOccur: 0.8,
+    duration: 10
+}, {
+    id: 3,
+    name: 'Plague!',
+    effects: {
+        birthsExtraPercent: -0.5
+    },
+    addedChanceToOccur: 0.7,
+    duration: 10
+}, {
+    id: 4,
+    name: 'Prosperity!',
+    effects: {
+        birthsExtraPercent: 0.15
+    },
+    addedChanceToOccur: 0.9,
+    duration: 50
+}, {
+    id: 5,
+    name: 'Decadency...',
+    effects: {
+        birthsExtraPercent: -0.15
+    },
+    addedChanceToOccur: 0.9,
+    duration: 50
+}, {
+    id: 6,
+    name: 'Long war...',
+    effects: {
+        birthsExtraPercent: -0.15,
+        fightsExtraPercent: 0.4
+    },
+    addedChanceToOccur: 0.9,
+    duration: 100
+}];
+
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1664,7 +1909,7 @@ MainController.prototype.generateTopBar = function () {};
 
 exports.default = MainController;
 
-},{"../Libraries/HtmlCreation":1,"../classes/Entity":5,"../constants/index":9,"./StandardController":13}],13:[function(require,module,exports){
+},{"../Libraries/HtmlCreation":1,"../classes/Entity":5,"../constants/index":10,"./StandardController":15}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1760,7 +2005,7 @@ StandardController.version = "0.0.1";
 
 exports.default = StandardController;
 
-},{"../constants/index":9}],14:[function(require,module,exports){
+},{"../constants/index":10}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1946,7 +2191,7 @@ Engine.prototype.showToast = function (message) {
 
 exports.default = Engine;
 
-},{"./constants/index":9,"./controllers/MainController":12}],15:[function(require,module,exports){
+},{"./constants/index":10,"./controllers/MainController":14}],17:[function(require,module,exports){
 'use strict';
 
 var _World = require('./classes/World');
@@ -1980,8 +2225,8 @@ gg.totals = {
 
 gg.settings = {
     autoLevelUp: true,
-    tickingInterval: 30,
-    tickingIncrement: 2
+    tickingInterval: 1,
+    tickingIncrement: 5
 };
 
 window.stats = [];
@@ -2068,4 +2313,4 @@ window.downloadCSV = function downloadCSV(stats) {
     return encodedUri;
 };
 
-},{"./bindings":4,"./classes/Entity":5,"./classes/World":8,"./controllers/MainController":12,"./engine":14}]},{},[15]);
+},{"./bindings":4,"./classes/Entity":5,"./classes/World":9,"./controllers/MainController":14,"./engine":16}]},{},[17]);

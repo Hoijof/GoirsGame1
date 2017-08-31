@@ -1,7 +1,6 @@
-import {QUESTS, QUESTS_PRICES, QUESTS_CODES, QUESTS_EVENTS, PAYOUT_TIERS} from '../constants/quest';
+import {PAYOUT_TIERS, QUESTS, QUESTS_CODES, QUESTS_EVENTS, QUESTS_PRICES} from '../constants/quest';
 import gf from "../Libraries/genericFunctions";
 import {ITEMS} from "../constants/items";
-import ef from "../Libraries/extendedFunctions";
 
 const Quest = {
     init: function(id) {
@@ -11,6 +10,7 @@ const Quest = {
         this.blueprint = null;
         this.eventChance = null;
         this.modifiers = [];
+        this.chanceOfSuccess = 0;
     },
     assignOwner: function(entity) {
         this.owner = entity;
@@ -27,26 +27,20 @@ const Quest = {
     getBlueprintByOwner: function() {
         const level = this.owner.basics.level;
 
-        switch (level) {
-            case level < 25:
-                return this.getRandomQuestFromQuestsBP(QUESTS[0]);
-                break;
-            case level < 50:
-                return this.getRandomQuestFromQuestsBP(QUESTS[1]);
-                break;
-            case level < 75:
-                return this.getRandomQuestFromQuestsBP(QUESTS[2]);
-                break;
-            case level < 100:
-                return this.getRandomQuestFromQuestsBP(QUESTS[3]);
-                break;
-
-            default:
-                return this.getRandomQuestFromQuestsBP(QUESTS[4]);
+        if (level < 25) {
+            return this.getRandomQuestFromQuestsBP(QUESTS[0]);
+        } else if (level < 50) {
+            return this.getRandomQuestFromQuestsBP(QUESTS[1]);
+        } else if (level < 75) {
+            return this.getRandomQuestFromQuestsBP(QUESTS[2]);
+        } else if (level < 100) {
+            return this.getRandomQuestFromQuestsBP(QUESTS[3]);
+        } else {
+            return this.getRandomQuestFromQuestsBP(QUESTS[4]);
         }
     },
     getRandomQuestFromQuestsBP: function(quests) {
-        return QUESTS[gf.getRandomInt(0, QUESTS.length - 1)];
+        return quests[gf.getRandomInt(0, quests.length - 1)];
     },
     tryQuest: function() {
         this.eventChance = this.blueprint.eventChance;
@@ -58,7 +52,7 @@ const Quest = {
         // TODO: Add stages to complex quests
         let questLevel = this.blueprint.level;
         // TODO: Tweak chance of success when we add more levels of quests
-        let chanceOfSuccess = (this.owner.basics.level * 1.2) - questLevel * 10;
+        this.chanceOfSuccess = (this.owner.basics.level * 1.2) - (questLevel * 10 + questLevel * 3);
 
         this.result = {
             outcome: null,
@@ -69,7 +63,7 @@ const Quest = {
         };
         // console.log("chance of succes: " + chanceOfSuccess, "level: " + this.owner.basics.level);
 
-        if (gf.isAppening(chanceOfSuccess)) {
+        if (gf.isAppening(this.chanceOfSuccess)) {
             this.result.outcome = QUESTS_CODES.SUCCESS;
             this.result.coins = this.getCoinsFromOutcome();
             this.result.prices = this.getPricesFromOutcome();

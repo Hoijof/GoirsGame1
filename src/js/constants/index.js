@@ -15,6 +15,8 @@ export const BASICS = {
     EXPERIENCE_WIN_FACTOR: 1,
     MAX_ATTRIBUTE_LEVEL: 500,
 
+    WORLD_EVENT_CHANCE: 5,
+
 
     PLAYER_BASICS: "PLAYER BASICS",
     FIGHTER_TYPES: [],
@@ -113,7 +115,9 @@ EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.warrior] = "warrior";
 EQUIVALENCES.PLAYER_FORM[MAIN_VIEW.PLAYER_FORM.monk] = "monk";
 
 export const TYPES = {
-    WEAPON: 0
+    WEAPON: 0,
+    SHIELD: 1,
+    ROBE: 2
 };
 
 export const TRANSLATIONS = {
@@ -125,6 +129,12 @@ export const TRANSLATIONS = {
     MEDIUM: 'Medium',
     HARD: 'Hard',
     TIERS: [
-        'Useless'
+        'Useless',
+        'Old',
+        'Normal',
+        'Good',
+        'Great',
+        'Legendary',
+        'Masterpiece'
     ]
 };

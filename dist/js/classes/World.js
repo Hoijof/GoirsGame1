@@ -5,6 +5,8 @@ import {BASICS} from '../constants/index';
 
 import QuestManager from './QuestManager';
 import Entity from './Entity';
+import Event from './Event';
+import {WORLD_EVENTS} from "../constants/worldEvents";
 
 function World() {
     this.player = null;
@@ -25,6 +27,14 @@ function World() {
 
     this.lastId = 0;
 
+    this.activeEvents = [];
+    this.pastEvents = [];
+    this.eventHistogram = [];
+
+    this.fightsExtraPercent = 0;
+    this.healingExtraPercent= 0;
+    this.birthsExtraPercent = 0;
+
     this.questManager = Object.create(QuestManager).init();
 
     for (let i = 1; i < this.standard.population; i++) {
@@ -37,7 +47,12 @@ World.prototype.callADay = function() {
 
     this.standard.day++;
 
-    const fightsToday = gf.getRandomInt((this.standard.population / 2) * 0.05, (this.standard.population / 2) * BASICS.WORLD_FIGHT_FACTOR);
+    // EVENT STUFF
+    this.checkIfNewEvent();
+    this.checkEvents();
+
+    let fightsToday = gf.getRandomInt((this.standard.population / 2) * 0.05, (this.standard.population / 2) * BASICS.WORLD_FIGHT_FACTOR);
+    fightsToday += Math.floor(fightsToday * this.fightsExtraPercent);
 
     gg.outputHTML += fightsToday + " fights to be done";
 
@@ -61,7 +76,7 @@ World.prototype.callADay = function() {
     this.standard.populationChange = this.people.size() - this.standard.population;
 
     // REPORTING
-    // window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
 
     this.standard.population = this.people.length = this.people.size();
 
@@ -72,6 +87,63 @@ World.prototype.callADay = function() {
             "Defeats : " + fightResult.todayDefeats + " " +
             "Draws : " + fightResult.todayDraws + " " +
             "Survivals : " + fightResult.survivalsToday;
+    }
+};
+
+// EVENTS
+World.prototype.checkIfNewEvent = function() {
+    if (gf.isAppening(BASICS.WORLD_EVENT_CHANCE)) {
+        let event = Object.create(Event).init(this.getRandomEvent());
+
+        if (!event.checkIfAlreadyExists(this.activeEvents)) {
+            if (gf.isAppening(event.addedChanceToOccur * 100)) {
+                this.activateEvent(event);
+            }
+        }
+    }
+};
+
+World.prototype.getRandomEvent = function() {
+    return gf.getRandomElementFromArray(WORLD_EVENTS);
+};
+
+World.prototype.checkEvents = function() {
+  this.activeEvents = this.activeEvents.filter((event) => {
+      if (--event.duration === 0) {
+          this.deactivateEvent(event);
+
+          return false;
+      }
+      return true;
+  });
+};
+
+World.prototype.activateEvent = function(event) {
+    this.activeEvents.push(event);
+
+    if (this.eventHistogram[event.id] === undefined) {
+        this.eventHistogram[event.id] = 0;
+    } else {
+        this.eventHistogram[event.id]++;
+    }
+
+    event.active = true;
+    event.num = this.activeEvents.length - 1;
+    event.startDate = this.standard.day;
+
+    for (let key in event.effects) {
+        this[key] += event.effects[key];
+    }
+};
+
+World.prototype.deactivateEvent = function(event) {
+    this.pastEvents.push(event);
+    event.active = false;
+    event.num = this.pastEvents.length - 1;
+    event.endDate = this.standard.day;
+
+    for (let key in event.effects) {
+        this[key] -= event.effects[key];
     }
 };
 
@@ -140,6 +212,7 @@ World.prototype.givePassives = function() {
 
 World.prototype.birthPeople = function() {
     let birthsToday = gf.getRandomInt(0, Math.floor(this.standard.population / 2) * BASICS.WORLD_BIRTH_FACTOR);
+        birthsToday += Math.floor(birthsToday * this.birthsExtraPercent);
 
     if (this.standard.population > BASICS.WORLD_MAX_POPULATION) {
         birthsToday = 0;
@@ -155,7 +228,7 @@ World.prototype.birthPeople = function() {
 
 World.prototype.updatePeopleHealth = function() {
     for (let i = 0; i < this.people.length; i++) {
-        ef.dailyHealingEntity(this.people[i]);
+        ef.dailyHealingEntity(this.people[i], this.healingExtraPercent);
     }
 };
 
@@ -219,7 +292,6 @@ World.prototype.reportPeople = function() {
 World.prototype.giveQuestToEntity = function(entity) {
     let quest = this.questManager.createQuest(entity);
     let result = this.questManager.executeQuest(quest);
-
 
     entity.basics.coins += result.coins;
     entity.basics.experience += result.experience;
