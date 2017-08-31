@@ -15,6 +15,7 @@ gg.settings = {
 
 window.stats = [];
 // Libraries
+import './Libraries/jqueryFunctions'
 // CLASSES
 import World from './classes/World';
 import Entity from './classes/Entity';

@@ -32,7 +32,7 @@ function World() {
     this.eventHistogram = [];
 
     this.fightsExtraPercent = 0;
-    this.healingExtraPercent= 0;
+    this.healingExtraPercent = 0;
     this.birthsExtraPercent = 0;
 
     this.questManager = Object.create(QuestManager).init();
@@ -108,18 +108,19 @@ World.prototype.getRandomEvent = function() {
 };
 
 World.prototype.checkEvents = function() {
-  this.activeEvents = this.activeEvents.filter((event) => {
-      if (--event.duration === 0) {
-          this.deactivateEvent(event);
+    this.activeEvents = this.activeEvents.filter((event) => {
+        if (--event.duration === 0) {
+            this.deactivateEvent(event);
 
-          return false;
-      }
-      return true;
-  });
+            return false;
+        }
+        return true;
+    });
 };
 
 World.prototype.activateEvent = function(event) {
     this.activeEvents.push(event);
+    gg.engine.showToast("New Event! " + event.name);
 
     if (this.eventHistogram[event.id] === undefined) {
         this.eventHistogram[event.id] = 0;
@@ -211,8 +212,8 @@ World.prototype.givePassives = function() {
 };
 
 World.prototype.birthPeople = function() {
-    let birthsToday = gf.getRandomInt(0, Math.floor(this.standard.population / 2) * BASICS.WORLD_BIRTH_FACTOR);
-        birthsToday += Math.floor(birthsToday * this.birthsExtraPercent);
+    let birthsToday = gf.getRandomInt((this.standard.population / 2) * 0.03, Math.floor(this.standard.population / 2) * BASICS.WORLD_BIRTH_FACTOR);
+    birthsToday += Math.floor(birthsToday * this.birthsExtraPercent);
 
     if (this.standard.population > BASICS.WORLD_MAX_POPULATION) {
         birthsToday = 0;

@@ -5,6 +5,7 @@ export default Event = {
         this.effects = bp.effects;
         this.duration = bp.duration;
         this.addedChanceToOccur = bp.addedChanceToOccur;
+        this.blocks = bp.blocks;
 
         this.num = null;
         this.active = false;
@@ -15,7 +16,7 @@ export default Event = {
     },
     checkIfAlreadyExists: function(activeEvents) {
         let res = activeEvents.find((event) => {
-            return event.id === this.id;
+            return event.id === this.id || this.blocks.indexOf(event.id) !== -1;
         });
 
         return typeof res !== 'undefined';

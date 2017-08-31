@@ -262,7 +262,7 @@ exports.default = {
     survivalCheck: survivalCheck
 };
 
-},{"../constants/index":10,"./genericFunctions":3}],3:[function(require,module,exports){
+},{"../constants/index":11,"./genericFunctions":3}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -382,7 +382,25 @@ exports.default = {
     getRandomElementFromArray: getRandomElementFromArray
 };
 
-},{"../constants/index":10}],4:[function(require,module,exports){
+},{"../constants/index":11}],4:[function(require,module,exports){
+"use strict";
+
+jQuery.fn.center = function (parent) {
+    if (parent) {
+        parent = this.parent();
+    } else {
+        parent = window;
+    }
+    this.css({
+        "position": "absolute",
+        "top": ($(parent).height() - this.outerHeight()) / 2 + $(parent).scrollTop() + "px",
+        "left": ($(parent).width() - this.outerWidth()) / 2 + $(parent).scrollLeft() + "px"
+    });
+
+    return this;
+};
+
+},{}],5:[function(require,module,exports){
 "use strict";
 
 var _Entity = require("./classes/Entity");
@@ -450,7 +468,7 @@ $(document).ready(function () {
      * Created by humberto.gomez on 25/06/2014.
      */
 
-},{"./classes/Entity":5}],5:[function(require,module,exports){
+},{"./classes/Entity":6}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -792,7 +810,7 @@ Entity.prototype.earnPassiveCoins = function () {
 
 exports.default = Entity;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":10}],6:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":11}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -805,6 +823,7 @@ exports.default = Event = {
         this.effects = bp.effects;
         this.duration = bp.duration;
         this.addedChanceToOccur = bp.addedChanceToOccur;
+        this.blocks = bp.blocks;
 
         this.num = null;
         this.active = false;
@@ -817,14 +836,14 @@ exports.default = Event = {
         var _this = this;
 
         var res = activeEvents.find(function (event) {
-            return event.id === _this.id;
+            return event.id === _this.id || _this.blocks.indexOf(event.id) !== -1;
         });
 
         return typeof res !== 'undefined';
     }
 };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -838,10 +857,6 @@ var _genericFunctions = require("../Libraries/genericFunctions");
 var _genericFunctions2 = _interopRequireDefault(_genericFunctions);
 
 var _items = require("../constants/items");
-
-var _extendedFunctions = require("../Libraries/extendedFunctions");
-
-var _extendedFunctions2 = _interopRequireDefault(_extendedFunctions);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -947,7 +962,7 @@ var Quest = {
 
 exports.default = Quest;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/items":11,"../constants/quest":12}],8:[function(require,module,exports){
+},{"../Libraries/genericFunctions":3,"../constants/items":12,"../constants/quest":13}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1006,7 +1021,7 @@ var QuestManager = {
 
 exports.default = QuestManager;
 
-},{"./Quest":7}],9:[function(require,module,exports){
+},{"./Quest":8}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1147,6 +1162,7 @@ World.prototype.checkEvents = function () {
 
 World.prototype.activateEvent = function (event) {
     this.activeEvents.push(event);
+    gg.engine.showToast("New Event! " + event.name);
 
     if (this.eventHistogram[event.id] === undefined) {
         this.eventHistogram[event.id] = 0;
@@ -1240,7 +1256,7 @@ World.prototype.givePassives = function () {
 };
 
 World.prototype.birthPeople = function () {
-    var birthsToday = _genericFunctions2.default.getRandomInt(0, Math.floor(this.standard.population / 2) * _index.BASICS.WORLD_BIRTH_FACTOR);
+    var birthsToday = _genericFunctions2.default.getRandomInt(this.standard.population / 2 * 0.03, Math.floor(this.standard.population / 2) * _index.BASICS.WORLD_BIRTH_FACTOR);
     birthsToday += Math.floor(birthsToday * this.birthsExtraPercent);
 
     if (this.standard.population > _index.BASICS.WORLD_MAX_POPULATION) {
@@ -1329,7 +1345,7 @@ World.prototype.giveQuestToEntity = function (entity) {
 
 exports.default = World;
 
-},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":10,"../constants/worldEvents":13,"./Entity":5,"./Event":6,"./QuestManager":8}],10:[function(require,module,exports){
+},{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":11,"../constants/worldEvents":14,"./Entity":6,"./Event":7,"./QuestManager":9}],11:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1339,7 +1355,7 @@ var BASICS = exports.BASICS = {
     MAX_ENTITY_HEALTH: 100,
 
     WORLD_FIGHT_FACTOR: 0.35,
-    WORLD_BIRTH_FACTOR: 0.10,
+    WORLD_BIRTH_FACTOR: 0.05,
     MAX_BATTLE_TURNS: 50,
     MAX_ITERATIONS: 30,
     REFRESH_COUNTER: 3,
@@ -1443,7 +1459,7 @@ var TRANSLATIONS = exports.TRANSLATIONS = {
     TIERS: ['Useless', 'Old', 'Normal', 'Good', 'Great', 'Legendary', 'Masterpiece']
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1503,7 +1519,7 @@ var ITEMS = exports.ITEMS = [{
     weight: 5
 }];
 
-},{"./index":10}],12:[function(require,module,exports){
+},{"./index":11}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1572,7 +1588,7 @@ var QUESTS_CODES = exports.QUESTS_CODES = {
 
 var PAYOUT_TIERS = exports.PAYOUT_TIERS = [10, 25, 50, 100, 200];
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1582,10 +1598,11 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
     id: 0,
     name: 'God touch',
     effects: {
-        healingExtraPercent: 0.25
+        healingExtraPercent: 10
     },
-    addedChanceToOccur: 1,
-    duration: 10
+    addedChanceToOccur: 0.8,
+    duration: 5,
+    blocks: []
 }, {
     id: 1,
     name: 'War!',
@@ -1593,7 +1610,8 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
         fightsExtraPercent: 0.5
     },
     addedChanceToOccur: 0.7,
-    duration: 30
+    duration: 30,
+    blocks: [8, 6]
 }, {
     id: 2,
     name: 'Fertility!',
@@ -1601,7 +1619,8 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
         birthsExtraPercent: 0.5
     },
     addedChanceToOccur: 0.8,
-    duration: 10
+    duration: 10,
+    blocks: [7]
 }, {
     id: 3,
     name: 'Plague!',
@@ -1609,7 +1628,8 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
         birthsExtraPercent: -0.5
     },
     addedChanceToOccur: 0.7,
-    duration: 10
+    duration: 10,
+    blocks: [4, 5]
 }, {
     id: 4,
     name: 'Prosperity!',
@@ -1617,7 +1637,8 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
         birthsExtraPercent: 0.15
     },
     addedChanceToOccur: 0.9,
-    duration: 50
+    duration: 50,
+    blocks: [5, 6]
 }, {
     id: 5,
     name: 'Decadency...',
@@ -1625,7 +1646,8 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
         birthsExtraPercent: -0.15
     },
     addedChanceToOccur: 0.9,
-    duration: 50
+    duration: 50,
+    blocks: [4, 7]
 }, {
     id: 6,
     name: 'Long war...',
@@ -1633,11 +1655,31 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
         birthsExtraPercent: -0.15,
         fightsExtraPercent: 0.4
     },
+    addedChanceToOccur: 0.6,
+    duration: 100,
+    blocks: [6, 8]
+}, {
+    id: 7,
+    name: 'Baby boom!',
+    effects: {
+        birthsExtraPercent: 0.8,
+        fightsExtraPercent: -0.4
+    },
     addedChanceToOccur: 0.9,
-    duration: 100
+    duration: 25,
+    blocks: [2]
+}, {
+    id: 8,
+    name: 'Calmed times',
+    effects: {
+        fightsExtraPercent: -0.4
+    },
+    addedChanceToOccur: 0.6,
+    duration: 100,
+    blocks: [1, 6, 7]
 }];
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1909,7 +1951,7 @@ MainController.prototype.generateTopBar = function () {};
 
 exports.default = MainController;
 
-},{"../Libraries/HtmlCreation":1,"../classes/Entity":5,"../constants/index":10,"./StandardController":15}],15:[function(require,module,exports){
+},{"../Libraries/HtmlCreation":1,"../classes/Entity":6,"../constants/index":11,"./StandardController":16}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2005,7 +2047,7 @@ StandardController.version = "0.0.1";
 
 exports.default = StandardController;
 
-},{"../constants/index":10}],16:[function(require,module,exports){
+},{"../constants/index":11}],17:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2191,8 +2233,10 @@ Engine.prototype.showToast = function (message) {
 
 exports.default = Engine;
 
-},{"./constants/index":10,"./controllers/MainController":14}],17:[function(require,module,exports){
+},{"./constants/index":11,"./controllers/MainController":15}],18:[function(require,module,exports){
 'use strict';
+
+require('./Libraries/jqueryFunctions');
 
 var _World = require('./classes/World');
 
@@ -2231,6 +2275,7 @@ gg.settings = {
 
 window.stats = [];
 // Libraries
+
 // CLASSES
 
 // CONTROLLERS
@@ -2313,4 +2358,4 @@ window.downloadCSV = function downloadCSV(stats) {
     return encodedUri;
 };
 
-},{"./bindings":4,"./classes/Entity":5,"./classes/World":9,"./controllers/MainController":14,"./engine":16}]},{},[17]);
+},{"./Libraries/jqueryFunctions":4,"./bindings":5,"./classes/Entity":6,"./classes/World":10,"./controllers/MainController":15,"./engine":17}]},{},[18]);

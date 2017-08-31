@@ -120,6 +120,7 @@ World.prototype.checkEvents = function() {
 
 World.prototype.activateEvent = function(event) {
     this.activeEvents.push(event);
+    gg.engine.showToast("New Event! " + event.name);
 
     if (this.eventHistogram[event.id] === undefined) {
         this.eventHistogram[event.id] = 0;
@@ -211,7 +212,7 @@ World.prototype.givePassives = function() {
 };
 
 World.prototype.birthPeople = function() {
-    let birthsToday = gf.getRandomInt(0, Math.floor(this.standard.population / 2) * BASICS.WORLD_BIRTH_FACTOR);
+    let birthsToday = gf.getRandomInt((this.standard.population / 2) * 0.03, Math.floor(this.standard.population / 2) * BASICS.WORLD_BIRTH_FACTOR);
     birthsToday += Math.floor(birthsToday * this.birthsExtraPercent);
 
     if (this.standard.population > BASICS.WORLD_MAX_POPULATION) {
