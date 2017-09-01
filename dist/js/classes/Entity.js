@@ -23,8 +23,8 @@ function Entity(id, playerClass) {
         defeats: 0,
         avoidedDeath: 0,
         coins: 0,
-        experience: 1,
-        nextLevel: 15
+        experience: 0,
+        nextLevel: BASICS.START_EXP
     };
 
     this.attributes = {
@@ -44,12 +44,15 @@ function Entity(id, playerClass) {
         leftArm: BASICS.MAX_ENTITY_HEALTH,
         rightArm: BASICS.MAX_ENTITY_HEALTH,
         leftLeg: BASICS.MAX_ENTITY_HEALTH,
-        rightLeg:BASICS. MAX_ENTITY_HEALTH
+        rightLeg: BASICS.MAX_ENTITY_HEALTH
     };
 
     this.init();
 }
 
+Entity.prototype.getNextLevelIncrement = function(currentNextLevel) {
+    return Math.ceil(currentNextLevel + currentNextLevel / 8);
+};
 
 Entity.prototype.getPointsFree = function() {
     //console.log("entering with id : " + this.id);
@@ -57,12 +60,7 @@ Entity.prototype.getPointsFree = function() {
     let temporalLevelUp = this.basics.nextLevel;
     //if(this.id == 0)console.log("Experience : " + this.basics.experience);
     while (Math.floor(this.basics.experience) >= temporalLevelUp) {
-        //if(this.id==0)console.log(temporalLevelUp);
-        if (this.basics.level > 250) {
-            temporalLevelUp = Math.floor(temporalLevelUp + temporalLevelUp * 0.1);
-        } else {
-            temporalLevelUp = Math.floor(temporalLevelUp + temporalLevelUp * 0.1);
-        }
+        temporalLevelUp = this.getNextLevelIncrement(temporalLevelUp);
         ++pointsFree;
     }
 
@@ -70,12 +68,8 @@ Entity.prototype.getPointsFree = function() {
 };
 
 Entity.prototype.levelUp = function() {
-    if (this.basics.experience > this.basics.nextLevel) {
-        if (this.basics.level > 250) {
-            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 8);
-        } else {
-            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 8);
-        }
+    if (this.basics.experience >= this.basics.nextLevel) {
+        this.basics.nextLevel = this.getNextLevelIncrement(this.basics.nextLevel);
     }
 };
 
@@ -85,48 +79,27 @@ Entity.prototype.init = function() {
     this.basics.class = this.basics.class === null ? gf.getRandomKey(WARRIOR_TYPES) : this.basics.class;
     this.basics.name = gf.getRandomCitizenName(this.basics.sex);
     this.basics.surname = gf.getRandomCitizenSurname();
-    this.basics.level = 8;
+    this.basics.level = 1;
     this.basics.hand = gf.isAppening(60) ? "right" : "left";
     this.basics.victories = 0;
     this.basics.defeats = 0;
-    this.basics.experience = 100;
+    this.basics.experience = 0;
     this.basics.coins = this.getBaseCoins();
 
-    this.attributes.strength = 1;
-    this.attributes.endurance = 1;
-    this.attributes.intelligence = 1;
-    this.attributes.willpower = 1;
-    this.attributes.agility = 1;
-    this.attributes.speed = 1;
-    this.attributes.stamina = 1;
-    this.attributes.faith = 1;
+    this.attributes = {
+        strength: BASICS.START_STATS,
+        endurance: BASICS.START_STATS,
+        intelligence: BASICS.START_STATS,
+        willpower: BASICS.START_STATS,
+        agility: BASICS.START_STATS,
+        speed: BASICS.START_STATS,
+        stamina: BASICS.START_STATS,
+        faith: BASICS.START_STATS
+    };
 
     // this.getBaseExperience();
     // console.log(this.basics.experience);
     ef.checkLevelUp(this);
-};
-
-Entity.prototype.getBaseExperience = function() {
-    let num = gf.getRandomInt(0, 100);
-
-
-    if (num > (100 - 3)) {
-        this.basics.experience = gf.getRandomInt(2000000, 3199629);
-    } else if (num > (100 - 15)) {
-        this.basics.experience = gf.getRandomInt(1000000, 2000000);
-    } else if (num > (100 - 25)) {
-        this.basics.experience = gf.getRandomInt(500000, 1000000);
-    } else if (num > (100 - 35)) {
-        this.basics.experience = gf.getRandomInt(250000, 500000);
-    } else if (num > (100 - 45)) {
-        this.basics.experience = gf.getRandomInt(100000, 250000);
-    } else if (num > (100 - 50)) {
-        this.basics.experience = gf.getRandomInt(50000, 100000);
-    } else {
-        this.basics.experience = gf.getRandomInt(0, 50000);
-    }
-
-    this.basics.experience /= 1000;
 };
 
 Entity.prototype.setAllStatsToValue = function(value) {
@@ -139,51 +112,6 @@ Entity.prototype.setAllStatsToValue = function(value) {
     this.attributes.speed = value;
     this.attributes.stamina = value;
     this.attributes.faith = value;
-};
-Entity.prototype.generateStat = function(stat) {
-    let result;
-
-    switch (stat) {
-        case "strength":
-            result = gf.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "endurance":
-            result = gf.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "intelligence":
-            result = gf.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "willpower":
-            result = gf.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "agility":
-            result = gf.getRandomInt(3, 100);
-            return result;
-            break;
-        case "speed":
-            result = gf.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "stamina":
-            result = gf.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "faith":
-            result = gf.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-    }
 };
 
 Entity.prototype.addPointsToAttribute = function(points, attribute) {
@@ -272,11 +200,6 @@ Entity.prototype.fightAgainstEntity = function(enemy) {
     }
 };
 
-Entity.prototype.earnPassiveExp = function() {
-    this.basics.experience += this.basics.experience * 0.01;
-    ef.checkLevelUp(this);
-};
-
 Entity.prototype.levelUpAsType = function(type) {
     for (let i = 0; i < BASICS.FIGHTER_TYPES[type].length; i++) {
         gg.outputHTML += "<br>" + BASICS.FIGHTER_TYPES[i];
@@ -311,17 +234,13 @@ Entity.prototype.report = function() {
 
 // Coins
 Entity.prototype.getBaseCoins = function() {
-  return 50;
+    return 50;
 };
 
 Entity.prototype.stealCoins = function(objective) {
     //base case TODO: Add concealed money.
-  this.basics.coins += objective.basics.coins;
-  objective.basics.coins = 0;
-};
-
-Entity.prototype.earnPassiveCoins = function() {
-  this.basics.coins += 5;
+    this.basics.coins += objective.basics.coins;
+    objective.basics.coins = 0;
 };
 
 export default Entity;

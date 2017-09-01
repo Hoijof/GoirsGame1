@@ -76,7 +76,8 @@ World.prototype.callADay = function() {
     this.standard.populationChange = this.people.size() - this.standard.population;
 
     // REPORTING
-    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    // window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    window.stats.push(this.standard.day, this.player.basics.level);
 
     this.standard.population = this.people.length = this.people.size();
 

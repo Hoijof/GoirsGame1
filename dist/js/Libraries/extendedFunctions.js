@@ -55,7 +55,9 @@ function attack(attacker, attacked) {
             gg.totals.dodges++;
         }
     } else {
-        damage = ((((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10))) * gf.getRandom(0.8, 1.1)).toFixed(3);
+        damage = ((((attacker.attributes.strength * 0.25 -
+            attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 -
+            attacked.attributes.agility * 0.10))) * gf.getRandom(0.8, 1.1)).toFixed(3);
         if (damage < 0) damage = 0;
         if (badHand) damage *= 0.6;
         attacked.vitalPoints[zoneToAttack[0]] -= damage;
@@ -107,9 +109,9 @@ function giveExperience(reciver, other, modificator) {
     let levelDifference = reciver.basics.level - other.basics.level,
         exp = 0;
     if (levelDifference >= 0) {
-        exp = Math.round(reciver.basics.level * 5 - Math.pow(levelDifference, 2) * modificator);
+        exp = Math.round(reciver.basics.level * 4 - Math.pow(levelDifference, 2) * modificator);
     } else {
-        exp = Math.round(reciver.basics.level * 10 + Math.pow(Math.abs(levelDifference), 2) * modificator);
+        exp = Math.round(reciver.basics.level * 8 + Math.pow(Math.abs(levelDifference), 2) * modificator);
     }
 
     if (exp < reciver.basics.level * 5 * modificator) exp = reciver.basics.level * 5 * modificator;

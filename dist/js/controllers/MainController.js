@@ -242,6 +242,7 @@ MainController.prototype.checkNewPlayerForm = function() {
 
     gg.player = new Entity(0, params.class);
     gg.world.addPerson(gg.player);
+    gg.world.player = gg.player;
 
     $.each(params, function(key, value) {
         gg.player.basics[key] = value;

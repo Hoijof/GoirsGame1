@@ -9,8 +9,8 @@ gg.totals = {
 
 gg.settings = {
     autoLevelUp: true,
-    tickingInterval: 30,
-    tickingIncrement: 3
+    tickingInterval: 1,
+    tickingIncrement: 100
 };
 
 window.stats = [];
@@ -81,10 +81,11 @@ gg.tick = function tick() {
 
 window.downloadCSV = function downloadCSV(stats) {
     let res = 'data:text/csv;charset=utf-8,';
-    res += 'Day,Total population,Deaths,Births\n';
+    // res += 'Day,Total population,Deaths,Births\n';
+    res += 'Day,Level\n';
 
     let current = 0;
-    const max = 4;
+    const max = 2;
     stats.forEach((stat) => {
         res += stat;
 

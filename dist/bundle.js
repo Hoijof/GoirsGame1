@@ -156,9 +156,9 @@ function giveExperience(reciver, other, modificator) {
     var levelDifference = reciver.basics.level - other.basics.level,
         exp = 0;
     if (levelDifference >= 0) {
-        exp = Math.round(reciver.basics.level * 5 - Math.pow(levelDifference, 2) * modificator);
+        exp = Math.round(reciver.basics.level * 4 - Math.pow(levelDifference, 2) * modificator);
     } else {
-        exp = Math.round(reciver.basics.level * 10 + Math.pow(Math.abs(levelDifference), 2) * modificator);
+        exp = Math.round(reciver.basics.level * 8 + Math.pow(Math.abs(levelDifference), 2) * modificator);
     }
 
     if (exp < reciver.basics.level * 5 * modificator) exp = reciver.basics.level * 5 * modificator;
@@ -508,8 +508,8 @@ function Entity(id, playerClass) {
         defeats: 0,
         avoidedDeath: 0,
         coins: 0,
-        experience: 1,
-        nextLevel: 15
+        experience: 0,
+        nextLevel: _index.BASICS.START_EXP
     };
 
     this.attributes = {
@@ -535,18 +535,17 @@ function Entity(id, playerClass) {
     this.init();
 }
 
+Entity.prototype.getNextLevelIncrement = function (currentNextLevel) {
+    return Math.ceil(currentNextLevel + currentNextLevel / 8);
+};
+
 Entity.prototype.getPointsFree = function () {
     //console.log("entering with id : " + this.id);
     var pointsFree = 0;
     var temporalLevelUp = this.basics.nextLevel;
     //if(this.id == 0)console.log("Experience : " + this.basics.experience);
     while (Math.floor(this.basics.experience) >= temporalLevelUp) {
-        //if(this.id==0)console.log(temporalLevelUp);
-        if (this.basics.level > 250) {
-            temporalLevelUp = Math.floor(temporalLevelUp + temporalLevelUp * 0.1);
-        } else {
-            temporalLevelUp = Math.floor(temporalLevelUp + temporalLevelUp * 0.1);
-        }
+        temporalLevelUp = this.getNextLevelIncrement(temporalLevelUp);
         ++pointsFree;
     }
 
@@ -554,12 +553,8 @@ Entity.prototype.getPointsFree = function () {
 };
 
 Entity.prototype.levelUp = function () {
-    if (this.basics.experience > this.basics.nextLevel) {
-        if (this.basics.level > 250) {
-            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 8);
-        } else {
-            this.basics.nextLevel = Math.floor(this.basics.nextLevel + this.basics.nextLevel / 8);
-        }
+    if (this.basics.experience >= this.basics.nextLevel) {
+        this.basics.nextLevel = this.getNextLevelIncrement(this.basics.nextLevel);
     }
 };
 
@@ -569,47 +564,27 @@ Entity.prototype.init = function () {
     this.basics.class = this.basics.class === null ? _genericFunctions2.default.getRandomKey(_index.WARRIOR_TYPES) : this.basics.class;
     this.basics.name = _genericFunctions2.default.getRandomCitizenName(this.basics.sex);
     this.basics.surname = _genericFunctions2.default.getRandomCitizenSurname();
-    this.basics.level = 8;
+    this.basics.level = 1;
     this.basics.hand = _genericFunctions2.default.isAppening(60) ? "right" : "left";
     this.basics.victories = 0;
     this.basics.defeats = 0;
-    this.basics.experience = 100;
+    this.basics.experience = 0;
     this.basics.coins = this.getBaseCoins();
 
-    this.attributes.strength = 1;
-    this.attributes.endurance = 1;
-    this.attributes.intelligence = 1;
-    this.attributes.willpower = 1;
-    this.attributes.agility = 1;
-    this.attributes.speed = 1;
-    this.attributes.stamina = 1;
-    this.attributes.faith = 1;
+    this.attributes = {
+        strength: _index.BASICS.START_STATS,
+        endurance: _index.BASICS.START_STATS,
+        intelligence: _index.BASICS.START_STATS,
+        willpower: _index.BASICS.START_STATS,
+        agility: _index.BASICS.START_STATS,
+        speed: _index.BASICS.START_STATS,
+        stamina: _index.BASICS.START_STATS,
+        faith: _index.BASICS.START_STATS
+    };
 
     // this.getBaseExperience();
     // console.log(this.basics.experience);
     _extendedFunctions2.default.checkLevelUp(this);
-};
-
-Entity.prototype.getBaseExperience = function () {
-    var num = _genericFunctions2.default.getRandomInt(0, 100);
-
-    if (num > 100 - 3) {
-        this.basics.experience = _genericFunctions2.default.getRandomInt(2000000, 3199629);
-    } else if (num > 100 - 15) {
-        this.basics.experience = _genericFunctions2.default.getRandomInt(1000000, 2000000);
-    } else if (num > 100 - 25) {
-        this.basics.experience = _genericFunctions2.default.getRandomInt(500000, 1000000);
-    } else if (num > 100 - 35) {
-        this.basics.experience = _genericFunctions2.default.getRandomInt(250000, 500000);
-    } else if (num > 100 - 45) {
-        this.basics.experience = _genericFunctions2.default.getRandomInt(100000, 250000);
-    } else if (num > 100 - 50) {
-        this.basics.experience = _genericFunctions2.default.getRandomInt(50000, 100000);
-    } else {
-        this.basics.experience = _genericFunctions2.default.getRandomInt(0, 50000);
-    }
-
-    this.basics.experience /= 1000;
 };
 
 Entity.prototype.setAllStatsToValue = function (value) {
@@ -622,51 +597,6 @@ Entity.prototype.setAllStatsToValue = function (value) {
     this.attributes.speed = value;
     this.attributes.stamina = value;
     this.attributes.faith = value;
-};
-Entity.prototype.generateStat = function (stat) {
-    var result = void 0;
-
-    switch (stat) {
-        case "strength":
-            result = _genericFunctions2.default.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "endurance":
-            result = _genericFunctions2.default.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "intelligence":
-            result = _genericFunctions2.default.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "willpower":
-            result = _genericFunctions2.default.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "agility":
-            result = _genericFunctions2.default.getRandomInt(3, 100);
-            return result;
-            break;
-        case "speed":
-            result = _genericFunctions2.default.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "stamina":
-            result = _genericFunctions2.default.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-        case "faith":
-            result = _genericFunctions2.default.getRandomInt(3, 100);
-            this.basics.level += result;
-            return result;
-            break;
-    }
 };
 
 Entity.prototype.addPointsToAttribute = function (points, attribute) {
@@ -758,11 +688,6 @@ Entity.prototype.fightAgainstEntity = function (enemy) {
     }
 };
 
-Entity.prototype.earnPassiveExp = function () {
-    this.basics.experience += this.basics.experience * 0.01;
-    _extendedFunctions2.default.checkLevelUp(this);
-};
-
 Entity.prototype.levelUpAsType = function (type) {
     for (var i = 0; i < _index.BASICS.FIGHTER_TYPES[type].length; i++) {
         gg.outputHTML += "<br>" + _index.BASICS.FIGHTER_TYPES[i];
@@ -802,10 +727,6 @@ Entity.prototype.stealCoins = function (objective) {
     //base case TODO: Add concealed money.
     this.basics.coins += objective.basics.coins;
     objective.basics.coins = 0;
-};
-
-Entity.prototype.earnPassiveCoins = function () {
-    this.basics.coins += 5;
 };
 
 exports.default = Entity;
@@ -1121,7 +1042,8 @@ World.prototype.callADay = function () {
     this.standard.populationChange = this.people.size() - this.standard.population;
 
     // REPORTING
-    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    // window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    window.stats.push(this.standard.day, this.player.basics.level);
 
     this.standard.population = this.people.length = this.people.size();
 
@@ -1356,7 +1278,7 @@ var BASICS = exports.BASICS = {
 
     WORLD_FIGHT_FACTOR: 0.35,
     WORLD_BIRTH_FACTOR: 0.05,
-    MAX_BATTLE_TURNS: 50,
+    MAX_BATTLE_TURNS: 65,
     MAX_ITERATIONS: 30,
     REFRESH_COUNTER: 3,
 
@@ -1364,9 +1286,12 @@ var BASICS = exports.BASICS = {
     WORLD_MAX_SIZE: 500,
     WORLD_MAX_POPULATION: 5000,
 
-    EXPERIENCE_LOSS_FACTOR: 0.2,
-    EXPERIENCE_WIN_FACTOR: 1,
+    EXPERIENCE_LOSS_FACTOR: 0.1,
+    EXPERIENCE_WIN_FACTOR: 0.4,
+
     MAX_ATTRIBUTE_LEVEL: 500,
+    START_STATS: 5,
+    START_EXP: 30,
 
     WORLD_EVENT_CHANCE: 5,
 
@@ -1936,6 +1861,7 @@ MainController.prototype.checkNewPlayerForm = function () {
 
     gg.player = new _Entity2.default(0, params.class);
     gg.world.addPerson(gg.player);
+    gg.world.player = gg.player;
 
     $.each(params, function (key, value) {
         gg.player.basics[key] = value;
@@ -2269,8 +2195,8 @@ gg.totals = {
 
 gg.settings = {
     autoLevelUp: true,
-    tickingInterval: 30,
-    tickingIncrement: 3
+    tickingInterval: 1,
+    tickingIncrement: 100
 };
 
 window.stats = [];
@@ -2338,10 +2264,11 @@ gg.tick = function tick() {
 
 window.downloadCSV = function downloadCSV(stats) {
     var res = 'data:text/csv;charset=utf-8,';
-    res += 'Day,Total population,Deaths,Births\n';
+    // res += 'Day,Total population,Deaths,Births\n';
+    res += 'Day,Level\n';
 
     var current = 0;
-    var max = 4;
+    var max = 2;
     stats.forEach(function (stat) {
         res += stat;
 
