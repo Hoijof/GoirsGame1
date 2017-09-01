@@ -50,7 +50,7 @@ export const QUESTS = [
             eventChance: 0
         }
     ],
-    // 3
+    // 4
     [
         {
             name: 'Save the Kingdom',
@@ -60,10 +60,22 @@ export const QUESTS = [
             experienceRatio: 1.6,
             coinsRatio: 1,
             pricesPool: 1,
-            eventChance: 100
+            eventChance: 0
+        }
+    ],
+    // 5
+    [
+        {
+            name: 'Save the World!',
+            level: 5,
+            payoutTier: 5,
+            pricesChance: 100,
+            experienceRatio: 1.5,
+            coinsRatio: 1,
+            pricesPool: 1,
+            eventChance: 0
         }
     ]
-
 ];
 
 export const QUESTS_PRICES = [
@@ -85,5 +97,6 @@ export const PAYOUT_TIERS = [
     25,
     50,
     100,
-    200
+    200,
+    500
 ];

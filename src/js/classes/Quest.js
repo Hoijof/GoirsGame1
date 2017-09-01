@@ -27,16 +27,18 @@ const Quest = {
     getBlueprintByOwner: function() {
         const level = this.owner.basics.level;
 
-        if (level < 25) {
+        if (level < 15) {
             return this.getRandomQuestFromQuestsBP(QUESTS[0]);
-        } else if (level < 50) {
+        } else if (level < 25) {
             return this.getRandomQuestFromQuestsBP(QUESTS[1]);
-        } else if (level < 75) {
+        } else if (level < 40) {
             return this.getRandomQuestFromQuestsBP(QUESTS[2]);
-        } else if (level < 100) {
+        } else if (level < 60) {
             return this.getRandomQuestFromQuestsBP(QUESTS[3]);
-        } else {
+        } else if (level < 70) {
             return this.getRandomQuestFromQuestsBP(QUESTS[4]);
+        } else {
+            return this.getRandomQuestFromQuestsBP(QUESTS[5]);
         }
     },
     getRandomQuestFromQuestsBP: function(quests) {
