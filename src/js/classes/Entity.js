@@ -243,4 +243,16 @@ Entity.prototype.stealCoins = function(objective) {
     objective.basics.coins = 0;
 };
 
+Entity.prototype.isBadlyHurt = function() {
+    let res = false;
+
+    this.vitalPoints.forEach((part) => {
+        if (part <= BASICS.BADLY_HURT_THRESHOLD) {
+            res = true
+        }
+    });
+
+    return res;
+};
+
 export default Entity;

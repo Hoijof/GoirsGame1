@@ -3,7 +3,7 @@ export const WORLD_EVENTS = [
         id: 0,
         name: 'God touch',
         effects: {
-            healingExtraPercent: 10
+            healingExtraPercent: 100
         },
         addedChanceToOccur: 0.8,
         duration: 5,
@@ -17,7 +17,14 @@ export const WORLD_EVENTS = [
         },
         addedChanceToOccur: 0.7,
         duration: 30,
-        blocks: [8, 6]
+        blocks: [8, 6],
+        conditions: [
+            {
+                stat: 'population',
+                condition: 'greater_than',
+                value: 2000
+            }
+        ]
     },
     {
         id: 2,
@@ -57,7 +64,7 @@ export const WORLD_EVENTS = [
         },
         addedChanceToOccur: 0.9,
         duration: 50,
-        blocks: [4, 7]
+        blocks: [4, 7, 8]
     },
     {
         id: 6,
@@ -67,8 +74,15 @@ export const WORLD_EVENTS = [
             fightsExtraPercent: 0.4
         },
         addedChanceToOccur: 0.6,
-        duration: 100,
-        blocks: [6, 8]
+        duration: 80,
+        blocks: [6, 8],
+        conditions: [
+            {
+                stat: 'population',
+                condition: 'greater_than',
+                value: 2000
+            }
+        ]
     },
     {
         id: 7,
@@ -88,7 +102,7 @@ export const WORLD_EVENTS = [
             fightsExtraPercent: -0.4
         },
         addedChanceToOccur: 0.6,
-        duration: 100,
+        duration: 80,
         blocks: [1, 6, 7]
     }
 ];

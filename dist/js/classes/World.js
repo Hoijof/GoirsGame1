@@ -75,12 +75,14 @@ World.prototype.callADay = function() {
 
     this.standard.populationChange = this.people.size() - this.standard.population;
 
-    // REPORTING
-    // window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
-    window.stats.push(this.standard.day, this.player.basics.level);
+    // REPORTING POPULATION
+    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    // REPORTING PLAYER LEVEL
+    // window.stats.push(this.standard.day, this.player.basics.level);
 
     this.standard.population = this.people.length = this.people.size();
 
+    this.questManager.update();
 
     if (report) {
         gg.outputHTML += "<br> Deaths : " + fightResult.deathsToday + " " +
@@ -93,12 +95,24 @@ World.prototype.callADay = function() {
 
 // EVENTS
 World.prototype.checkIfNewEvent = function() {
-    if (gf.isAppening(BASICS.WORLD_EVENT_CHANCE)) {
+    if (gf.isAppening(BASICS.WORLD_EVENT_CHANCE - this.activeEvents.length * 5)) {
         let event = Object.create(Event).init(this.getRandomEvent());
 
         if (!event.checkIfAlreadyExists(this.activeEvents)) {
             if (gf.isAppening(event.addedChanceToOccur * 100)) {
-                this.activateEvent(event);
+                if (event.conditions !== undefined) {
+                    event.conditions.forEach((condition) => {
+                       switch (condition.condition) {
+                           case 'greater_than':
+                               if (this.standard[condition.stat] > condition.value) {
+                                   this.activateEvent(event);
+                               }
+                           break;
+                       }
+                    });
+                } else {
+                    this.activateEvent(event);
+                }
             }
         }
     }
@@ -298,6 +312,26 @@ World.prototype.giveQuestToEntity = function(entity) {
     entity.basics.coins += result.coins;
     entity.basics.experience += result.experience;
     ef.checkLevelUp(entity);
+
+    if (entity.id !== 0) {
+        this.questManager.removeQuest(quest.id);
+    }
+};
+
+World.prototype.getEntityWithMaxLevel = function() {
+    let res = {
+        basics: {
+            level: 0
+        }
+    };
+
+    gg.world.people.forEach((entity) => {
+        if (entity.basics.level > res.basics.level) {
+            res = entity;
+        }
+    });
+
+    return res;
 };
 
 export default World;

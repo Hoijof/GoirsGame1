@@ -1,4 +1,4 @@
-import {WARRIOR_TYPES, BASICS} from '../constants/index';
+import {BASICS, WARRIOR_TYPES} from '../constants/index';
 import gf from '../Libraries/genericFunctions';
 import ef from '../Libraries/extendedFunctions';
 
@@ -241,6 +241,18 @@ Entity.prototype.stealCoins = function(objective) {
     //base case TODO: Add concealed money.
     this.basics.coins += objective.basics.coins;
     objective.basics.coins = 0;
+};
+
+Entity.prototype.isBadlyHurt = function() {
+    let res = false;
+
+    this.vitalPoints.forEach((part) => {
+        if (part <= BASICS.BADLY_HURT_THRESHOLD) {
+            res = true
+        }
+    });
+
+    return res;
 };
 
 export default Entity;

@@ -104,7 +104,7 @@ function attack(attacker, attacked) {
             gg.totals.dodges++;
         }
     } else {
-        damage = ((attacker.attributes.strength * 0.25 - attacked.attributes.endurance * 0.10 + (attacker.attributes.agility * 0.15 - attacked.attributes.agility * 0.10)) * _genericFunctions2.default.getRandom(0.8, 1.1)).toFixed(3);
+        damage = ((attacker.attributes.strength * 0.26 - attacked.attributes.endurance * 0.10 + (attacker.attributes.agility * 0.16 - attacked.attributes.agility * 0.10)) * _genericFunctions2.default.getRandom(0.8, 1.1)).toFixed(3);
         if (damage < 0) damage = 0;
         if (badHand) damage *= 0.6;
         attacked.vitalPoints[zoneToAttack[0]] -= damage;
@@ -729,6 +729,18 @@ Entity.prototype.stealCoins = function (objective) {
     objective.basics.coins = 0;
 };
 
+Entity.prototype.isBadlyHurt = function () {
+    var res = false;
+
+    this.vitalPoints.forEach(function (part) {
+        if (part <= _index.BASICS.BADLY_HURT_THRESHOLD) {
+            res = true;
+        }
+    });
+
+    return res;
+};
+
 exports.default = Entity;
 
 },{"../Libraries/extendedFunctions":2,"../Libraries/genericFunctions":3,"../constants/index":11}],7:[function(require,module,exports){
@@ -745,6 +757,7 @@ exports.default = Event = {
         this.duration = bp.duration;
         this.addedChanceToOccur = bp.addedChanceToOccur;
         this.blocks = bp.blocks;
+        this.conditions = bp.conditions;
 
         this.num = null;
         this.active = false;
@@ -1041,11 +1054,14 @@ World.prototype.callADay = function () {
 
     this.standard.populationChange = this.people.size() - this.standard.population;
 
-    // REPORTING
-    // window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
-    window.stats.push(this.standard.day, this.player.basics.level);
+    // REPORTING POPULATION
+    window.stats.push(this.standard.day, this.standard.population, this.standard.deathsToday, this.standard.birthsToday);
+    // REPORTING PLAYER LEVEL
+    // window.stats.push(this.standard.day, this.player.basics.level);
 
     this.standard.population = this.people.length = this.people.size();
+
+    this.questManager.update();
 
     if (report) {
         gg.outputHTML += "<br> Deaths : " + fightResult.deathsToday + " " + "Victories : " + fightResult.todayVictories + " " + "Defeats : " + fightResult.todayDefeats + " " + "Draws : " + fightResult.todayDraws + " " + "Survivals : " + fightResult.survivalsToday;
@@ -1054,12 +1070,26 @@ World.prototype.callADay = function () {
 
 // EVENTS
 World.prototype.checkIfNewEvent = function () {
-    if (_genericFunctions2.default.isAppening(_index.BASICS.WORLD_EVENT_CHANCE)) {
+    var _this = this;
+
+    if (_genericFunctions2.default.isAppening(_index.BASICS.WORLD_EVENT_CHANCE - this.activeEvents.length * 5)) {
         var event = Object.create(_Event2.default).init(this.getRandomEvent());
 
         if (!event.checkIfAlreadyExists(this.activeEvents)) {
             if (_genericFunctions2.default.isAppening(event.addedChanceToOccur * 100)) {
-                this.activateEvent(event);
+                if (event.conditions !== undefined) {
+                    event.conditions.forEach(function (condition) {
+                        switch (condition.condition) {
+                            case 'greater_than':
+                                if (_this.standard[condition.stat] > condition.value) {
+                                    _this.activateEvent(event);
+                                }
+                                break;
+                        }
+                    });
+                } else {
+                    this.activateEvent(event);
+                }
             }
         }
     }
@@ -1070,11 +1100,11 @@ World.prototype.getRandomEvent = function () {
 };
 
 World.prototype.checkEvents = function () {
-    var _this = this;
+    var _this2 = this;
 
     this.activeEvents = this.activeEvents.filter(function (event) {
         if (--event.duration === 0) {
-            _this.deactivateEvent(event);
+            _this2.deactivateEvent(event);
 
             return false;
         }
@@ -1166,11 +1196,11 @@ World.prototype.fight = function (fightsToday) {
 };
 
 World.prototype.givePassives = function () {
-    var _this2 = this;
+    var _this3 = this;
 
     this.people.forEach(function (person) {
         if (person.elegibleForQuest === true) {
-            _this2.giveQuestToEntity(person);
+            _this3.giveQuestToEntity(person);
         } else {
             person.elegibleForQuest = true;
         }
@@ -1263,6 +1293,26 @@ World.prototype.giveQuestToEntity = function (entity) {
     entity.basics.coins += result.coins;
     entity.basics.experience += result.experience;
     _extendedFunctions2.default.checkLevelUp(entity);
+
+    if (entity.id !== 0) {
+        this.questManager.removeQuest(quest.id);
+    }
+};
+
+World.prototype.getEntityWithMaxLevel = function () {
+    var res = {
+        basics: {
+            level: 0
+        }
+    };
+
+    gg.world.people.forEach(function (entity) {
+        if (entity.basics.level > res.basics.level) {
+            res = entity;
+        }
+    });
+
+    return res;
 };
 
 exports.default = World;
@@ -1274,7 +1324,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 var BASICS = exports.BASICS = {
-    MAX_ENTITY_HEALTH: 100,
+    MAX_ENTITY_HEALTH: 115,
 
     WORLD_FIGHT_FACTOR: 0.35,
     WORLD_BIRTH_FACTOR: 0.05,
@@ -1282,9 +1332,9 @@ var BASICS = exports.BASICS = {
     MAX_ITERATIONS: 30,
     REFRESH_COUNTER: 3,
 
-    WORLD_MIN_SIZE: 100,
-    WORLD_MAX_SIZE: 500,
-    WORLD_MAX_POPULATION: 5000,
+    WORLD_MIN_SIZE: 300,
+    WORLD_MAX_SIZE: 700,
+    WORLD_MAX_POPULATION: 6000,
 
     EXPERIENCE_LOSS_FACTOR: 0.1,
     EXPERIENCE_WIN_FACTOR: 0.4,
@@ -1292,6 +1342,7 @@ var BASICS = exports.BASICS = {
     MAX_ATTRIBUTE_LEVEL: 500,
     START_STATS: 5,
     START_EXP: 30,
+    BADLY_HURT_THRESHOLD: 20,
 
     WORLD_EVENT_CHANCE: 5,
 
@@ -1523,7 +1574,7 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
     id: 0,
     name: 'God touch',
     effects: {
-        healingExtraPercent: 10
+        healingExtraPercent: 100
     },
     addedChanceToOccur: 0.8,
     duration: 5,
@@ -1536,7 +1587,12 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
     },
     addedChanceToOccur: 0.7,
     duration: 30,
-    blocks: [8, 6]
+    blocks: [8, 6],
+    conditions: [{
+        stat: 'population',
+        condition: 'greater_than',
+        value: 2000
+    }]
 }, {
     id: 2,
     name: 'Fertility!',
@@ -1572,7 +1628,7 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
     },
     addedChanceToOccur: 0.9,
     duration: 50,
-    blocks: [4, 7]
+    blocks: [4, 7, 8]
 }, {
     id: 6,
     name: 'Long war...',
@@ -1581,8 +1637,13 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
         fightsExtraPercent: 0.4
     },
     addedChanceToOccur: 0.6,
-    duration: 100,
-    blocks: [6, 8]
+    duration: 80,
+    blocks: [6, 8],
+    conditions: [{
+        stat: 'population',
+        condition: 'greater_than',
+        value: 2000
+    }]
 }, {
     id: 7,
     name: 'Baby boom!',
@@ -1600,7 +1661,7 @@ var WORLD_EVENTS = exports.WORLD_EVENTS = [{
         fightsExtraPercent: -0.4
     },
     addedChanceToOccur: 0.6,
-    duration: 100,
+    duration: 80,
     blocks: [1, 6, 7]
 }];
 
@@ -2253,7 +2314,7 @@ gg.tick = function tick() {
 
         if (gg.player.basics.isDead && !gg.playerDeadNotified) {
             gg.ticking.active = false;
-            alert("You lasted " + gg.world.standard.day + " days in this cruel world.\n You finished as the " + (gg.world.standard.population + 1) + "th last human.");
+            gg.engine.showToast("You lasted " + gg.world.standard.day + " days in this cruel world.\n You finished as the " + (gg.world.standard.population + 1) + "th last human.");
             gg.playerDeadNotified = true;
         }
     } else {
@@ -2264,11 +2325,11 @@ gg.tick = function tick() {
 
 window.downloadCSV = function downloadCSV(stats) {
     var res = 'data:text/csv;charset=utf-8,';
-    // res += 'Day,Total population,Deaths,Births\n';
-    res += 'Day,Level\n';
+    res += 'Day,Total population,Deaths,Births\n';
+    // res += 'Day,Level\n';
 
     var current = 0;
-    var max = 2;
+    var max = 4;
     stats.forEach(function (stat) {
         res += stat;
 

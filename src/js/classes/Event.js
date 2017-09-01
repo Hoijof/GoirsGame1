@@ -6,6 +6,7 @@ export default Event = {
         this.duration = bp.duration;
         this.addedChanceToOccur = bp.addedChanceToOccur;
         this.blocks = bp.blocks;
+        this.conditions = bp.conditions;
 
         this.num = null;
         this.active = false;

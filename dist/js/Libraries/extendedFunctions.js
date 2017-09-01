@@ -55,8 +55,8 @@ function attack(attacker, attacked) {
             gg.totals.dodges++;
         }
     } else {
-        damage = ((((attacker.attributes.strength * 0.25 -
-            attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.15 -
+        damage = ((((attacker.attributes.strength * 0.26 -
+            attacked.attributes.endurance * 0.10) + (attacker.attributes.agility * 0.16 -
             attacked.attributes.agility * 0.10))) * gf.getRandom(0.8, 1.1)).toFixed(3);
         if (damage < 0) damage = 0;
         if (badHand) damage *= 0.6;

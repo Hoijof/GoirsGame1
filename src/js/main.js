@@ -70,7 +70,7 @@ gg.tick = function tick() {
 
         if (gg.player.basics.isDead && !gg.playerDeadNotified) {
             gg.ticking.active = false;
-            alert("You lasted " + gg.world.standard.day + " days in this cruel world.\n You finished as the " + (gg.world.standard.population + 1) + "th last human.");
+            gg.engine.showToast("You lasted " + gg.world.standard.day + " days in this cruel world.\n You finished as the " + (gg.world.standard.population + 1) + "th last human.");
             gg.playerDeadNotified = true;
         }
     } else {
@@ -81,11 +81,11 @@ gg.tick = function tick() {
 
 window.downloadCSV = function downloadCSV(stats) {
     let res = 'data:text/csv;charset=utf-8,';
-    // res += 'Day,Total population,Deaths,Births\n';
-    res += 'Day,Level\n';
+    res += 'Day,Total population,Deaths,Births\n';
+    // res += 'Day,Level\n';
 
     let current = 0;
-    const max = 2;
+    const max = 4;
     stats.forEach((stat) => {
         res += stat;
 
