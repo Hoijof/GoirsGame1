@@ -102,13 +102,13 @@ World.prototype.checkIfNewEvent = function() {
             if (gf.isAppening(event.addedChanceToOccur * 100)) {
                 if (event.conditions !== undefined) {
                     event.conditions.forEach((condition) => {
-                       switch (condition.condition) {
-                           case 'greater_than':
-                               if (this.standard[condition.stat] > condition.value) {
-                                   this.activateEvent(event);
-                               }
-                           break;
-                       }
+                        switch (condition.condition) {
+                            case 'greater_than':
+                                if (this.standard[condition.stat] > condition.value) {
+                                    this.activateEvent(event);
+                                }
+                                break;
+                        }
                     });
                 } else {
                     this.activateEvent(event);
