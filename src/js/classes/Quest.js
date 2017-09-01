@@ -79,8 +79,12 @@ const Quest = {
     },
     getCoinsFromOutcome: function() {
         if (this.result.outcome === QUESTS_CODES.SUCCESS) {
-            return PAYOUT_TIERS[this.blueprint.payoutTier] +
+            let res = PAYOUT_TIERS[this.blueprint.payoutTier] +
                 gf.getRandomInt(- (PAYOUT_TIERS[this.blueprint.payoutTier] * 0.05), PAYOUT_TIERS[this.blueprint.payoutTier] * 0.05);
+
+            res *= this.blueprint.coinsRatio;
+
+            return res;
         } else {
             return 0;
         }

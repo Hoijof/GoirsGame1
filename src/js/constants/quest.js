@@ -6,6 +6,7 @@ export const QUESTS = [
             payoutTier: 0,
             pricesChance: 65,
             experienceRatio: 1.2,
+            coinsRatio: 1,
             pricesPool: 0,
             eventChance: 0
         }
@@ -18,6 +19,7 @@ export const QUESTS = [
             payoutTier: 1,
             pricesChance: 25,
             experienceRatio: 1.5,
+            coinsRatio: 1,
             pricesPool: 1,
             eventChance: 0
         }
@@ -30,6 +32,7 @@ export const QUESTS = [
             payoutTier: 2,
             pricesChance: 50,
             experienceRatio: 1.3,
+            coinsRatio: 1,
             pricesPool: 1,
             eventChance: 0
         }
@@ -42,6 +45,7 @@ export const QUESTS = [
             payoutTier: 3,
             pricesChance: 100,
             experienceRatio: 1.2,
+            coinsRatio: 1,
             pricesPool: 1,
             eventChance: 0
         }
@@ -54,6 +58,7 @@ export const QUESTS = [
             payoutTier: 4,
             pricesChance: 100,
             experienceRatio: 1.6,
+            coinsRatio: 1,
             pricesPool: 1,
             eventChance: 100
         }
