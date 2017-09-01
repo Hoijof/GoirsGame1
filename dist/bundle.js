@@ -122,7 +122,7 @@ function attackingFirstCheck(attacker, attacked) {
 
 function survivalCheck(entity) {
 
-    var check = entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.2 + _genericFunctions2.default.getRandomInt(-5, 5);
+    var check = entity.attributes.willpower * 0.6 + entity.attributes.faith * 0.6 + _genericFunctions2.default.getRandomInt(-5, 5);
 
     if (entity.id === 0) {
         check += 10;
@@ -144,7 +144,7 @@ function isDying(entity) {
 }
 
 function dailyHealingEntity(entity, healingExtraPercent) {
-    var toHeal = (entity.attributes.endurance * 0.2 + entity.attributes.stamina * 0.2 + entity.attributes.willpower * 0.5 + entity.attributes.faith * 0.5) / 2;
+    var toHeal = (entity.attributes.endurance * 0.2 + entity.attributes.stamina * 0.2 + entity.attributes.willpower * 0.5 + entity.attributes.faith * 0.8) / 2;
     for (var part in entity.vitalPoints) {
         entity.vitalPoints[part] += toHeal + toHeal * healingExtraPercent;
         if (entity.vitalPoints[part] > _index.BASICS.MAX_ENTITY_HEALTH) entity.vitalPoints[part] = _index.BASICS.MAX_ENTITY_HEALTH;
