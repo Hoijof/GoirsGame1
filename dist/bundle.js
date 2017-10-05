@@ -710,7 +710,7 @@ Entity.prototype.report = function () {
         gg.outputHTML += "<br>" + key + " = " + val;
     });
     gg.outputHTML += "<br>" + "End of Attributes Report";
-     gg.outputHTML += "<br>" + "PERCENTAGES";
+      gg.outputHTML += "<br>" + "PERCENTAGES";
     for (i = 0; i < basePercentages.length; ++i) {
         gg.outputHTML += "<br>" + String(basePercentages[i] - percentages[i]);
     }*/
@@ -819,16 +819,18 @@ var Quest = {
     getBlueprintByOwner: function getBlueprintByOwner() {
         var level = this.owner.basics.level;
 
-        if (level < 25) {
+        if (level < 15) {
             return this.getRandomQuestFromQuestsBP(_quest.QUESTS[0]);
-        } else if (level < 50) {
+        } else if (level < 25) {
             return this.getRandomQuestFromQuestsBP(_quest.QUESTS[1]);
-        } else if (level < 75) {
+        } else if (level < 40) {
             return this.getRandomQuestFromQuestsBP(_quest.QUESTS[2]);
-        } else if (level < 100) {
+        } else if (level < 60) {
             return this.getRandomQuestFromQuestsBP(_quest.QUESTS[3]);
-        } else {
+        } else if (level < 70) {
             return this.getRandomQuestFromQuestsBP(_quest.QUESTS[4]);
+        } else {
+            return this.getRandomQuestFromQuestsBP(_quest.QUESTS[5]);
         }
     },
     getRandomQuestFromQuestsBP: function getRandomQuestFromQuestsBP(quests) {
@@ -871,7 +873,11 @@ var Quest = {
     },
     getCoinsFromOutcome: function getCoinsFromOutcome() {
         if (this.result.outcome === _quest.QUESTS_CODES.SUCCESS) {
-            return _quest.PAYOUT_TIERS[this.blueprint.payoutTier] + _genericFunctions2.default.getRandomInt(-(_quest.PAYOUT_TIERS[this.blueprint.payoutTier] * 0.05), _quest.PAYOUT_TIERS[this.blueprint.payoutTier] * 0.05);
+            var res = _quest.PAYOUT_TIERS[this.blueprint.payoutTier] + _genericFunctions2.default.getRandomInt(-(_quest.PAYOUT_TIERS[this.blueprint.payoutTier] * 0.05), _quest.PAYOUT_TIERS[this.blueprint.payoutTier] * 0.05);
+
+            res *= this.blueprint.coinsRatio;
+
+            return res;
         } else {
             return 0;
         }
@@ -1507,6 +1513,7 @@ var QUESTS = exports.QUESTS = [[{
     payoutTier: 0,
     pricesChance: 65,
     experienceRatio: 1.2,
+    coinsRatio: 1,
     pricesPool: 0,
     eventChance: 0
 }],
@@ -1517,6 +1524,7 @@ var QUESTS = exports.QUESTS = [[{
     payoutTier: 1,
     pricesChance: 25,
     experienceRatio: 1.5,
+    coinsRatio: 1,
     pricesPool: 1,
     eventChance: 0
 }],
@@ -1527,6 +1535,7 @@ var QUESTS = exports.QUESTS = [[{
     payoutTier: 2,
     pricesChance: 50,
     experienceRatio: 1.3,
+    coinsRatio: 1,
     pricesPool: 1,
     eventChance: 0
 }],
@@ -1537,18 +1546,31 @@ var QUESTS = exports.QUESTS = [[{
     payoutTier: 3,
     pricesChance: 100,
     experienceRatio: 1.2,
+    coinsRatio: 1,
     pricesPool: 1,
     eventChance: 0
 }],
-// 3
+// 4
 [{
     name: 'Save the Kingdom',
     level: 4,
     payoutTier: 4,
     pricesChance: 100,
     experienceRatio: 1.6,
+    coinsRatio: 1,
     pricesPool: 1,
-    eventChance: 100
+    eventChance: 0
+}],
+// 5
+[{
+    name: 'Save the World!',
+    level: 5,
+    payoutTier: 5,
+    pricesChance: 100,
+    experienceRatio: 1.5,
+    coinsRatio: 1,
+    pricesPool: 1,
+    eventChance: 0
 }]];
 
 var QUESTS_PRICES = exports.QUESTS_PRICES = [[0, 1, 2], [3, 4, 5]];
@@ -1562,7 +1584,7 @@ var QUESTS_CODES = exports.QUESTS_CODES = {
     GREAT_SUCCESS: 3
 };
 
-var PAYOUT_TIERS = exports.PAYOUT_TIERS = [10, 25, 50, 100, 200];
+var PAYOUT_TIERS = exports.PAYOUT_TIERS = [10, 25, 50, 100, 200, 500];
 
 },{}],14:[function(require,module,exports){
 'use strict';
@@ -2256,8 +2278,8 @@ gg.totals = {
 
 gg.settings = {
     autoLevelUp: true,
-    tickingInterval: 30,
-    tickingIncrement: 3
+    tickingInterval: 1,
+    tickingIncrement: 100
 };
 
 window.stats = [];
